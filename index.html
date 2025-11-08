@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DP Consulting | iOS & Web Development | Hawaii</title>
+    <meta name="description" content="Quality iOS and web development for Hawaii's local businesses. Native iOS apps, Firebase integration, and mobile-responsive websites that work.">
+    <link rel="icon" type="image/jpeg" href="Icon.jpg">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --ocean-blue: #0891b2;
+            --deep-blue: #0e7490;
+            --sky-blue: #22d3ee;
+            --sunset-orange: #fb923c;
+            --sunset-pink: #f472b6;
+            --dark-bg: #0f172a;
+            --darker-bg: #020617;
+            --text-light: #f8fafc;
+            --text-gray: #cbd5e1;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: var(--darker-bg);
+            color: var(--text-light);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Animated Ocean Background */
+        .ocean-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: linear-gradient(180deg, 
+                var(--darker-bg) 0%, 
+                var(--dark-bg) 30%, 
+                #0c4a6e 100%);
+        }
+
+        .wave {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 200%;
+            height: 200px;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none"><path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" fill="rgba(8,145,178,0.1)"></path></svg>') repeat-x;
+            animation: wave 25s cubic-bezier(0.36, 0.45, 0.63, 0.53) infinite;
+            opacity: 0.3;
+        }
+
+        .wave:nth-child(2) {
+            bottom: -20px;
+            animation: wave 20s cubic-bezier(0.36, 0.45, 0.63, 0.53) -.125s infinite, swell 7s ease -1.25s infinite;
+            opacity: 0.4;
+        }
+
+        .wave:nth-child(3) {
+            bottom: -40px;
+            animation: wave 15s cubic-bezier(0.36, 0.45, 0.63, 0.53) -.125s infinite, swell 5s ease -1.25s infinite;
+            opacity: 0.5;
+        }
+
+        @keyframes wave {
+            0% { transform: translateX(0); }
+            50% { transform: translateX(-25%); }
+            100% { transform: translateX(-50%); }
+        }
+
+        @keyframes swell {
+            0%, 100% { transform: translateY(-25px); }
+            50% { transform: translateY(5px); }
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(8, 145, 178, 0.2);
+        }
+
+        nav .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--sky-blue);
+            text-decoration: none;
+        }
+
+        .logo img {
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        nav a {
+            color: var(--text-gray);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: var(--sky-blue);
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 6rem 2rem 4rem;
+            position: relative;
+        }
+
+        .hero-content {
+            max-width: 900px;
+            z-index: 10;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--sky-blue), var(--ocean-blue), var(--sunset-pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradient-shift 8s ease infinite;
+            background-size: 200% 200%;
+        }
+
+        @keyframes gradient-shift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .hero h2 {
+            font-size: clamp(1.2rem, 3vw, 1.8rem);
+            color: var(--text-gray);
+            font-weight: 400;
+            margin-bottom: 2rem;
+        }
+
+        .hero-tagline {
+            font-size: clamp(1rem, 2vw, 1.2rem);
+            color: var(--text-gray);
+            margin-bottom: 3rem;
+            line-height: 1.8;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--ocean-blue), var(--deep-blue));
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(8, 145, 178, 0.4);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            border: 2px solid var(--ocean-blue);
+            color: var(--sky-blue);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(8, 145, 178, 0.1);
+        }
+
+        /* Sections */
+        section {
+            padding: 6rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 10;
+        }
+
+        section h2 {
+            font-size: clamp(2rem, 4vw, 3rem);
+            margin-bottom: 1rem;
+            text-align: center;
+            color: var(--sky-blue);
+        }
+
+        section .subtitle {
+            text-align: center;
+            color: var(--text-gray);
+            margin-bottom: 4rem;
+            font-size: 1.2rem;
+        }
+
+        /* Project Grid */
+        .project-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .project-card {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(8, 145, 178, 0.2);
+            border-radius: 16px;
+            padding: 2rem;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--sky-blue), var(--ocean-blue));
+        }
+
+        .project-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--sky-blue);
+            box-shadow: 0 15px 40px rgba(8, 145, 178, 0.3);
+        }
+
+        .project-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .project-card h3 {
+            color: var(--sky-blue);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .project-card p {
+            color: var(--text-gray);
+            margin-bottom: 1rem;
+        }
+
+        .project-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .tag {
+            background: rgba(8, 145, 178, 0.2);
+            color: var(--sky-blue);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+        }
+
+        /* Screenshot placeholder */
+        .project-screenshot {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, rgba(8, 145, 178, 0.1), rgba(14, 116, 144, 0.1));
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-gray);
+            border: 1px dashed rgba(8, 145, 178, 0.3);
+        }
+
+        /* Services */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .service-card {
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .service-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .service-card h3 {
+            color: var(--sky-blue);
+            margin-bottom: 1rem;
+        }
+
+        /* About Section */
+        .about-content {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .about-content p {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+            color: var(--text-gray);
+        }
+
+        .about-highlight {
+            background: rgba(8, 145, 178, 0.1);
+            border-left: 4px solid var(--ocean-blue);
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-radius: 8px;
+        }
+
+        /* Contact Form */
+        .contact-form {
+            max-width: 600px;
+            margin: 0 auto;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(8, 145, 178, 0.2);
+            border-radius: 16px;
+            padding: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--sky-blue);
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            background: rgba(8, 145, 178, 0.1);
+            border: 1px solid rgba(8, 145, 178, 0.3);
+            border-radius: 8px;
+            color: var(--text-light);
+            font-size: 1rem;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--sky-blue);
+            box-shadow: 0 0 0 3px rgba(8, 145, 178, 0.2);
+        }
+
+        .form-group textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .form-status {
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+            display: none;
+        }
+
+        .form-status.success {
+            background: rgba(34, 197, 94, 0.2);
+            border: 1px solid rgba(34, 197, 94, 0.5);
+            color: #86efac;
+        }
+
+        .form-status.error {
+            background: rgba(239, 68, 68, 0.2);
+            border: 1px solid rgba(239, 68, 68, 0.5);
+            color: #fca5a5;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 3rem 2rem;
+            background: rgba(2, 6, 23, 0.8);
+            border-top: 1px solid rgba(8, 145, 178, 0.2);
+            position: relative;
+            z-index: 10;
+        }
+
+        footer p {
+            color: var(--text-gray);
+        }
+
+        /* Mobile Navigation */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--sky-blue);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+            nav ul {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: rgba(15, 23, 42, 0.95);
+                flex-direction: column;
+                padding: 2rem;
+                gap: 1rem;
+            }
+
+            nav ul.active {
+                display: flex;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .hero {
+                padding: 8rem 1rem 4rem;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+
+        /* Smooth scroll */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Loading animation for images */
+        .loading-placeholder {
+            background: linear-gradient(90deg, rgba(8, 145, 178, 0.1) 0%, rgba(8, 145, 178, 0.2) 50%, rgba(8, 145, 178, 0.1) 100%);
+            background-size: 200% 100%;
+            animation: loading 1.5s ease-in-out infinite;
+        }
+
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Ocean Background -->
+    <div class="ocean-bg">
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="wave"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="container">
+            <a href="#" class="logo">
+                <img src="Icon.jpg" alt="DP Consulting Logo">
+                <span>DP Consulting</span>
+            </a>
+            <button class="mobile-menu-btn" onclick="toggleMenu()">☰</button>
+            <ul id="navMenu">
+                <li><a href="#apps">Apps</a></li>
+                <li><a href="#web">Web</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Quality Development<br>for Hawaii's Businesses</h1>
+            <h2>Native iOS Apps • Modern Web Solutions • Affordable Excellence</h2>
+            <p class="hero-tagline">
+                Building professional iOS applications and mobile-responsive websites<br>
+                that help local Hawaii businesses thrive without breaking the bank.
+            </p>
+            <div class="cta-buttons">
+                <a href="#contact" class="btn btn-primary">Let's Talk</a>
+                <a href="#apps" class="btn btn-secondary">View Work</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- iOS Apps Section -->
+    <section id="apps">
+        <h2>iOS Applications</h2>
+        <p class="subtitle">Native SwiftUI apps built for quality and performance</p>
+        
+        <div class="project-grid">
+            <div class="project-card">
+                <div class="project-screenshot loading-placeholder">
+                    <span>📱 App Screenshot</span>
+                </div>
+                <h3>Discover More</h3>
+                <p>Comprehensive DISC personality assessment application helping users understand their communication style and behavioral preferences.</p>
+                <div class="project-tags">
+                    <span class="tag">SwiftUI</span>
+                    <span class="tag">iOS</span>
+                    <span class="tag">Firebase</span>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <div class="project-screenshot loading-placeholder">
+                    <span>📱 App Screenshot</span>
+                </div>
+                <h3>Spiritual Gifts Survey</h3>
+                <p>Interactive spiritual assessment tool providing personalized insights and guidance for personal growth and self-discovery.</p>
+                <div class="project-tags">
+                    <span class="tag">SwiftUI</span>
+                    <span class="tag">iOS</span>
+                    <span class="tag">Assessment</span>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <div class="project-screenshot loading-placeholder">
+                    <span>📱 App Screenshot</span>
+                </div>
+                <h3>LDAH FAQ Helper</h3>
+                <p>Empowering Hawaii parents navigating special education services with personalized Action Guides and resources.</p>
+                <div class="project-tags">
+                    <span class="tag">React</span>
+                    <span class="tag">Firebase</span>
+                    <span class="tag">PWA</span>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <div class="project-screenshot loading-placeholder">
+                    <span>📱 App Screenshot</span>
+                </div>
+                <h3>DP Meeting AI</h3>
+                <p>Smart meeting companion that listens, transcribes, and creates actionable summaries with easy sharing capabilities.</p>
+                <div class="project-tags">
+                    <span class="tag">SwiftUI</span>
+                    <span class="tag">AI</span>
+                    <span class="tag">iOS</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Web Development Section -->
+    <section id="web">
+        <h2>Web Development</h2>
+        <p class="subtitle">Mobile-responsive websites with modern functionality</p>
+        
+        <div class="project-grid">
+            <div class="project-card">
+                <div class="project-screenshot loading-placeholder">
+                    <span>💻 Website Screenshot</span>
+                </div>
+                <h3>VSG Website</h3>
+                <p>Complete business website with Firebase-powered CMS, lead capture system, and volunteer application management.</p>
+                <div class="project-tags">
+                    <span class="tag">HTML/CSS/JS</span>
+                    <span class="tag">Firebase</span>
+                    <span class="tag">Mobile-First</span>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <div class="project-screenshot loading-placeholder">
+                    <span>💻 Website Screenshot</span>
+                </div>
+                <h3>LDAH Website</h3>
+                <p>Non-profit organization site featuring comprehensive volunteer management, application tracking, and content management system.</p>
+                <div class="project-tags">
+                    <span class="tag">React</span>
+                    <span class="tag">Firebase</span>
+                    <span class="tag">Admin Panel</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services">
+        <h2>What I Offer</h2>
+        <p class="subtitle">Focused expertise where it matters most</p>
+        
+        <div class="services-grid">
+            <div class="service-card">
+                <div class="service-icon">📱</div>
+                <h3>Native iOS Development</h3>
+                <p>SwiftUI applications built with attention to detail, performance, and user experience that Apple users expect.</p>
+            </div>
+
+            <div class="service-card">
+                <div class="service-icon">🌐</div>
+                <h3>Mobile-Responsive Websites</h3>
+                <p>Modern web solutions that work beautifully on every device, from iPhones to desktops.</p>
+            </div>
+
+            <div class="service-card">
+                <div class="service-icon">🔥</div>
+                <h3>Firebase Integration</h3>
+                <p>Backend solutions for real-time data, authentication, storage, and content management.</p>
+            </div>
+
+            <div class="service-card">
+                <div class="service-icon">⚙️</div>
+                <h3>Custom Solutions</h3>
+                <p>Tailored applications that solve your specific business challenges without unnecessary complexity.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about">
+        <h2>About DP Consulting</h2>
+        <div class="about-content">
+            <p>
+                I'm a self-taught developer who made the jump from SAP Build Apps to native iOS development 
+                because I believe local Hawaii businesses deserve quality software that works.
+            </p>
+            
+            <div class="about-highlight">
+                <h3 style="color: var(--sky-blue); margin-bottom: 1rem;">My Mission</h3>
+                <p>
+                    Make professional development services accessible to Hawaii's local businesses and non-profit organizations. 
+                    Too many great organizations struggle to find quality development work at prices they can afford. 
+                    I'm here to change that - working with businesses and causes I believe in, creating solutions 
+                    that help them succeed without the enterprise price tag.
+                </p>
+            </div>
+
+            <p>
+                I focus on iOS apps and web development because that's where I can deliver the most value. 
+                Every project gets the same attention to mobile responsiveness, clean code, and user experience 
+                that I'd want in my own products.
+            </p>
+
+            <p style="color: var(--sky-blue); font-size: 1.3rem; margin-top: 2rem;">
+                Let's build something great together. 🤙
+            </p>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact">
+        <h2>Get In Touch</h2>
+        <p class="subtitle">Have a project in mind? Let's talk about it.</p>
+        
+        <form class="contact-form" id="contactForm">
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+
+            <div class="form-group">
+                <label for="business">Business/Organization (optional)</label>
+                <input type="text" id="business" name="business">
+            </div>
+
+            <div class="form-group">
+                <label for="message">Tell me about your project</label>
+                <textarea id="message" name="message" required></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="width: 100%;">Send Message</button>
+            
+            <div id="formStatus" class="form-status"></div>
+        </form>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 DP Consulting | Serving Hawaii's Local Businesses</p>
+        <p style="margin-top: 0.5rem; color: var(--text-gray);">Built with ❤️ in Hawaii</p>
+    </footer>
+
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getFirestore, collection, addDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyAohn0wRVsbtUexqq-GN9e72Ii0qUApIsg",
+            authDomain: "vantosg-65652.firebaseapp.com",
+            projectId: "vantosg-65652",
+            storageBucket: "vantosg-65652.firebasestorage.app",
+            messagingSenderId: "531627484684",
+            appId: "1:531627484684:ios:b9da7582fcd9f257e3b029"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // Form submission
+        const contactForm = document.getElementById('contactForm');
+        const formStatus = document.getElementById('formStatus');
+
+        contactForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const formData = {
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                business: document.getElementById('business').value,
+                message: document.getElementById('message').value,
+                timestamp: serverTimestamp(),
+                status: 'new'
+            };
+
+            try {
+                await addDoc(collection(db, 'contact-inquiries'), formData);
+                
+                formStatus.className = 'form-status success';
+                formStatus.style.display = 'block';
+                formStatus.textContent = '✓ Thanks! I\'ll get back to you soon.';
+                
+                contactForm.reset();
+                
+                setTimeout(() => {
+                    formStatus.style.display = 'none';
+                }, 5000);
+            } catch (error) {
+                console.error('Error submitting form:', error);
+                
+                formStatus.className = 'form-status error';
+                formStatus.style.display = 'block';
+                formStatus.textContent = 'Something went wrong. Please try again or email me directly.';
+            }
+        });
+    </script>
+
+    <script>
+        // Mobile menu toggle
+        function toggleMenu() {
+            document.getElementById('navMenu').classList.toggle('active');
+        }
+
+        // Close mobile menu when clicking a link
+        document.querySelectorAll('nav a').forEach(link => {
+            link.addEventListener('click', () => {
+                document.getElementById('navMenu').classList.remove('active');
+            });
+        });
+    </script>
+</body>
+</html>
