@@ -31,6 +31,36 @@
             color: var(--text-light);
             line-height: 1.6;
             overflow-x: hidden;
+            cursor: none;
+        }
+
+        /* Custom Cursor */
+        #cursor {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--sky-blue);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 10000;
+            transition: transform 0.15s ease;
+            mix-blend-mode: difference;
+        }
+
+        #cursor.hover {
+            transform: scale(1.5);
+            background: rgba(34, 211, 238, 0.2);
+        }
+
+        /* Particle Canvas */
+        #particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
         }
 
         /* Animated Ocean Background */
@@ -159,7 +189,6 @@
             background-clip: text;
             animation: gradient-shift 8s ease-in-out infinite;
             background-size: 200% 200%;
-            text-shadow: 0 8px 32px rgba(34, 211, 238, 0.4);
             filter: drop-shadow(0 4px 16px rgba(34, 211, 238, 0.3)) 
                     drop-shadow(0 8px 32px rgba(8, 145, 178, 0.2));
         }
@@ -237,8 +266,6 @@
         /* Sections */
         section {
             padding: 6rem 2rem;
-            max-width: 1200px;
-            margin: 0 auto;
             position: relative;
             z-index: 10;
         }
@@ -253,66 +280,185 @@
         section .subtitle {
             text-align: center;
             color: var(--text-gray);
-            margin-bottom: 4rem;
+            margin-bottom: 6rem;
             font-size: 1.2rem;
         }
 
-        /* Project Grid */
-        .project-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-top: 3rem;
-        }
-
-        .project-card {
-            background: rgba(15, 23, 42, 0.6);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(8, 145, 178, 0.2);
-            border-radius: 16px;
-            padding: 2rem;
-            transition: all 0.3s;
+        /* iPhone Frame */
+        .iphone-frame {
             position: relative;
-            overflow: hidden;
-        }
-
-        .project-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
             width: 100%;
-            height: 4px;
-            background: linear-gradient(90deg, var(--sky-blue), var(--ocean-blue));
+            max-width: 300px;
+            aspect-ratio: 9/19.5;
+            background: #1a1a1a;
+            border-radius: 40px;
+            padding: 12px;
+            box-shadow: 
+                0 0 0 2px #2a2a2a,
+                0 0 0 4px #1a1a1a,
+                0 20px 60px rgba(0, 0, 0, 0.5),
+                inset 0 0 6px rgba(255, 255, 255, 0.1);
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transform-style: preserve-3d;
+            opacity: 0.6;
+            filter: blur(2px);
         }
 
-        .project-card:hover {
-            transform: translateY(-5px);
-            border-color: var(--sky-blue);
-            box-shadow: 0 15px 40px rgba(8, 145, 178, 0.3);
+        .iphone-frame.awake {
+            opacity: 1;
+            filter: blur(0);
+            box-shadow: 
+                0 0 0 2px #2a2a2a,
+                0 0 0 4px #1a1a1a,
+                0 30px 80px rgba(0, 0, 0, 0.6),
+                0 0 60px rgba(34, 211, 238, 0.3),
+                inset 0 0 6px rgba(255, 255, 255, 0.1);
         }
 
-        .project-icon {
-            font-size: 3rem;
-            margin-bottom: 1rem;
+        .iphone-notch {
+            position: absolute;
+            top: 12px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 28px;
+            background: #1a1a1a;
+            border-radius: 0 0 20px 20px;
+            z-index: 2;
         }
 
-        .project-card h3 {
+        .iphone-screen {
+            width: 100%;
+            height: 100%;
+            border-radius: 32px;
+            overflow: hidden;
+            background: #000;
+            position: relative;
+        }
+
+        .iphone-screen video,
+        .iphone-screen img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Asymmetric Grid Container */
+        .chaos-grid {
+            position: relative;
+            min-height: 1800px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .phone-container {
+            position: absolute;
+            transition: transform 0.3s ease;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .phone-container:hover {
+            z-index: 100;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) translateZ(0);
+            }
+            50% {
+                transform: translateY(-15px) translateZ(20px);
+            }
+        }
+
+        /* Individual Phone Positions - Large Screens */
+        .phone-1 { 
+            top: 0; 
+            left: 50%;
+            transform: translateX(-50%) rotate(-2deg);
+            animation-delay: 0s;
+        }
+        .phone-1 .iphone-frame { max-width: 350px; }
+
+        .phone-2 { 
+            top: 400px; 
+            left: 10%;
+            transform: rotate(3deg);
+            animation-delay: -1s;
+        }
+        .phone-2 .iphone-frame { max-width: 280px; }
+
+        .phone-3 { 
+            top: 350px; 
+            right: 8%;
+            transform: rotate(-4deg);
+            animation-delay: -2s;
+        }
+        .phone-3 .iphone-frame { max-width: 300px; }
+
+        .phone-4 { 
+            top: 800px; 
+            left: 5%;
+            transform: rotate(-2deg);
+            animation-delay: -3s;
+        }
+        .phone-4 .iphone-frame { max-width: 240px; }
+
+        .phone-5 { 
+            top: 750px; 
+            right: 15%;
+            transform: rotate(2deg);
+            animation-delay: -4s;
+        }
+        .phone-5 .iphone-frame { max-width: 320px; }
+
+        .phone-6 { 
+            top: 1200px; 
+            left: 35%;
+            transform: rotate(-3deg);
+            animation-delay: -5s;
+        }
+        .phone-6 .iphone-frame { max-width: 290px; }
+
+        /* Project Info Overlay */
+        .project-info {
+            position: absolute;
+            bottom: -80px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(34, 211, 238, 0.3);
+            border-radius: 16px;
+            padding: 1.5rem;
+            width: 320px;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s ease;
+            z-index: 101;
+        }
+
+        .phone-container:hover .project-info {
+            opacity: 1;
+            bottom: -100px;
+        }
+
+        .project-info h3 {
             color: var(--sky-blue);
-            margin-bottom: 1rem;
-            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            font-size: 1.3rem;
         }
 
-        .project-card p {
+        .project-info p {
             color: var(--text-gray);
+            font-size: 0.9rem;
             margin-bottom: 1rem;
+            line-height: 1.4;
         }
 
         .project-tags {
             display: flex;
             flex-wrap: wrap;
             gap: 0.5rem;
-            margin-top: 1rem;
         }
 
         .tag {
@@ -320,34 +466,254 @@
             color: var(--sky-blue);
             padding: 0.3rem 0.8rem;
             border-radius: 20px;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
+            border: 1px solid rgba(8, 145, 178, 0.3);
         }
 
-        /* Screenshot placeholder */
-        .project-screenshot {
+        /* MacBook Frame */
+        .macbook-frame {
+            position: relative;
             width: 100%;
-            height: 200px;
-            background: linear-gradient(135deg, rgba(8, 145, 178, 0.1), rgba(14, 116, 144, 0.1));
-            border-radius: 8px;
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--text-gray);
-            border: 1px dashed rgba(8, 145, 178, 0.3);
+            max-width: 600px;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transform-style: preserve-3d;
+            opacity: 0.6;
+            filter: blur(2px);
         }
 
-        /* Services */
+        .macbook-frame.awake {
+            opacity: 1;
+            filter: blur(0);
+        }
+
+        .macbook-screen {
+            background: #1a1a1a;
+            border-radius: 8px 8px 0 0;
+            padding: 12px 12px 0 12px;
+            box-shadow: 
+                0 0 0 2px #2a2a2a,
+                0 0 0 4px #1a1a1a,
+                0 10px 40px rgba(0, 0, 0, 0.4),
+                inset 0 0 6px rgba(255, 255, 255, 0.1);
+            position: relative;
+        }
+
+        .macbook-frame.awake .macbook-screen {
+            box-shadow: 
+                0 0 0 2px #2a2a2a,
+                0 0 0 4px #1a1a1a,
+                0 20px 60px rgba(0, 0, 0, 0.6),
+                0 0 60px rgba(34, 211, 238, 0.3),
+                inset 0 0 6px rgba(255, 255, 255, 0.1);
+        }
+
+        .macbook-camera {
+            position: absolute;
+            top: 6px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 6px;
+            height: 6px;
+            background: #333;
+            border-radius: 50%;
+            box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
+            z-index: 2;
+        }
+
+        .screen-content {
+            width: 100%;
+            aspect-ratio: 16/10;
+            border-radius: 4px;
+            overflow: hidden;
+            background: #000;
+        }
+
+        .screen-content img,
+        .screen-content video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .macbook-bottom {
+            background: linear-gradient(to bottom, #3a3a3a 0%, #2a2a2a 50%, #1a1a1a 100%);
+            border-radius: 0 0 12px 12px;
+            padding: 8px 20px 12px;
+            box-shadow: 
+                0 8px 16px rgba(0, 0, 0, 0.4),
+                inset 0 1px 2px rgba(255, 255, 255, 0.1);
+            position: relative;
+        }
+
+        .keyboard-area {
+            background: linear-gradient(135deg, #2a2a2a, #1f1f1f);
+            border-radius: 4px;
+            padding: 10px;
+            margin-bottom: 8px;
+            box-shadow: 
+                inset 0 1px 3px rgba(0, 0, 0, 0.5),
+                0 1px 0 rgba(255, 255, 255, 0.05);
+        }
+
+        .keyboard-row {
+            display: flex;
+            gap: 3px;
+            margin-bottom: 3px;
+            justify-content: center;
+        }
+
+        .key {
+            background: linear-gradient(to bottom, #3a3a3a, #2a2a2a);
+            border: 1px solid #1a1a1a;
+            border-radius: 2px;
+            width: 20px;
+            height: 12px;
+            box-shadow: 
+                0 1px 0 rgba(0, 0, 0, 0.5),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        .key.wide {
+            width: 45px;
+        }
+
+        .key.wider {
+            width: 60px;
+        }
+
+        .key.space {
+            width: 180px;
+        }
+
+        .trackpad {
+            background: linear-gradient(135deg, #2a2a2a, #1f1f1f);
+            border-radius: 8px;
+            height: 50px;
+            margin: 0 auto;
+            max-width: 200px;
+            box-shadow: 
+                inset 0 1px 3px rgba(0, 0, 0, 0.5),
+                0 1px 0 rgba(255, 255, 255, 0.05);
+        }
+
+        .macbook-notch {
+            position: absolute;
+            bottom: -2px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60%;
+            height: 4px;
+            background: #1a1a1a;
+            border-radius: 2px 2px 0 0;
+        }
+
+        /* Laptop Container Positions */
+        .laptop-container {
+            position: absolute;
+            transition: transform 0.3s ease;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .laptop-container:hover {
+            z-index: 100;
+        }
+
+        .laptop-1 {
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%) rotate(-1deg);
+            animation-delay: 0s;
+        }
+        .laptop-1 .macbook-frame { max-width: 650px; }
+
+        .laptop-2 {
+            top: 450px;
+            left: 15%;
+            transform: rotate(2deg);
+            animation-delay: -2s;
+        }
+        .laptop-2 .macbook-frame { max-width: 550px; }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            body {
+                cursor: auto;
+            }
+
+            #cursor, #particles {
+                display: none;
+            }
+
+            .chaos-grid {
+                min-height: auto !important;
+                display: flex;
+                flex-direction: column;
+                gap: 4rem;
+                padding: 2rem;
+            }
+
+            .phone-container,
+            .laptop-container {
+                position: relative !important;
+                top: auto !important;
+                left: auto !important;
+                right: auto !important;
+                transform: none !important;
+                margin: 0 auto;
+            }
+
+            .phone-container .iphone-frame {
+                max-width: 300px !important;
+                margin: 0 auto;
+            }
+
+            .laptop-container .macbook-frame {
+                max-width: 500px !important;
+                margin: 0 auto;
+            }
+
+            .project-info {
+                position: relative;
+                opacity: 1;
+                bottom: auto;
+                margin-top: 2rem;
+                width: 100%;
+                max-width: 320px;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+
+            .phone-container:hover .project-info,
+            .laptop-container:hover .project-info {
+                bottom: auto;
+            }
+        }
+
+        /* Services Grid */
         .services-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 2rem;
             margin-top: 3rem;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         .service-card {
-            text-align: center;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(8, 145, 178, 0.2);
+            border-radius: 16px;
             padding: 2rem;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .service-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(34, 211, 238, 0.4);
+            box-shadow: 0 20px 40px rgba(8, 145, 178, 0.2);
         }
 
         .service-icon {
@@ -364,20 +730,18 @@
         .about-content {
             max-width: 800px;
             margin: 0 auto;
-            text-align: center;
+            color: var(--text-gray);
         }
 
         .about-content p {
-            font-size: 1.2rem;
-            line-height: 1.8;
             margin-bottom: 1.5rem;
-            color: var(--text-gray);
+            font-size: 1.1rem;
         }
 
         .about-highlight {
             background: rgba(8, 145, 178, 0.1);
             border-left: 4px solid var(--ocean-blue);
-            padding: 1.5rem;
+            padding: 2rem;
             margin: 2rem 0;
             border-radius: 8px;
         }
@@ -385,12 +749,7 @@
         /* Contact Form */
         .contact-form {
             max-width: 600px;
-            margin: 0 auto;
-            background: rgba(15, 23, 42, 0.6);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(8, 145, 178, 0.2);
-            border-radius: 16px;
-            padding: 2rem;
+            margin: 3rem auto 0;
         }
 
         .form-group {
@@ -407,18 +766,12 @@
         .form-group textarea {
             width: 100%;
             padding: 0.8rem;
-            background: rgba(8, 145, 178, 0.1);
+            background: rgba(15, 23, 42, 0.6);
             border: 1px solid rgba(8, 145, 178, 0.3);
             border-radius: 8px;
             color: var(--text-light);
-            font-size: 1rem;
-        }
-
-        .form-group input:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: var(--sky-blue);
-            box-shadow: 0 0 0 3px rgba(8, 145, 178, 0.2);
+            font-family: inherit;
+            transition: all 0.3s;
         }
 
         .form-group textarea {
@@ -426,22 +779,29 @@
             resize: vertical;
         }
 
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--sky-blue);
+            box-shadow: 0 0 0 3px rgba(34, 211, 238, 0.1);
+        }
+
         .form-status {
+            margin-top: 1rem;
             padding: 1rem;
             border-radius: 8px;
-            margin-top: 1rem;
             display: none;
         }
 
         .form-status.success {
             background: rgba(34, 197, 94, 0.2);
-            border: 1px solid rgba(34, 197, 94, 0.5);
+            border: 1px solid rgba(34, 197, 94, 0.4);
             color: #86efac;
         }
 
         .form-status.error {
             background: rgba(239, 68, 68, 0.2);
-            border: 1px solid rgba(239, 68, 68, 0.5);
+            border: 1px solid rgba(239, 68, 68, 0.4);
             color: #fca5a5;
         }
 
@@ -449,80 +809,19 @@
         footer {
             text-align: center;
             padding: 3rem 2rem;
-            background: rgba(2, 6, 23, 0.8);
+            background: rgba(15, 23, 42, 0.8);
             border-top: 1px solid rgba(8, 145, 178, 0.2);
-            position: relative;
-            z-index: 10;
-        }
-
-        footer p {
-            color: var(--text-gray);
-        }
-
-        /* Mobile Navigation */
-        .mobile-menu-btn {
-            display: none;
-            background: none;
-            border: none;
-            color: var(--sky-blue);
-            font-size: 1.5rem;
-            cursor: pointer;
-        }
-
-        @media (max-width: 768px) {
-            nav ul {
-                display: none;
-                position: absolute;
-                top: 100%;
-                left: 0;
-                right: 0;
-                background: rgba(15, 23, 42, 0.95);
-                flex-direction: column;
-                padding: 2rem;
-                gap: 1rem;
-            }
-
-            nav ul.active {
-                display: flex;
-            }
-
-            .mobile-menu-btn {
-                display: block;
-            }
-
-            .hero {
-                padding: 8rem 1rem 4rem;
-            }
-
-            .cta-buttons {
-                flex-direction: column;
-            }
-
-            .btn {
-                width: 100%;
-            }
-        }
-
-        /* Smooth scroll */
-        html {
-            scroll-behavior: smooth;
-        }
-
-        /* Loading animation for images */
-        .loading-placeholder {
-            background: linear-gradient(90deg, rgba(8, 145, 178, 0.1) 0%, rgba(8, 145, 178, 0.2) 50%, rgba(8, 145, 178, 0.1) 100%);
-            background-size: 200% 100%;
-            animation: loading 1.5s ease-in-out infinite;
-        }
-
-        @keyframes loading {
-            0% { background-position: 200% 0; }
-            100% { background-position: -200% 0; }
         }
     </style>
 </head>
 <body>
-    <!-- Animated Ocean Background -->
+    <!-- Custom Cursor -->
+    <div id="cursor"></div>
+
+    <!-- Particle Canvas -->
+    <canvas id="particles"></canvas>
+
+    <!-- Ocean Background -->
     <div class="ocean-bg">
         <div class="wave"></div>
         <div class="wave"></div>
@@ -536,9 +835,8 @@
                 <img src="Icon.jpg" alt="DP Consulting Logo">
                 <span>DP Consulting</span>
             </a>
-            <button class="mobile-menu-btn" onclick="toggleMenu()">☰</button>
             <ul id="navMenu">
-                <li><a href="#apps">Apps</a></li>
+                <li><a href="#ios">iOS</a></li>
                 <li><a href="#web">Web</a></li>
                 <li><a href="#services">Services</a></li>
                 <li><a href="#about">About</a></li>
@@ -550,93 +848,139 @@
     <!-- Hero Section -->
     <section class="hero">
         <div class="hero-content">
-            <h1>Quality Development<br>for Hawaii's Businesses</h1>
-            <h2>Native iOS Apps • Modern Web Solutions • Affordable Excellence</h2>
+            <h1>iOS & Web Development for Hawaii</h1>
+            <h2>Quality Apps That Work</h2>
             <p class="hero-tagline">
-                Building professional iOS applications and mobile-responsive websites<br>
-                that help local Hawaii businesses thrive without breaking the bank.
+                Native iOS development and mobile-responsive web solutions for local businesses and non-profits. 
+                Built with care, right here in the islands.
             </p>
             <div class="cta-buttons">
-                <a href="#contact" class="btn btn-primary">Let's Talk</a>
-                <a href="#apps" class="btn btn-secondary">View Work</a>
+                <a href="#contact" class="btn btn-primary">Get In Touch</a>
+                <a href="#ios" class="btn btn-secondary">View Portfolio</a>
             </div>
         </div>
     </section>
 
-    <!-- iOS Apps Section -->
-    <section id="apps">
-        <h2>iOS Applications</h2>
-        <p class="subtitle">Native SwiftUI apps built for quality and performance</p>
+    <!-- iOS Development Section -->
+    <section id="ios">
+        <h2>iOS Development</h2>
+        <p class="subtitle">Native SwiftUI applications built for Apple users</p>
         
-        <div class="project-grid">
-            <div class="project-card">
-                <video autoplay loop muted playsinline style="width: 100%; border-radius: 8px; margin-bottom: 1rem;">
-                    <source src="DMLive_cropped.mp4" type="video/mp4">
-                    <img src="Discover.jpg" alt="Discover More App Screenshot" style="width: 100%; border-radius: 8px;">
-                </video>
-                <h3>Discover More</h3>
-                <p>Comprehensive DISC personality assessment application helping users understand their communication style and behavioral preferences.</p>
-                <div class="project-tags">
-                    <span class="tag">SwiftUI</span>
-                    <span class="tag">iOS</span>
-                    <span class="tag">Firebase</span>
+        <div class="chaos-grid">
+            <!-- Discover More -->
+            <div class="phone-container phone-1">
+                <div class="iphone-frame" data-phone="1">
+                    <div class="iphone-notch"></div>
+                    <div class="iphone-screen">
+                        <video loop muted playsinline>
+                            <source src="DMLive_cropped.mp4" type="video/mp4">
+                            <img src="Discover.jpg" alt="Discover More App">
+                        </video>
+                    </div>
+                </div>
+                <div class="project-info">
+                    <h3>Discover More</h3>
+                    <p>Comprehensive DISC personality assessment application helping users understand their communication style and behavioral preferences.</p>
+                    <div class="project-tags">
+                        <span class="tag">SwiftUI</span>
+                        <span class="tag">iOS</span>
+                        <span class="tag">Firebase</span>
+                    </div>
                 </div>
             </div>
 
-            <div class="project-card">
-                <img src="SGA.jpg" alt="Spiritual Gifts Assessment App Screenshot" style="width: 100%; border-radius: 8px; margin-bottom: 1rem;">
-                <h3>Spiritual Gifts Assessment</h3>
-                <p>Interactive spiritual assessment tool providing personalized insights and guidance for personal growth and self-discovery. <strong style="color: var(--sky-blue);">Free on the App Store</strong></p>
-                <div class="project-tags">
-                    <span class="tag">SwiftUI</span>
-                    <span class="tag">iOS</span>
-                    <span class="tag">Assessment</span>
-                    <span class="tag">App Store</span>
+            <!-- Spiritual Gifts -->
+            <div class="phone-container phone-2">
+                <div class="iphone-frame" data-phone="2">
+                    <div class="iphone-notch"></div>
+                    <div class="iphone-screen">
+                        <img src="SGA.jpg" alt="Spiritual Gifts Assessment App">
+                    </div>
+                </div>
+                <div class="project-info">
+                    <h3>Spiritual Gifts Assessment</h3>
+                    <p>Interactive spiritual assessment tool providing personalized insights and guidance for personal growth. <strong style="color: var(--sky-blue);">Free on the App Store</strong></p>
+                    <div class="project-tags">
+                        <span class="tag">SwiftUI</span>
+                        <span class="tag">iOS</span>
+                        <span class="tag">App Store</span>
+                    </div>
                 </div>
             </div>
 
-            <div class="project-card">
-                <img src="LDAH.jpg" alt="LDAH App Screenshot" style="width: 100%; border-radius: 8px; margin-bottom: 1rem;">
-                <h3>LDAH App</h3>
-                <p>Empowering Hawaii parents navigating special education services with personalized Action Guides and resources for the Learning Disabilities Association of Hawaii.</p>
-                <div class="project-tags">
-                    <span class="tag">React</span>
-                    <span class="tag">Firebase</span>
-                    <span class="tag">PWA</span>
+            <!-- LDAH App -->
+            <div class="phone-container phone-3">
+                <div class="iphone-frame" data-phone="3">
+                    <div class="iphone-notch"></div>
+                    <div class="iphone-screen">
+                        <img src="LDAH.jpg" alt="LDAH App">
+                    </div>
+                </div>
+                <div class="project-info">
+                    <h3>LDAH App</h3>
+                    <p>Empowering Hawaii parents navigating special education services with personalized Action Guides and resources.</p>
+                    <div class="project-tags">
+                        <span class="tag">React</span>
+                        <span class="tag">Firebase</span>
+                        <span class="tag">PWA</span>
+                    </div>
                 </div>
             </div>
 
-            <div class="project-card">
-                <img src="DPM.jpg" alt="DP Meeting AI App Screenshot" style="width: 100%; border-radius: 8px; margin-bottom: 1rem;">
-                <h3>DP Meeting AI</h3>
-                <p>Smart meeting companion that listens, transcribes, and creates actionable summaries with easy sharing capabilities powered by AI.</p>
-                <div class="project-tags">
-                    <span class="tag">SwiftUI</span>
-                    <span class="tag">AI</span>
-                    <span class="tag">iOS</span>
+            <!-- DP Meeting AI -->
+            <div class="phone-container phone-4">
+                <div class="iphone-frame" data-phone="4">
+                    <div class="iphone-notch"></div>
+                    <div class="iphone-screen">
+                        <img src="DPM.jpg" alt="DP Meeting AI App">
+                    </div>
+                </div>
+                <div class="project-info">
+                    <h3>DP Meeting AI</h3>
+                    <p>Smart meeting companion that listens, transcribes, and creates actionable summaries with easy sharing capabilities powered by AI.</p>
+                    <div class="project-tags">
+                        <span class="tag">SwiftUI</span>
+                        <span class="tag">AI</span>
+                        <span class="tag">iOS</span>
+                    </div>
                 </div>
             </div>
 
-            <div class="project-card">
-                <img src="MT.jpg" alt="Meds Tracker App Screenshot" style="width: 100%; border-radius: 8px; margin-bottom: 1rem;">
-                <h3>Meds Tracker</h3>
-                <p>Comprehensive medication management app helping users track prescriptions, dosages, and refill schedules with ease. <strong style="color: var(--sky-blue);">Free on the App Store</strong></p>
-                <div class="project-tags">
-                    <span class="tag">SwiftUI</span>
-                    <span class="tag">iOS</span>
-                    <span class="tag">Healthcare</span>
-                    <span class="tag">App Store</span>
+            <!-- Meds Track -->
+            <div class="phone-container phone-5">
+                <div class="iphone-frame" data-phone="5">
+                    <div class="iphone-notch"></div>
+                    <div class="iphone-screen">
+                        <img src="DPMeds.jpg" alt="Meds Track App">
+                    </div>
+                </div>
+                <div class="project-info">
+                    <h3>Meds Track</h3>
+                    <p>Medication tracking and management with reminders, history, and export capabilities for personal healthcare organization.</p>
+                    <div class="project-tags">
+                        <span class="tag">SwiftUI</span>
+                        <span class="tag">Healthcare</span>
+                        <span class="tag">iOS</span>
+                    </div>
                 </div>
             </div>
 
-            <div class="project-card">
-                <img src="VSG.jpg" alt="VSG App Screenshot" style="width: 100%; border-radius: 8px; margin-bottom: 1rem;">
-                <h3>VSG App</h3>
-                <p>Vanto Services Group business management application with invoicing, to-do lists, scheduling, customer management, and comprehensive reporting tools.</p>
-                <div class="project-tags">
-                    <span class="tag">SwiftUI</span>
-                    <span class="tag">Firebase</span>
-                    <span class="tag">Business Tools</span>
+            <!-- VSG App -->
+            <div class="phone-container phone-6">
+                <div class="iphone-frame" data-phone="6">
+                    <div class="iphone-notch"></div>
+                    <div class="iphone-screen">
+                        <img src="VSG.jpg" alt="VSG App">
+                    </div>
+                </div>
+                <div class="project-info">
+                    <h3>VSG App</h3>
+                    <p>Vanto Services Group business management application with invoicing, to-do lists, scheduling, customer management, and comprehensive reporting tools.</p>
+                    <div class="project-tags">
+                        <span class="tag">SwiftUI</span>
+                        <span class="tag">Firebase</span>
+                        <span class="tag">Business</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -647,26 +991,88 @@
         <h2>Web Development</h2>
         <p class="subtitle">Mobile-responsive websites with modern functionality</p>
         
-        <div class="project-grid">
-            <div class="project-card">
-                <img src="VSGweb.jpg" alt="VSG Website Screenshot" style="width: 100%; border-radius: 8px; margin-bottom: 1rem;">
-                <h3>VSG Website</h3>
-                <p>Vanto Services Group business website with Firebase-powered CMS, lead capture system, and mobile-responsive design optimized for all devices.</p>
-                <div class="project-tags">
-                    <span class="tag">HTML/CSS/JS</span>
-                    <span class="tag">Firebase</span>
-                    <span class="tag">Mobile-First</span>
+        <div class="chaos-grid" style="min-height: 1200px;">
+            <!-- VSG Website -->
+            <div class="laptop-container laptop-1">
+                <div class="macbook-frame" data-laptop="1">
+                    <div class="macbook-screen">
+                        <div class="macbook-camera"></div>
+                        <div class="screen-content">
+                            <img src="VSGweb.jpg" alt="VSG Website">
+                        </div>
+                    </div>
+                    <div class="macbook-bottom">
+                        <div class="keyboard-area">
+                            <div class="keyboard-row">
+                                <div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div><div class="key wide"></div>
+                            </div>
+                            <div class="keyboard-row">
+                                <div class="key wide"></div><div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div>
+                            </div>
+                            <div class="keyboard-row">
+                                <div class="key wider"></div><div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div><div class="key wider"></div>
+                            </div>
+                            <div class="keyboard-row">
+                                <div class="key wider"></div><div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div><div class="key wider"></div>
+                            </div>
+                            <div class="keyboard-row">
+                                <div class="key wide"></div><div class="key wide"></div><div class="key space"></div><div class="key wide"></div><div class="key wide"></div>
+                            </div>
+                        </div>
+                        <div class="trackpad"></div>
+                        <div class="macbook-notch"></div>
+                    </div>
+                </div>
+                <div class="project-info">
+                    <h3>VSG Website</h3>
+                    <p>Vanto Services Group business website with Firebase-powered CMS, lead capture system, and mobile-responsive design optimized for all devices.</p>
+                    <div class="project-tags">
+                        <span class="tag">HTML/CSS/JS</span>
+                        <span class="tag">Firebase</span>
+                        <span class="tag">Mobile-First</span>
+                    </div>
                 </div>
             </div>
 
-            <div class="project-card">
-                <img src="LDAHWeb.jpg" alt="LDAH Website Screenshot" style="width: 100%; border-radius: 8px; margin-bottom: 1rem;">
-                <h3>LDAH Website</h3>
-                <p>Learning Disabilities Association of Hawaii website featuring comprehensive volunteer management, application tracking, and content management system.</p>
-                <div class="project-tags">
-                    <span class="tag">HTML/CSS/JS</span>
-                    <span class="tag">Firebase</span>
-                    <span class="tag">Admin Panel</span>
+            <!-- LDAH Website -->
+            <div class="laptop-container laptop-2">
+                <div class="macbook-frame" data-laptop="2">
+                    <div class="macbook-screen">
+                        <div class="macbook-camera"></div>
+                        <div class="screen-content">
+                            <img src="LDAHWeb.jpg" alt="LDAH Website">
+                        </div>
+                    </div>
+                    <div class="macbook-bottom">
+                        <div class="keyboard-area">
+                            <div class="keyboard-row">
+                                <div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div><div class="key wide"></div>
+                            </div>
+                            <div class="keyboard-row">
+                                <div class="key wide"></div><div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div>
+                            </div>
+                            <div class="keyboard-row">
+                                <div class="key wider"></div><div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div><div class="key wider"></div>
+                            </div>
+                            <div class="keyboard-row">
+                                <div class="key wider"></div><div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div><div class="key wider"></div>
+                            </div>
+                            <div class="keyboard-row">
+                                <div class="key wide"></div><div class="key wide"></div><div class="key space"></div><div class="key wide"></div><div class="key wide"></div>
+                            </div>
+                        </div>
+                        <div class="trackpad"></div>
+                        <div class="macbook-notch"></div>
+                    </div>
+                </div>
+                <div class="project-info">
+                    <h3>LDAH Website</h3>
+                    <p>Learning Disabilities Association of Hawaii website featuring comprehensive volunteer management, application tracking, and content management system.</p>
+                    <div class="project-tags">
+                        <span class="tag">HTML/CSS/JS</span>
+                        <span class="tag">Firebase</span>
+                        <span class="tag">Admin Panel</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -769,7 +1175,7 @@
 
     <!-- Footer -->
     <footer>
-        <p>&copy; 2024 DP Consulting | Serving Hawaii's Local Businesses</p>
+        <p>&copy; 2025 DP Consulting | Serving Hawaii's Local Businesses</p>
         <p style="margin-top: 0.5rem; color: var(--text-gray);">Built with ❤️ in Hawaii</p>
     </footer>
 
@@ -778,7 +1184,6 @@
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
         import { getFirestore, collection, addDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
 
-        // Firebase configuration
         const firebaseConfig = {
             apiKey: "AIzaSyAohn0wRVsbtUexqq-GN9e72Ii0qUApIsg",
             authDomain: "vantosg-65652.firebaseapp.com",
@@ -788,11 +1193,9 @@
             appId: "1:531627484684:ios:b9da7582fcd9f257e3b029"
         };
 
-        // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // Form submission
         const contactForm = document.getElementById('contactForm');
         const formStatus = document.getElementById('formStatus');
 
@@ -831,15 +1234,197 @@
     </script>
 
     <script>
-        // Mobile menu toggle
-        function toggleMenu() {
-            document.getElementById('navMenu').classList.toggle('active');
+        // ============================================
+        // STAGE 1: Custom Cursor
+        // ============================================
+        const cursor = document.getElementById('cursor');
+        let mouseX = 0, mouseY = 0;
+        let cursorX = 0, cursorY = 0;
+
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+
+        function animateCursor() {
+            cursorX += (mouseX - cursorX) * 0.2;
+            cursorY += (mouseY - cursorY) * 0.2;
+            cursor.style.left = cursorX + 'px';
+            cursor.style.top = cursorY + 'px';
+            requestAnimationFrame(animateCursor);
+        }
+        animateCursor();
+
+        // Cursor hover effects
+        document.querySelectorAll('a, button, .iphone-frame').forEach(el => {
+            el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+            el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+        });
+
+        // ============================================
+        // STAGE 2: Particle Trail System
+        // ============================================
+        const canvas = document.getElementById('particles');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const particles = [];
+        const maxParticles = 50;
+
+        class Particle {
+            constructor(x, y) {
+                this.x = x;
+                this.y = y;
+                this.size = Math.random() * 3 + 1;
+                this.speedX = Math.random() * 2 - 1;
+                this.speedY = Math.random() * 2 - 1;
+                this.life = 1;
+                this.decay = Math.random() * 0.02 + 0.01;
+            }
+
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                this.life -= this.decay;
+                this.size *= 0.97;
+            }
+
+            draw() {
+                ctx.save();
+                ctx.globalAlpha = this.life;
+                ctx.fillStyle = '#22d3ee';
+                ctx.shadowBlur = 20;
+                ctx.shadowColor = '#22d3ee';
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+            }
         }
 
-        // Close mobile menu when clicking a link
+        document.addEventListener('mousemove', (e) => {
+            if (particles.length < maxParticles) {
+                particles.push(new Particle(e.clientX, e.clientY));
+            }
+        });
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            for (let i = particles.length - 1; i >= 0; i--) {
+                particles[i].update();
+                particles[i].draw();
+                
+                if (particles[i].life <= 0) {
+                    particles.splice(i, 1);
+                }
+            }
+            
+            requestAnimationFrame(animateParticles);
+        }
+        animateParticles();
+
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+
+        // ============================================
+        // STAGE 3: Scroll-Triggered Wake-Up Animation
+        // ============================================
+        const observerOptions = {
+            threshold: 0.3,
+            rootMargin: '0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('awake');
+                    const video = entry.target.querySelector('video');
+                    if (video) {
+                        video.play();
+                    }
+                } else {
+                    entry.target.classList.remove('awake');
+                    const video = entry.target.querySelector('video');
+                    if (video) {
+                        video.pause();
+                    }
+                }
+            });
+        }, observerOptions);
+
+        // Observe both phones and laptops
+        document.querySelectorAll('.iphone-frame, .macbook-frame').forEach(frame => {
+            observer.observe(frame);
+        });
+
+        // ============================================
+        // STAGE 4: Magnetic Effect (Phones & Laptops)
+        // ============================================
+        document.querySelectorAll('.phone-container').forEach(container => {
+            const phone = container.querySelector('.iphone-frame');
+            
+            container.addEventListener('mousemove', (e) => {
+                const rect = container.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+                
+                const rotateX = (y / rect.height) * 10;
+                const rotateY = (x / rect.width) * 10;
+                
+                phone.style.transform = `
+                    perspective(1000px)
+                    rotateX(${-rotateX}deg)
+                    rotateY(${rotateY}deg)
+                    translateZ(20px)
+                `;
+            });
+            
+            container.addEventListener('mouseleave', () => {
+                phone.style.transform = '';
+            });
+        });
+
+        document.querySelectorAll('.laptop-container').forEach(container => {
+            const laptop = container.querySelector('.macbook-frame');
+            
+            container.addEventListener('mousemove', (e) => {
+                const rect = container.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+                
+                const rotateX = (y / rect.height) * 8;
+                const rotateY = (x / rect.width) * 8;
+                
+                laptop.style.transform = `
+                    perspective(1500px)
+                    rotateX(${-rotateX}deg)
+                    rotateY(${rotateY}deg)
+                    translateZ(20px)
+                `;
+            });
+            
+            container.addEventListener('mouseleave', () => {
+                laptop.style.transform = '';
+            });
+        });
+
+        // ============================================
+        // Smooth Scroll for Navigation
+        // ============================================
         document.querySelectorAll('nav a').forEach(link => {
-            link.addEventListener('click', () => {
-                document.getElementById('navMenu').classList.remove('active');
+            link.addEventListener('click', (e) => {
+                const href = link.getAttribute('href');
+                if (href.startsWith('#')) {
+                    e.preventDefault();
+                    const target = document.querySelector(href);
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                }
             });
         });
     </script>
