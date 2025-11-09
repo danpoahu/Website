@@ -152,17 +152,40 @@
         .hero h1 {
             font-size: clamp(2.5rem, 6vw, 4.5rem);
             margin-bottom: 1rem;
-            background: linear-gradient(135deg, var(--sky-blue), var(--ocean-blue), var(--sunset-pink));
+            line-height: 1.2;
+            background: linear-gradient(135deg, var(--sky-blue), var(--ocean-blue), var(--sunset-pink), var(--sunset-orange));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            animation: gradient-shift 8s ease infinite;
-            background-size: 200% 200%;
+            animation: gradient-shift 6s ease-in-out infinite, float 4s ease-in-out infinite;
+            background-size: 300% 300%;
+            text-shadow: 0 8px 32px rgba(34, 211, 238, 0.4);
+            filter: drop-shadow(0 4px 16px rgba(34, 211, 238, 0.3)) 
+                    drop-shadow(0 8px 32px rgba(8, 145, 178, 0.2));
         }
 
         @keyframes gradient-shift {
-            0%, 100% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
+            0%, 100% { 
+                background-position: 0% 50%; 
+            }
+            25% {
+                background-position: 100% 50%;
+            }
+            50% { 
+                background-position: 100% 100%; 
+            }
+            75% {
+                background-position: 0% 100%;
+            }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-8px);
+            }
         }
 
         .hero h2 {
