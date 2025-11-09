@@ -640,8 +640,13 @@
                 cursor: auto;
             }
 
-            #cursor, #particles {
+            #cursor {
                 display: none;
+            }
+
+            /* Keep particles visible on mobile! */
+            #particles {
+                display: block;
             }
 
             .chaos-grid {
@@ -1427,6 +1432,134 @@
                 }
             });
         });
+
+        // ============================================
+        // MOBILE ENHANCEMENTS
+        // ============================================
+        
+        // Touch Particle Trails for Mobile
+        if ('ontouchstart' in window) {
+            document.addEventListener('touchmove', (e) => {
+                for (let i = 0; i < e.touches.length; i++) {
+                    const touch = e.touches[i];
+                    // Create particles at each touch point
+                    for (let j = 0; j < 2; j++) {
+                        particles.push(new Particle(touch.clientX, touch.clientY));
+                    }
+                }
+            });
+
+            document.addEventListener('touchstart', (e) => {
+                for (let i = 0; i < e.touches.length; i++) {
+                    const touch = e.touches[i];
+                    // Burst of particles on tap
+                    for (let j = 0; j < 8; j++) {
+                        particles.push(new Particle(touch.clientX, touch.clientY));
+                    }
+                }
+            });
+        }
+
+        // Gyroscope Tilt Effects for Mobile
+        if (window.DeviceOrientationEvent) {
+            let lastBeta = 0;
+            let lastGamma = 0;
+
+            window.addEventListener('deviceorientation', (e) => {
+                // beta is front-to-back tilt (-180 to 180)
+                // gamma is left-to-right tilt (-90 to 90)
+                const beta = e.beta || 0;
+                const gamma = e.gamma || 0;
+
+                // Smooth the values
+                lastBeta = lastBeta * 0.9 + beta * 0.1;
+                lastGamma = lastGamma * 0.9 + gamma * 0.1;
+
+                // Apply subtle parallax to background waves
+                const waves = document.querySelectorAll('.wave');
+                waves.forEach((wave, index) => {
+                    const multiplier = (index + 1) * 0.5;
+                    wave.style.transform = `translateX(${-lastGamma * multiplier}px) translateY(${lastBeta * multiplier * 0.5}px)`;
+                });
+
+                // Tilt phones and laptops based on device orientation
+                document.querySelectorAll('.iphone-frame, .macbook-frame').forEach((device) => {
+                    const tiltX = lastBeta * 0.3;
+                    const tiltY = lastGamma * 0.3;
+                    device.style.transform = `
+                        perspective(1000px)
+                        rotateX(${tiltX}deg)
+                        rotateY(${tiltY}deg)
+                    `;
+                });
+            });
+        }
+
+        // Touch Ripple Effect
+        if ('ontouchstart' in window) {
+            document.addEventListener('touchstart', (e) => {
+                e.touches.forEach(touch => {
+                    createRipple(touch.clientX, touch.clientY);
+                });
+            });
+
+            function createRipple(x, y) {
+                const ripple = document.createElement('div');
+                ripple.style.position = 'fixed';
+                ripple.style.left = x + 'px';
+                ripple.style.top = y + 'px';
+                ripple.style.width = '10px';
+                ripple.style.height = '10px';
+                ripple.style.borderRadius = '50%';
+                ripple.style.border = '2px solid rgba(34, 211, 238, 0.6)';
+                ripple.style.pointerEvents = 'none';
+                ripple.style.transform = 'translate(-50%, -50%)';
+                ripple.style.animation = 'ripple-expand 1s ease-out forwards';
+                ripple.style.zIndex = '9998';
+                document.body.appendChild(ripple);
+
+                setTimeout(() => {
+                    ripple.remove();
+                }, 1000);
+            }
+        }
+
+        // Haptic Feedback (if supported)
+        function triggerHaptic() {
+            if (navigator.vibrate) {
+                navigator.vibrate(10); // 10ms subtle vibration
+            }
+        }
+
+        // Add haptic feedback to scroll intersections
+        if ('ontouchstart' in window) {
+            const hapticObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        triggerHaptic();
+                    }
+                });
+            }, { threshold: 0.5 });
+
+            document.querySelectorAll('.phone-container, .laptop-container').forEach(container => {
+                hapticObserver.observe(container);
+            });
+        }
     </script>
+
+    <style>
+        @keyframes ripple-expand {
+            0% {
+                width: 10px;
+                height: 10px;
+                opacity: 1;
+            }
+            100% {
+                width: 300px;
+                height: 300px;
+                opacity: 0;
+            }
+        }
+    </style>
 </body>
 </html>
