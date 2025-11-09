@@ -157,34 +157,28 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            animation: gradient-shift 6s ease-in-out infinite, float 4s ease-in-out infinite;
-            background-size: 300% 300%;
+            animation: gradient-shift 8s ease-in-out infinite;
+            background-size: 200% 200%;
             text-shadow: 0 8px 32px rgba(34, 211, 238, 0.4);
             filter: drop-shadow(0 4px 16px rgba(34, 211, 238, 0.3)) 
                     drop-shadow(0 8px 32px rgba(8, 145, 178, 0.2));
         }
 
         @keyframes gradient-shift {
-            0%, 100% { 
+            0% { 
                 background-position: 0% 50%; 
             }
-            25% {
+            30% {
                 background-position: 100% 50%;
             }
             50% { 
-                background-position: 100% 100%; 
+                background-position: 100% 50%; 
             }
-            75% {
-                background-position: 0% 100%;
+            80% {
+                background-position: 0% 50%;
             }
-        }
-
-        @keyframes float {
-            0%, 100% {
-                transform: translateY(0px);
-            }
-            50% {
-                transform: translateY(-8px);
+            100% {
+                background-position: 0% 50%;
             }
         }
 
