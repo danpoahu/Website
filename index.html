@@ -423,14 +423,19 @@
             border-radius: 32px;
             overflow: hidden;
             position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .iphone-screen video {
             width: 100%;
-            height: 100%;
+            height: 98%;
             object-fit: cover;
+            object-position: center;
             background: #000;
-            border-radius: 32px;
+            border-radius: 30px;
+            display: block;
         }
 
         .iphone-screen img {
@@ -537,6 +542,11 @@
         }
 
         .phone-container:hover .project-info {
+            opacity: 1;
+            bottom: -100px;
+        }
+
+        .laptop-container:hover .project-info {
             opacity: 1;
             bottom: -100px;
         }
