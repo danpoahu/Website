@@ -422,16 +422,24 @@
             height: 100%;
             border-radius: 32px;
             overflow: hidden;
-            background: #000;
             position: relative;
         }
 
-        .iphone-screen video,
-        .iphone-screen img {
+        .iphone-screen video {
             width: 100%;
             height: 100%;
-            object-fit: contain;
+            object-fit: cover;
             background: #000;
+            border-radius: 32px;
+        }
+
+        .iphone-screen img {
+            width: 100%;
+            height: 95%;
+            object-fit: cover;
+            object-position: center top;
+            background: #000;
+            border-radius: 32px;
         }
 
         /* Asymmetric Grid Container */
