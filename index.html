@@ -1316,6 +1316,11 @@
             </div>
 
             <div class="form-group">
+                <label for="phone">Phone (optional)</label>
+                <input type="tel" id="phone" name="phone" placeholder="(808) 555-1234">
+            </div>
+
+            <div class="form-group">
                 <label for="business">Business/Organization (optional)</label>
                 <input type="text" id="business" name="business">
             </div>
@@ -1343,12 +1348,13 @@
         import { getFirestore, collection, addDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
 
         const firebaseConfig = {
-            apiKey: "AIzaSyAohn0wRVsbtUexqq-GN9e72Ii0qUApIsg",
+            apiKey: "AIzaSyCOUxfMyfD5_Q08QE4eIHCuF69k4fD99kw",
             authDomain: "vantosg-65652.firebaseapp.com",
             projectId: "vantosg-65652",
             storageBucket: "vantosg-65652.firebasestorage.app",
             messagingSenderId: "531627484684",
-            appId: "1:531627484684:ios:b9da7582fcd9f257e3b029"
+            appId: "1:531627484684:web:8724b47a144fe4e0e3b029",
+            measurementId: "G-69Q2DH32WC"
         };
 
         const app = initializeApp(firebaseConfig);
@@ -1363,14 +1369,17 @@
             const formData = {
                 name: document.getElementById('name').value,
                 email: document.getElementById('email').value,
-                business: document.getElementById('business').value,
-                message: document.getElementById('message').value,
-                timestamp: serverTimestamp(),
-                status: 'new'
+                phone: document.getElementById('phone').value || "",
+                address: "",
+                notes: document.getElementById('message').value,
+                active: true,
+                webProspect: true,
+                createdAt: serverTimestamp(),
+                updatedAt: serverTimestamp()
             };
 
             try {
-                await addDoc(collection(db, 'contact-inquiries'), formData);
+                await addDoc(collection(db, 'dpCustomers'), formData);
                 
                 formStatus.className = 'form-status success';
                 formStatus.style.display = 'block';
