@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spiritual Gifts Assessment - Discover Your God-Given Gifts</title>
+    <meta name="description" content="Discover the gifts God placed within you. Take the comprehensive Spiritual Gifts Assessment and DISC personality survey.">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #195FD9;
+            background: linear-gradient(135deg, #FAF8F0 0%, #FFFFFF 50%, #F0FAFF 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 60px 20px 40px;
+        }
+
+        .app-icon {
+            width: 150px;
+            height: 150px;
+            margin: 0 auto 30px;
+            border-radius: 35px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(74, 164, 168, 0.3);
+        }
+
+        .app-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #4AA4A8;
+            margin-bottom: 15px;
+            letter-spacing: -0.5px;
+        }
+
+        .tagline {
+            font-size: 1.3rem;
+            color: #195FD9;
+            margin-bottom: 40px;
+            font-weight: 500;
+        }
+
+        .download-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 40px 0;
+        }
+
+        .store-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            padding: 15px 30px;
+            background: linear-gradient(135deg, #4AA4A8, #A1D4FF);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            box-shadow: 0 10px 30px rgba(74, 164, 168, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .store-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(74, 164, 168, 0.4);
+        }
+
+        .store-button svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin: 60px 0;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            padding: 30px;
+            border-radius: 25px;
+            box-shadow: 0 10px 30px rgba(25, 95, 217, 0.1);
+            border: 2px solid rgba(161, 212, 255, 0.3);
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        .feature-card h3 {
+            color: #4AA4A8;
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .feature-card p {
+            color: #195FD9;
+            line-height: 1.7;
+        }
+
+        .screenshots {
+            margin: 80px 0;
+            text-align: center;
+        }
+
+        .screenshots h2 {
+            font-size: 2rem;
+            color: #4AA4A8;
+            margin-bottom: 40px;
+            font-weight: 700;
+        }
+
+        .screenshot-gallery {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            overflow-x: auto;
+            padding: 20px 0;
+        }
+
+        .screenshot-gallery img {
+            height: 500px;
+            border-radius: 30px;
+            box-shadow: 0 20px 60px rgba(25, 95, 217, 0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .screenshot-gallery img:hover {
+            transform: scale(1.05);
+        }
+
+        .verse {
+            text-align: center;
+            padding: 60px 20px;
+            background: linear-gradient(135deg, rgba(161, 212, 255, 0.2), rgba(74, 164, 168, 0.2));
+            border-radius: 30px;
+            margin: 60px 0;
+        }
+
+        .verse-text {
+            font-size: 1.3rem;
+            color: #195FD9;
+            font-style: italic;
+            max-width: 800px;
+            margin: 0 auto 15px;
+            font-weight: 500;
+        }
+
+        .verse-reference {
+            color: #4AA4A8;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: #4AA4A8;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            .tagline {
+                font-size: 1.1rem;
+            }
+
+            .download-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .store-button {
+                width: 100%;
+                max-width: 300px;
+                justify-content: center;
+            }
+
+            .screenshot-gallery img {
+                height: 400px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="app-icon">
+                <img src="logo.jpg" alt="Spiritual Gifts Assessment Logo">
+            </div>
+            <h1>Spiritual Gifts Assessment</h1>
+            <p class="tagline">Discover the gifts God placed within you</p>
+            
+            <div class="download-buttons">
+                <a href="https://apps.apple.com/us/app/id6748858523" class="store-button" target="_blank" rel="noopener">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09l.01-.01zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/>
+                    </svg>
+                    Download on App Store
+                </a>
+                
+                <a href="https://play.google.com/store/apps/details?id=com.dpconsulting.spiritualgifts" class="store-button" target="_blank" rel="noopener">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M3,20.5V3.5C3,2.91 3.34,2.39 3.84,2.15L13.69,12L3.84,21.85C3.34,21.6 3,21.09 3,20.5M16.81,15.12L6.05,21.34L14.54,12.85L16.81,15.12M20.16,10.81C20.5,11.08 20.75,11.5 20.75,12C20.75,12.5 20.5,12.92 20.16,13.19L17.89,14.5L15.39,12L17.89,9.5L20.16,10.81M6.05,2.66L16.81,8.88L14.54,11.15L6.05,2.66Z"/>
+                    </svg>
+                    Get it on Google Play
+                </a>
+            </div>
+        </header>
+
+        <div class="verse">
+            <p class="verse-text">"We have different gifts, according to the grace given to each of us."</p>
+            <p class="verse-reference">— Romans 12:6</p>
+        </div>
+
+        <section class="features">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <img src="ic_launcher-playstore_copy.png" alt="Praying Hands" style="width: 60px; height: 60px; border-radius: 12px;">
+                </div>
+                <h3>Discover Your Gifts</h3>
+                <p>Take a comprehensive 72-question spiritual gifts assessment designed to help you identify your God-given abilities for serving in the body of Christ.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">👥</div>
+                <h3>DISC Personality</h3>
+                <p>Complete a 20-question DISC personality survey to understand your communication style, strengths, and how you interact with others in ministry.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">📊</div>
+                <h3>Detailed Results</h3>
+                <p>Receive personalized results showing your top spiritual gifts with biblical references, explanations, and practical applications for using them.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">📄</div>
+                <h3>Export to PDF</h3>
+                <p>Save and share your complete results as a beautifully formatted PDF document, perfect for discussing with church leaders or small groups.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">🔄</div>
+                <h3>Retake Anytime</h3>
+                <p>Revisit the assessment as you grow in your faith journey. Your spiritual gifts may develop and change over time as you serve.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">✨</div>
+                <h3>Beautiful Design</h3>
+                <p>Enjoy a modern, clean interface with soothing colors and smooth animations that make the assessment experience delightful.</p>
+            </div>
+        </section>
+
+        <section class="screenshots">
+            <h2>See It In Action</h2>
+            <div class="screenshot-gallery">
+                <img src="phone_screenshot_1_welcome.png" alt="Welcome Screen">
+                <img src="phone_screenshot_2_results.png" alt="Results Screen">
+                <img src="phone_screenshot_3_pdf.png" alt="PDF Export">
+            </div>
+        </section>
+
+        <footer>
+            <p>&copy; 2025 DP Consulting. All rights reserved.</p>
+            <p>Made with ❤️ in Hawaii</p>
+        </footer>
+    </div>
+</body>
+</html>
