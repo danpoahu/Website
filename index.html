@@ -37,7 +37,7 @@
       "logo": "https://oahuappdesign.com/Icon.jpg",
       "image": "https://oahuappdesign.com/Icon.jpg",
       "telephone": "",
-      "email": "",
+      "email": "dan@oahuappdesign.com",
       "address": {
         "@type": "PostalAddress",
         "addressLocality": "Honolulu",
@@ -1510,6 +1510,7 @@
     <!-- Footer -->
     <footer>
         <p>&copy; 2026 DP Consulting | Serving Hawaii's Local Businesses</p>
+        <p style="margin-top: 0.5rem;"><a href="mailto:dan@oahuappdesign.com" style="color: var(--primary); text-decoration: none;">dan@oahuappdesign.com</a></p>
         <p style="margin-top: 0.5rem; color: var(--text-gray);">Built with 🤙 in Hawaii</p>
     </footer>
 
@@ -1550,7 +1551,7 @@
                 console.error('Error submitting form:', error);
                 formStatus.className = 'form-status error';
                 formStatus.style.display = 'block';
-                formStatus.textContent = 'Something went wrong. Please try again or email me directly.';
+                formStatus.innerHTML = 'Something went wrong. Please try again or <a href="mailto:dan@oahuappdesign.com" style="color: var(--primary);">email me directly</a>.';
             }
         });
     </script>
