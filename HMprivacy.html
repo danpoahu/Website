@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HandyMan Privacy Policy — Oahu App Design</title>
+    <meta name="description" content="Privacy Policy for HandyMan - Job & Invoice Pro. Learn how your data is stored and protected.">
+    <link rel="icon" href="Icon.jpg" type="image/jpeg">
+    <style>
+        :root {
+            --ocean-blue: #0891b2;
+            --deep-blue: #0e7490;
+            --sky-blue: #22d3ee;
+            --sunset-orange: #fb923c;
+            --dark-bg: #0f172a;
+            --darker-bg: #020617;
+            --text-light: #f8fafc;
+            --text-gray: #cbd5e1;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: var(--darker-bg);
+            color: var(--text-gray);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* Nav */
+        nav {
+            position: fixed; top: 0; width: 100%; z-index: 100;
+            background: rgba(2, 6, 23, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(8, 145, 178, 0.15);
+            padding: 0.75rem 2rem;
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .nav-logo {
+            display: flex; align-items: center; gap: 0.75rem;
+            text-decoration: none; color: var(--text-light);
+        }
+        .nav-logo img { width: 36px; height: 36px; border-radius: 8px; }
+        .nav-logo span { font-size: 1.1rem; font-weight: 600; }
+        .nav-links { display: flex; gap: 1.5rem; }
+        .nav-links a {
+            color: var(--text-gray); text-decoration: none; font-size: 0.95rem;
+            transition: color 0.3s;
+        }
+        .nav-links a:hover { color: var(--sky-blue); }
+
+        /* Hero */
+        .hero {
+            padding: 8rem 2rem 4rem;
+            text-align: center;
+            background: linear-gradient(180deg, rgba(8, 145, 178, 0.08) 0%, transparent 60%);
+        }
+        .hero h1 {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            color: var(--text-light);
+            margin-bottom: 0.5rem;
+        }
+        .hero h1 span { color: var(--sky-blue); }
+        .hero p {
+            font-size: 1.15rem;
+            color: var(--text-gray);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .hero .effective { font-size: 0.9rem; margin-top: 0.75rem; color: rgba(203, 213, 225, 0.6); }
+
+        /* Content */
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 2rem 4rem;
+        }
+
+        .card {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(8, 145, 178, 0.2);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            transition: border-color 0.3s;
+        }
+        .card:hover { border-color: rgba(8, 145, 178, 0.4); }
+
+        .card h2 {
+            color: var(--sky-blue);
+            font-size: 1.35rem;
+            margin-bottom: 1rem;
+        }
+        .card h3 {
+            color: var(--text-light);
+            font-size: 1.05rem;
+            margin: 1.25rem 0 0.4rem;
+        }
+        .card h3:first-of-type { margin-top: 0; }
+        .card p, .card li {
+            color: var(--text-gray);
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+        .card ul {
+            list-style: none;
+            padding: 0;
+        }
+        .card ul li {
+            padding: 0.35rem 0 0.35rem 1.5rem;
+            position: relative;
+        }
+        .card ul li::before {
+            content: '';
+            position: absolute; left: 0; top: 0.85rem;
+            width: 6px; height: 6px;
+            background: var(--ocean-blue);
+            border-radius: 50%;
+        }
+        .card strong { color: var(--text-light); }
+
+        a.link {
+            color: var(--sky-blue);
+            text-decoration: none;
+            border-bottom: 1px solid transparent;
+            transition: border-color 0.3s;
+        }
+        a.link:hover { border-bottom-color: var(--sky-blue); }
+
+        .highlight {
+            background: rgba(8, 145, 178, 0.1);
+            border-left: 3px solid var(--ocean-blue);
+            padding: 1rem 1.25rem;
+            border-radius: 0 10px 10px 0;
+            margin: 1rem 0;
+        }
+        .highlight p { font-size: 0.95rem; }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 2rem;
+            border-top: 1px solid rgba(8, 145, 178, 0.1);
+            font-size: 0.85rem;
+            color: rgba(203, 213, 225, 0.5);
+        }
+        footer a { color: var(--ocean-blue); text-decoration: none; }
+        footer a:hover { text-decoration: underline; }
+
+        @media (max-width: 768px) {
+            nav { padding: 0.6rem 1rem; }
+            .nav-links { gap: 1rem; }
+            .nav-links a { font-size: 0.85rem; }
+            .hero { padding: 6rem 1.25rem 2.5rem; }
+            .container { padding: 0 1.25rem 3rem; }
+            .card { padding: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <a href="https://oahuappdesign.com" class="nav-logo">
+        <img src="Icon.jpg" alt="Oahu App Design">
+        <span>Oahu App Design</span>
+    </a>
+    <div class="nav-links">
+        <a href="https://oahuappdesign.com">Home</a>
+        <a href="HMsupport.html">Support</a>
+    </div>
+</nav>
+
+<section class="hero">
+    <h1><span>HandyMan</span> Privacy Policy</h1>
+    <p>Job &amp; Invoice Pro</p>
+    <p class="effective">Effective Date: March 6, 2026</p>
+</section>
+
+<div class="container">
+
+    <!-- Overview -->
+    <div class="card">
+        <h2>Overview</h2>
+        <p>HandyMan (&ldquo;the App&rdquo;) is developed by Daniel Pellegrini, operating as Oahu App Design. We are committed to protecting your privacy. This policy explains what data the App accesses, how it is stored, and your rights regarding that data.</p>
+
+        <div class="highlight">
+            <p><strong>The short version:</strong> Your data stays on your devices and in your private iCloud account. We never see it, collect it, or store it on our servers.</p>
+        </div>
+    </div>
+
+    <!-- Data Collection -->
+    <div class="card">
+        <h2>Information We Do Not Collect</h2>
+        <p>HandyMan does <strong>not</strong> collect, transmit, or store any of the following:</p>
+        <ul>
+            <li>Personal information (name, email, phone number)</li>
+            <li>Business data (customers, invoices, quotes, jobs)</li>
+            <li>Location data</li>
+            <li>Usage analytics or tracking data</li>
+            <li>Advertising identifiers</li>
+            <li>Device identifiers or fingerprints</li>
+        </ul>
+        <p style="margin-top: 1rem;">We do not use any third-party analytics, advertising, or tracking SDKs.</p>
+    </div>
+
+    <!-- Data Storage -->
+    <div class="card">
+        <h2>Data Storage &amp; iCloud</h2>
+        <p>All data you create in HandyMan &mdash; customers, invoices, quotes, jobs, services, and company settings &mdash; is stored in two places:</p>
+        <ul>
+            <li><strong>On your device</strong> &mdash; for offline access and fast performance.</li>
+            <li><strong>In your private iCloud account</strong> &mdash; using Apple&rsquo;s CloudKit framework for syncing across your devices.</li>
+        </ul>
+
+        <p style="margin-top: 1rem;">Your iCloud data is protected by your Apple&nbsp;ID credentials and Apple&rsquo;s security infrastructure. HandyMan uses only your <strong>private CloudKit database</strong>, meaning no other user or the developer can access your records.</p>
+
+        <p style="margin-top: 0.75rem;">For more information on how Apple protects your iCloud data, visit <a href="https://support.apple.com/en-us/102651" class="link" target="_blank" rel="noopener">Apple&rsquo;s iCloud security overview</a>.</p>
+    </div>
+
+    <!-- Third-Party Services -->
+    <div class="card">
+        <h2>Third-Party Services</h2>
+        <p>HandyMan does not integrate with any third-party services, APIs, or SDKs beyond Apple&rsquo;s own frameworks:</p>
+        <ul>
+            <li><strong>CloudKit</strong> &mdash; for iCloud data sync (Apple)</li>
+            <li><strong>PDFKit / UIKit</strong> &mdash; for generating invoice and report PDFs locally on your device</li>
+            <li><strong>StoreKit</strong> &mdash; for App Store purchase processing (Apple)</li>
+        </ul>
+        <p style="margin-top: 1rem;">No data is sent to any server outside of Apple&rsquo;s iCloud infrastructure.</p>
+    </div>
+
+    <!-- Sharing -->
+    <div class="card">
+        <h2>Data Sharing</h2>
+        <p>HandyMan allows you to share invoices and reports as PDF files via the iOS share sheet (email, text, AirDrop, etc.). When you share a document, it is sent directly from your device to the recipient you choose. The developer has no access to or visibility into shared documents.</p>
+        <p style="margin-top: 0.75rem;">We do not sell, rent, or share your data with any third party.</p>
+    </div>
+
+    <!-- Data Retention -->
+    <div class="card">
+        <h2>Data Retention &amp; Deletion</h2>
+        <p>Since all data is stored in your private iCloud account:</p>
+        <ul>
+            <li>Your data exists as long as you keep it in the App.</li>
+            <li>Deleting the App removes local data from that device.</li>
+            <li>Data in iCloud persists until you delete it (via the App&rsquo;s built-in tools or through iCloud settings).</li>
+            <li>You can erase all App data at any time using the <strong>Erase All Data</strong> feature in the App&rsquo;s Setup screen.</li>
+        </ul>
+        <p style="margin-top: 1rem;">We have no ability to access or delete your data because it is stored entirely in your private iCloud container.</p>
+    </div>
+
+    <!-- Children -->
+    <div class="card">
+        <h2>Children&rsquo;s Privacy</h2>
+        <p>HandyMan is a business tool intended for adults. We do not knowingly collect any information from children under 13. The App is rated 4+ and contains no objectionable content.</p>
+    </div>
+
+    <!-- Security -->
+    <div class="card">
+        <h2>Security</h2>
+        <p>Your data security is handled by Apple&rsquo;s iCloud infrastructure, which includes:</p>
+        <ul>
+            <li>End-to-end encryption for data in transit</li>
+            <li>AES-128 or AES-256 encryption for data at rest</li>
+            <li>Authentication via your Apple&nbsp;ID</li>
+        </ul>
+        <p style="margin-top: 1rem;">The App itself does not implement additional encryption because Apple&rsquo;s CloudKit private database already provides robust security by design.</p>
+    </div>
+
+    <!-- Changes -->
+    <div class="card">
+        <h2>Changes to This Policy</h2>
+        <p>We may update this Privacy Policy from time to time. Any changes will be posted on this page with an updated effective date. Continued use of the App after changes constitutes acceptance of the revised policy.</p>
+    </div>
+
+    <!-- Contact -->
+    <div class="card">
+        <h2>Contact Us</h2>
+        <p>If you have questions or concerns about this Privacy Policy or the App&rsquo;s data practices, please contact us:</p>
+        <p style="margin-top: 0.75rem;">
+            <strong>Email:</strong> <a href="mailto:support@oahuappdesign.com" class="link">support@oahuappdesign.com</a><br>
+            <strong>Website:</strong> <a href="https://oahuappdesign.com" class="link">oahuappdesign.com</a>
+        </p>
+    </div>
+
+</div>
+
+<footer>
+    &copy; 2025 Daniel Pellegrini &mdash; <a href="https://oahuappdesign.com">Oahu App Design</a><br>
+    <a href="HMsupport.html">Support</a>
+</footer>
+
+</body>
+</html>

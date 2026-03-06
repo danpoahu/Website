@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HandyMan Support — Oahu App Design</title>
+    <meta name="description" content="Support and help for HandyMan - Job & Invoice Pro. Get answers to common questions and contact us for assistance.">
+    <link rel="icon" href="Icon.jpg" type="image/jpeg">
+    <style>
+        :root {
+            --ocean-blue: #0891b2;
+            --deep-blue: #0e7490;
+            --sky-blue: #22d3ee;
+            --sunset-orange: #fb923c;
+            --dark-bg: #0f172a;
+            --darker-bg: #020617;
+            --text-light: #f8fafc;
+            --text-gray: #cbd5e1;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: var(--darker-bg);
+            color: var(--text-gray);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* Nav */
+        nav {
+            position: fixed; top: 0; width: 100%; z-index: 100;
+            background: rgba(2, 6, 23, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(8, 145, 178, 0.15);
+            padding: 0.75rem 2rem;
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .nav-logo {
+            display: flex; align-items: center; gap: 0.75rem;
+            text-decoration: none; color: var(--text-light);
+        }
+        .nav-logo img { width: 36px; height: 36px; border-radius: 8px; }
+        .nav-logo span { font-size: 1.1rem; font-weight: 600; }
+        .nav-links { display: flex; gap: 1.5rem; }
+        .nav-links a {
+            color: var(--text-gray); text-decoration: none; font-size: 0.95rem;
+            transition: color 0.3s;
+        }
+        .nav-links a:hover { color: var(--sky-blue); }
+
+        /* Hero */
+        .hero {
+            padding: 8rem 2rem 4rem;
+            text-align: center;
+            background: linear-gradient(180deg, rgba(8, 145, 178, 0.08) 0%, transparent 60%);
+        }
+        .hero h1 {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            color: var(--text-light);
+            margin-bottom: 0.5rem;
+        }
+        .hero h1 span { color: var(--sky-blue); }
+        .hero p {
+            font-size: 1.15rem;
+            color: var(--text-gray);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Content */
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 2rem 4rem;
+        }
+
+        .card {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(8, 145, 178, 0.2);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            transition: border-color 0.3s;
+        }
+        .card:hover { border-color: rgba(8, 145, 178, 0.4); }
+
+        .card h2 {
+            color: var(--sky-blue);
+            font-size: 1.35rem;
+            margin-bottom: 1rem;
+            display: flex; align-items: center; gap: 0.6rem;
+        }
+        .card h3 {
+            color: var(--text-light);
+            font-size: 1.05rem;
+            margin: 1.25rem 0 0.4rem;
+        }
+        .card h3:first-of-type { margin-top: 0.5rem; }
+        .card p, .card li {
+            color: var(--text-gray);
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+        .card ul {
+            list-style: none;
+            padding: 0;
+        }
+        .card ul li {
+            padding: 0.35rem 0 0.35rem 1.5rem;
+            position: relative;
+        }
+        .card ul li::before {
+            content: '';
+            position: absolute; left: 0; top: 0.85rem;
+            width: 6px; height: 6px;
+            background: var(--ocean-blue);
+            border-radius: 50%;
+        }
+
+        a.link {
+            color: var(--sky-blue);
+            text-decoration: none;
+            border-bottom: 1px solid transparent;
+            transition: border-color 0.3s;
+        }
+        a.link:hover { border-bottom-color: var(--sky-blue); }
+
+        .contact-btn {
+            display: inline-block;
+            margin-top: 1rem;
+            padding: 0.7rem 1.8rem;
+            background: linear-gradient(135deg, var(--ocean-blue), var(--deep-blue));
+            color: var(--text-light);
+            font-weight: 600;
+            font-size: 0.95rem;
+            border-radius: 10px;
+            text-decoration: none;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .contact-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 24px rgba(8, 145, 178, 0.3);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 2rem;
+            border-top: 1px solid rgba(8, 145, 178, 0.1);
+            font-size: 0.85rem;
+            color: rgba(203, 213, 225, 0.5);
+        }
+        footer a { color: var(--ocean-blue); text-decoration: none; }
+        footer a:hover { text-decoration: underline; }
+
+        @media (max-width: 768px) {
+            nav { padding: 0.6rem 1rem; }
+            .nav-links { gap: 1rem; }
+            .nav-links a { font-size: 0.85rem; }
+            .hero { padding: 6rem 1.25rem 2.5rem; }
+            .container { padding: 0 1.25rem 3rem; }
+            .card { padding: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <a href="https://oahuappdesign.com" class="nav-logo">
+        <img src="Icon.jpg" alt="Oahu App Design">
+        <span>Oahu App Design</span>
+    </a>
+    <div class="nav-links">
+        <a href="https://oahuappdesign.com">Home</a>
+        <a href="HMprivacy.html">Privacy</a>
+    </div>
+</nav>
+
+<section class="hero">
+    <h1><span>HandyMan</span> Support</h1>
+    <p>Job &amp; Invoice Pro &mdash; help and answers for your questions</p>
+</section>
+
+<div class="container">
+
+    <!-- Getting Started -->
+    <div class="card">
+        <h2>Getting Started</h2>
+        <h3>What is HandyMan?</h3>
+        <p>HandyMan is an all-in-one business tool for handymen, contractors, and service professionals. Create quotes, schedule jobs, track invoices, and get paid &mdash; all from your iPhone or iPad.</p>
+
+        <h3>How do I set up my company info?</h3>
+        <p>Open the app and tap <strong>Setup</strong> on the Dashboard. From there you can add your company name, logo, sales-tax rate, and work-hours-per-day setting. This information appears on your invoices and reports.</p>
+
+        <h3>Does HandyMan sync across devices?</h3>
+        <p>Yes. HandyMan uses your private iCloud account to keep everything in sync across your iPhone and iPad. Changes made on one device appear on the other automatically. It also works offline and syncs when you reconnect.</p>
+    </div>
+
+    <!-- Quotes & Invoices -->
+    <div class="card">
+        <h2>Quotes &amp; Invoices</h2>
+        <h3>How do I create a quote?</h3>
+        <p>Tap the <strong>Invoices</strong> tile on the Dashboard, then tap <strong>+</strong>. Select a customer (or add a new one), add line items from your Services list, and save. Every new document starts as a quote.</p>
+
+        <h3>How do I convert a quote to an invoice?</h3>
+        <p>Open the quote and change its status to <strong>Pending</strong>. This locks in the quote and makes it ready for scheduling or direct invoicing.</p>
+
+        <h3>Can I share invoices as PDFs?</h3>
+        <p>Yes. From any invoice detail screen you can generate a professional PDF and share it via email, text message, or AirDrop.</p>
+    </div>
+
+    <!-- Scheduling -->
+    <div class="card">
+        <h2>Scheduling &amp; Jobs</h2>
+        <h3>How does scheduling work?</h3>
+        <p>When a quote becomes a pending invoice, tap <strong>Schedule</strong>. The app calculates hours from your hourly line items and slices the job across multiple days based on your work-hours-per-day setting.</p>
+
+        <h3>What about flat-rate or resale items?</h3>
+        <p>If your invoice has only flat-rate or resale items (no hourly entries), the scheduler will ask you how many man-hours the job will take. Enter the time estimate and it will be scheduled normally.</p>
+
+        <h3>How do I complete a job and get paid?</h3>
+        <p>From the To-Do list, tap <strong>Complete</strong> on the job card, then <strong>Request Payment</strong> to generate the invoice PDF, and finally <strong>Send Invoice</strong> to share it with your customer.</p>
+    </div>
+
+    <!-- Data & Privacy -->
+    <div class="card">
+        <h2>Data &amp; Privacy</h2>
+        <h3>Where is my data stored?</h3>
+        <p>All your data is stored in your private iCloud account using Apple's CloudKit. HandyMan never sees, collects, or stores your business data on external servers. You own your data completely.</p>
+
+        <h3>Can I export my data?</h3>
+        <p>Yes. Every report (Paid Invoices, Open Invoices, Jobs by Week, Prospects) can be exported as a PDF or CSV from the Reports section.</p>
+
+        <p style="margin-top: 0.75rem;">Read our full <a href="HMprivacy.html" class="link">Privacy Policy</a> for more details.</p>
+    </div>
+
+    <!-- Troubleshooting -->
+    <div class="card">
+        <h2>Troubleshooting</h2>
+        <h3>The app says &ldquo;will sync later&rdquo;</h3>
+        <p>This means iCloud was temporarily unreachable. The app will retry automatically in the background and sync when your connection is stable. You can also bring the app to the foreground to trigger a retry.</p>
+
+        <h3>My data isn&rsquo;t appearing on my other device</h3>
+        <ul>
+            <li>Make sure both devices are signed into the same Apple&nbsp;ID.</li>
+            <li>Check that iCloud Drive is enabled in <strong>Settings &gt; Apple&nbsp;ID &gt; iCloud</strong>.</li>
+            <li>Pull to refresh or relaunch the app to trigger a sync.</li>
+        </ul>
+
+        <h3>The app won&rsquo;t create a new quote</h3>
+        <p>Make sure you have at least one customer and one active service item before creating a quote. You can add both from within the create-quote sheet using the <strong>+</strong> buttons.</p>
+    </div>
+
+    <!-- Contact -->
+    <div class="card">
+        <h2>Contact Support</h2>
+        <p>Couldn't find what you need? We're happy to help.</p>
+        <a href="mailto:support@oahuappdesign.com?subject=HandyMan%20Support" class="contact-btn">Email Support</a>
+        <p style="margin-top: 1rem; font-size: 0.85rem; color: rgba(203, 213, 225, 0.6);">We typically respond within 24 hours.</p>
+    </div>
+
+</div>
+
+<footer>
+    &copy; 2025 Daniel Pellegrini &mdash; <a href="https://oahuappdesign.com">Oahu App Design</a><br>
+    <a href="HMprivacy.html">Privacy Policy</a>
+</footer>
+
+</body>
+</html>
