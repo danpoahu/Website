@@ -775,28 +775,6 @@
             object-fit: contain;
         }
 
-        .screen-content .iframe-scroll-wrapper {
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .screen-content .iframe-scroll-wrapper iframe {
-            width: 100%;
-            height: 300%;
-            border: none;
-            transform-origin: top left;
-            transform: scale(1);
-            animation: iframeScroll 20s ease-in-out infinite;
-            pointer-events: none;
-        }
-
-        @keyframes iframeScroll {
-            0%, 10% { transform: translateY(0); }
-            45%, 55% { transform: translateY(-40%); }
-            90%, 100% { transform: translateY(0); }
-        }
 
         .macbook-bottom {
             background: linear-gradient(to bottom, #d4d4d8 0%, #c4c4c8 50%, #a1a1aa 100%);
@@ -1330,9 +1308,7 @@
                     <div class="macbook-screen">
                         <div class="macbook-camera"></div>
                         <div class="screen-content">
-                            <div class="iframe-scroll-wrapper">
-                                <iframe src="https://danpoahu.github.io/LDAH_W2/" title="LDAH Website" loading="lazy" sandbox="allow-scripts allow-same-origin"></iframe>
-                            </div>
+                            <video src="LDAHWeb_compressed.mp4" loop muted playsinline autoplay preload="none"></video>
                         </div>
                     </div>
                     <div class="macbook-bottom">
