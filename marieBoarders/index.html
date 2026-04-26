@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marie Borders | Marin County Real Estate</title>
+<meta name="description" content="A new home for Marie Borders Real Estate is on the way. Marin County, California.">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body { height: 100%; }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    color: #fff;
+    background: #1a1f24 url('images/hero.jpg') center/cover no-repeat fixed;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: linear-gradient(135deg,
+      rgba(15, 22, 36, 0.55) 0%,
+      rgba(20, 30, 45, 0.45) 50%,
+      rgba(40, 25, 20, 0.55) 100%);
+    z-index: 0;
+  }
+
+  main {
+    position: relative;
+    z-index: 1;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1.5rem;
+  }
+
+  .card {
+    text-align: center;
+    max-width: 640px;
+    animation: rise 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  }
+
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  h1 {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-weight: 400;
+    font-size: clamp(2.75rem, 8vw, 5rem);
+    line-height: 1.05;
+    letter-spacing: 0.01em;
+    margin-bottom: 0.5rem;
+  }
+
+  .tagline {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-weight: 300;
+    font-style: italic;
+    font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 2.5rem;
+  }
+
+  .divider {
+    width: 60px;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.5);
+    margin: 0 auto 2.5rem;
+  }
+
+  .message {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-weight: 400;
+    font-size: clamp(1.25rem, 3vw, 1.75rem);
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.95);
+    max-width: 32ch;
+    margin: 0 auto 1.25rem;
+  }
+
+  .message-sub {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 300;
+    letter-spacing: 0.05em;
+    color: rgba(255, 255, 255, 0.75);
+  }
+
+  footer {
+    position: relative;
+    z-index: 1;
+    padding: 1.25rem 1.5rem;
+    text-align: center;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.55);
+  }
+
+  footer a {
+    color: inherit;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+    padding-bottom: 1px;
+    transition: color 0.2s, border-color 0.2s;
+  }
+
+  footer a:hover {
+    color: #fff;
+    border-color: rgba(255, 255, 255, 0.7);
+  }
+
+  @media (max-width: 600px) {
+    body {
+      background-attachment: scroll;
+    }
+    .card { padding: 0 0.5rem; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .card { animation: none; }
+  }
+</style>
+</head>
+<body>
+  <main>
+    <div class="card">
+      <h1>Marie Borders</h1>
+      <p class="tagline">Marin County Real Estate</p>
+      <div class="divider"></div>
+      <p class="message">A brand new site is being imagined.</p>
+      <p class="message-sub">Please check back here soon.</p>
+    </div>
+  </main>
+  <footer>
+    Photo by <a href="https://unsplash.com/@paulkim" target="_blank" rel="noopener">Paul Kim</a> on <a href="https://unsplash.com/" target="_blank" rel="noopener">Unsplash</a>
+  </footer>
+</body>
+</html>
