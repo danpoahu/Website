@@ -1,0 +1,20 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Roadway dashboard — fully-open MVP (no auth).
+    // `trips` is read-only from the dashboard (written by the iOS app).
+    match /trips/{tripId} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    // `work_orders` — dashboard creates and updates; deletes are forbidden.
+    match /work_orders/{orderId} {
+      allow read: if true;
+      allow create: if true;
+      allow update: if true;
+      allow delete: if false;
+    }
+  }
+}

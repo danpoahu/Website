@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Roadway Dashboard</title>
+
+  <!-- Leaflet -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <!-- Leaflet.draw -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.css" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header id="topbar">
+    <div class="brand">
+      <span class="logo-dot"></span>
+      <span class="title">Roadway</span>
+      <span class="subtitle">Pothole Dashboard</span>
+    </div>
+
+    <div class="kpis">
+      <div class="kpi"><span class="kpi-val" id="kpiTotal">0</span><span class="kpi-label">Total Bumps</span></div>
+      <div class="kpi"><span class="kpi-val" id="kpiToday">0</span><span class="kpi-label">Today</span></div>
+      <div class="kpi"><span class="kpi-val" id="kpiTrips">0</span><span class="kpi-label">Trips</span></div>
+      <div class="kpi"><span class="kpi-val" id="kpiDevices">0</span><span class="kpi-label">Devices</span></div>
+      <div class="kpi pothole"><span class="kpi-val" id="kpiPotholes">0</span><span class="kpi-label">Potholes</span></div>
+      <div class="kpi speedbump"><span class="kpi-val" id="kpiSpeedBumps">0</span><span class="kpi-label">Speed Bumps</span></div>
+      <div class="kpi live"><span class="kpi-val" id="kpiLive">0</span><span class="kpi-label">Live</span></div>
+    </div>
+  </header>
+
+  <div id="controls">
+    <label>Region
+      <select id="regionSelect">
+        <option value="Oahu">Oahu</option>
+        <option value="Colorado">Colorado</option>
+      </select>
+    </label>
+    <label>Severity
+      <select id="severitySelect">
+        <option>All</option><option>Low</option><option>Moderate</option>
+        <option>High</option><option>Severe</option>
+      </select>
+    </label>
+    <label>Type
+      <select id="typeSelect">
+        <option value="All">All</option>
+        <option value="Potholes">Potholes</option>
+        <option value="Speed Bumps">Speed Bumps</option>
+      </select>
+    </label>
+    <label>Date
+      <select id="dateSelect">
+        <option>Today</option><option>This Week</option><option>Last Week</option>
+        <option>Month</option><option selected>Quarter</option><option>Custom</option>
+      </select>
+    </label>
+    <div id="customDates" style="display:none">
+      <input type="date" id="customFrom" />
+      <input type="date" id="customTo" />
+    </div>
+
+    <label class="toggle">
+      <input type="checkbox" id="assignToggle" /> Assign Mode
+    </label>
+
+    <button id="woToggle" class="btn">Work Orders</button>
+  </div>
+
+  <div id="assignHint" class="hint" style="display:none">
+    Click and drag a box over the potholes to select them, then assign a crew.
+  </div>
+
+  <div id="map"></div>
+
+  <!-- Assign panel (sheet) -->
+  <aside id="assignPanel" class="panel">
+    <h2>Assign Crew</h2>
+    <p class="assign-summary">
+      <strong id="assignCount">0</strong> potholes selected
+      <span class="muted">(<span id="assignSelectedTotal">0</span> total bumps in area)</span>
+    </p>
+    <label class="field">Crew name
+      <input type="text" id="crewName" placeholder="e.g. North District Crew" />
+    </label>
+    <label class="field">Notes (optional)
+      <textarea id="crewNotes" rows="3" placeholder="Special instructions..."></textarea>
+    </label>
+    <div class="panel-actions">
+      <button id="assignCancel" class="btn ghost">Cancel</button>
+      <button id="assignCreate" class="btn primary">Create Work Order</button>
+    </div>
+  </aside>
+
+  <!-- Work Orders panel -->
+  <aside id="woPanel" class="panel wide">
+    <div class="panel-head">
+      <h2>Work Orders</h2>
+      <button id="woClose" class="btn ghost small">Close</button>
+    </div>
+    <div id="woList" class="wo-list"></div>
+  </aside>
+
+  <!-- Work Order detail modal -->
+  <div id="woModalBackdrop" class="modal-backdrop" aria-hidden="true">
+    <div id="woModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="woModalTitle">
+      <button id="woModalClose" class="modal-close" aria-label="Close">&times;</button>
+      <div class="modal-head">
+        <h2 id="woModalTitle">Crew</h2>
+        <span id="woModalBadge" class="wo-badge"></span>
+      </div>
+      <div id="woModalMeta" class="modal-meta"></div>
+
+      <label class="field">Status
+        <select id="woModalStatus"></select>
+      </label>
+
+      <h3 class="modal-subhead">Potholes</h3>
+      <div class="modal-table-wrap">
+        <table id="woModalPotholes" class="modal-table">
+          <thead>
+            <tr><th>#</th><th>Lat</th><th>Lng</th><th>Severity</th><th>Type</th></tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+
+      <label class="field">Notes
+        <textarea id="woModalNotes" rows="4" placeholder="Notes..."></textarea>
+      </label>
+
+      <div class="panel-actions">
+        <button id="woModalPrint" class="btn ghost">Print</button>
+        <button id="woModalSave" class="btn primary">Save Notes</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Printable work order sheet (hidden on screen, shown only on print) -->
+  <div id="printArea" aria-hidden="true">
+    <h1 class="print-title">Roadway Work Order</h1>
+    <div id="printBody"></div>
+  </div>
+
+  <!-- Turf.js -->
+  <script src="https://unpkg.com/@turf/turf@6/turf.min.js"></script>
+  <!-- Leaflet + Leaflet.draw (non-module globals) -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.js"></script>
+
+  <!-- App (module) -->
+  <script type="module" src="app.js"></script>
+</body>
+</html>

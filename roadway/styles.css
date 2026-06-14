@@ -1,0 +1,259 @@
+/* styles.css — Roadway dashboard. Clean, modern, government-readable with a vibrant accent. */
+:root {
+  --bg: #0f1419;
+  --panel: #1a2230;
+  --panel-2: #222c3d;
+  --text: #e8edf4;
+  --muted: #9aa7b8;
+  --line: #2c3850;
+  --pothole: #FF0099;
+  --speedbump: #00E6FF;
+  --accent: #FF8000;
+  --green: #1DB954;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* Top bar */
+#topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 10px 18px;
+  background: linear-gradient(90deg, #141b26, #1a2230);
+  border-bottom: 1px solid var(--line);
+  flex-wrap: wrap;
+}
+.brand { display: flex; align-items: baseline; gap: 8px; }
+.logo-dot {
+  width: 14px; height: 14px; border-radius: 50%;
+  background: var(--pothole);
+  box-shadow: 0 0 12px var(--pothole);
+  align-self: center;
+}
+.brand .title { font-size: 22px; font-weight: 800; letter-spacing: .5px; }
+.brand .subtitle { font-size: 13px; color: var(--muted); }
+
+.kpis { display: flex; gap: 10px; flex-wrap: wrap; }
+.kpi {
+  background: var(--panel-2);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 6px 14px;
+  min-width: 76px;
+  text-align: center;
+}
+.kpi-val { display: block; font-size: 20px; font-weight: 800; }
+.kpi-label { display: block; font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .5px; }
+.kpi.pothole .kpi-val { color: var(--pothole); }
+.kpi.speedbump .kpi-val { color: var(--speedbump); }
+.kpi.live { border-color: var(--green); }
+.kpi.live .kpi-val { color: var(--green); }
+
+/* Controls */
+#controls {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 8px 18px;
+  background: var(--panel);
+  border-bottom: 1px solid var(--line);
+  flex-wrap: wrap;
+}
+#controls label { font-size: 12px; color: var(--muted); display: flex; flex-direction: column; gap: 3px; }
+#controls select, #controls input[type="date"], #controls input[type="text"] {
+  background: var(--panel-2);
+  color: var(--text);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 6px 8px;
+  font-size: 13px;
+}
+#customDates { display: flex; gap: 6px; align-items: flex-end; }
+#controls label.toggle { flex-direction: row; align-items: center; gap: 6px; font-size: 13px; color: var(--text); }
+
+.btn {
+  background: var(--panel-2);
+  color: var(--text);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 7px 14px;
+  font-size: 13px;
+  cursor: pointer;
+}
+.btn:hover { background: #2b384e; }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: #1a1200; font-weight: 700; }
+.btn.primary:hover { filter: brightness(1.1); }
+.btn.ghost { background: transparent; }
+.btn.small { padding: 4px 10px; font-size: 12px; }
+
+.hint {
+  background: rgba(255,128,0,.12);
+  color: var(--accent);
+  font-size: 13px;
+  padding: 6px 18px;
+  border-bottom: 1px solid var(--line);
+}
+
+/* Map */
+#map { flex: 1; width: 100%; }
+
+/* Panels (sheets sliding from the right) */
+.panel {
+  position: fixed;
+  top: 0; right: 0;
+  height: 100%;
+  width: 340px;
+  background: var(--panel);
+  border-left: 1px solid var(--line);
+  box-shadow: -8px 0 24px rgba(0,0,0,.4);
+  padding: 20px;
+  transform: translateX(110%);
+  transition: transform .25s ease;
+  z-index: 1200;
+  overflow-y: auto;
+}
+.panel.wide { width: 400px; }
+.panel.open { transform: translateX(0); }
+.panel h2 { margin: 0 0 12px; font-size: 18px; }
+.panel-head { display: flex; justify-content: space-between; align-items: center; }
+.field { display: block; font-size: 13px; color: var(--muted); margin-bottom: 14px; }
+.field input, .field textarea {
+  display: block; width: 100%; margin-top: 4px;
+  background: var(--panel-2); color: var(--text);
+  border: 1px solid var(--line); border-radius: 8px; padding: 9px;
+  font-size: 14px; font-family: inherit;
+}
+.assign-summary { font-size: 15px; margin: 0 0 16px; }
+.muted { color: var(--muted); font-size: 12px; }
+.panel-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 8px; }
+
+/* Work order list */
+.wo-list { margin-top: 12px; display: flex; flex-direction: column; gap: 10px; }
+.wo-row {
+  background: var(--panel-2);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 12px;
+}
+.wo-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+.wo-crew { font-weight: 700; font-size: 14px; }
+.wo-badge { font-size: 11px; padding: 2px 8px; border-radius: 99px; font-weight: 700; }
+.wo-badge.assigned { background: rgba(255,128,0,.2); color: var(--accent); }
+.wo-badge.progress { background: rgba(0,230,255,.2); color: var(--speedbump); }
+.wo-badge.done { background: rgba(29,185,84,.2); color: var(--green); }
+.wo-meta { font-size: 12px; color: var(--muted); }
+.wo-notes { font-size: 12px; color: var(--text); margin-top: 6px; font-style: italic; }
+.wo-actions { margin-top: 8px; font-size: 12px; color: var(--muted); }
+.wo-actions select {
+  background: var(--panel); color: var(--text);
+  border: 1px solid var(--line); border-radius: 6px; padding: 4px 6px; margin-left: 4px;
+}
+.empty { color: var(--muted); font-size: 13px; }
+
+/* Open button on a work order row */
+.wo-row .wo-open {
+  width: 100%;
+  margin-top: 8px;
+  text-align: center;
+}
+
+/* Work order detail modal (centered overlay, dark theme) */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.6);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 1400;
+  padding: 20px;
+}
+.modal-backdrop.open { display: flex; }
+.modal {
+  position: relative;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  box-shadow: 0 18px 48px rgba(0,0,0,.55);
+  padding: 22px;
+  width: 520px;
+  max-width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+.modal-close {
+  position: absolute;
+  top: 10px; right: 12px;
+  background: transparent;
+  border: none;
+  color: var(--muted);
+  font-size: 26px;
+  line-height: 1;
+  cursor: pointer;
+}
+.modal-close:hover { color: var(--text); }
+.modal-head { display: flex; align-items: center; gap: 10px; margin: 0 24px 8px 0; }
+.modal-head h2 { margin: 0; font-size: 20px; }
+.modal-meta { font-size: 13px; color: var(--muted); margin-bottom: 16px; }
+.modal-subhead { font-size: 14px; margin: 16px 0 8px; }
+.modal select {
+  display: block; width: 100%; margin-top: 4px;
+  background: var(--panel-2); color: var(--text);
+  border: 1px solid var(--line); border-radius: 8px; padding: 9px;
+  font-size: 14px;
+}
+.modal-table-wrap { max-height: 220px; overflow-y: auto; border: 1px solid var(--line); border-radius: 8px; }
+.modal-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+.modal-table th, .modal-table td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--line); }
+.modal-table th { color: var(--muted); font-weight: 700; position: sticky; top: 0; background: var(--panel-2); }
+.modal-table tr:last-child td { border-bottom: none; }
+.modal-table .empty-cell { color: var(--muted); text-align: center; }
+
+/* Printable sheet — hidden on screen */
+#printArea { display: none; }
+
+/* Print: isolate the work order sheet, light/printer-friendly */
+@media print {
+  body > * { display: none !important; }
+  #printArea {
+    display: block !important;
+    position: static;
+    background: #fff;
+    color: #000;
+    font-family: Georgia, "Times New Roman", serif;
+    padding: 0;
+    margin: 0;
+  }
+  #printArea .print-title {
+    font-size: 24px;
+    margin: 0 0 16px;
+    border-bottom: 2px solid #000;
+    padding-bottom: 8px;
+  }
+  #printArea h2 { font-size: 18px; margin: 0 0 4px; }
+  #printArea .print-meta { font-size: 13px; margin: 0 0 16px; }
+  #printArea .print-meta div { margin-bottom: 2px; }
+  #printArea .print-subhead { font-size: 15px; margin: 16px 0 6px; }
+  #printArea table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  #printArea th, #printArea td { border: 1px solid #000; padding: 5px 8px; text-align: left; }
+  #printArea th { background: #eee; }
+  #printArea .print-notes {
+    border: 1px solid #000;
+    padding: 8px;
+    min-height: 60px;
+    font-size: 13px;
+    white-space: pre-wrap;
+  }
+}
