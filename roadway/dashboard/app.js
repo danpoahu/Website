@@ -24,7 +24,7 @@ const state = {
   region: "Colorado",
   severity: "All",
   bumpType: "All",
-  datePreset: "Quarter",
+  datePreset: "Custom",
   customFrom: null,
   customTo: null,
   assignMode: false
@@ -336,6 +336,17 @@ function setupControls() {
   $("severitySelect").value = state.severity;
   $("typeSelect").value = state.bumpType;
   $("dateSelect").value = state.datePreset;
+
+  // Default the custom range to the current calendar year so all of this year's
+  // bumps render on open (the rolling presets would hide older data).
+  if (state.datePreset === "Custom" && !state.customFrom && !state.customTo) {
+    const yr = new Date().getFullYear();
+    state.customFrom = `${yr}-01-01`;
+    state.customTo = `${yr}-12-31`;
+  }
+  $("customFrom").value = state.customFrom || "";
+  $("customTo").value = state.customTo || "";
+  $("customDates").style.display = state.datePreset === "Custom" ? "flex" : "none";
 
   $("regionSelect").addEventListener("change", (e) => {
     state.region = e.target.value;
