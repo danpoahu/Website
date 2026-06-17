@@ -21,7 +21,7 @@ let liveCount = 0;
 let pendingPolygon = null;  // {latlngs:[{lat,lng}], selected:[bumps]}
 
 const state = {
-  region: "Oahu",
+  region: "Colorado",
   severity: "All",
   bumpType: "All",
   datePreset: "Quarter",
