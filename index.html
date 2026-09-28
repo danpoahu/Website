@@ -331,6 +331,7 @@
             nav ul.active li:nth-child(3) { transition-delay: 0.3s; }
             nav ul.active li:nth-child(4) { transition-delay: 0.4s; }
             nav ul.active li:nth-child(5) { transition-delay: 0.5s; }
+            nav ul.active li:nth-child(6) { transition-delay: 0.6s; }
 
             nav a {
                 font-size: 1.3rem;
@@ -1069,6 +1070,75 @@
         }
 
         /* Footer */
+        /* Case Studies */
+        .cs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .cs-card {
+            display: flex;
+            flex-direction: column;
+            text-decoration: none;
+            color: var(--text-gray);
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(8, 145, 178, 0.2);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+
+        .cs-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(34, 211, 238, 0.4);
+            box-shadow: 0 20px 40px rgba(8, 145, 178, 0.2);
+        }
+
+        .cs-thumb {
+            height: 140px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .cs-thumb img {
+            max-height: 96px;
+            max-width: 70%;
+            object-fit: contain;
+            border-radius: 14px;
+        }
+
+        .cs-card div.cs-text {
+            padding: 1.2rem 1.4rem 1.5rem;
+        }
+
+        .cs-card h3 {
+            color: var(--sky-blue);
+            margin: 0.3rem 0 0.5rem;
+            font-size: 1.15rem;
+        }
+
+        .cs-card .cs-meta {
+            font-size: 0.75rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--sunset-orange);
+            font-weight: 700;
+        }
+
+        .cs-all {
+            display: block;
+            width: max-content;
+            margin: 2.5rem auto 0;
+            color: var(--sky-blue);
+            font-weight: 700;
+            text-decoration: none;
+        }
+
         footer {
             text-align: center;
             padding: 3rem 2rem;
@@ -1106,6 +1176,7 @@
             <ul id="navMenu">
                 <li><a href="#ios">Apps</a></li>
                 <li><a href="#web">Web</a></li>
+                <li><a href="#case-studies">Case Studies</a></li>
                 <li><a href="#services">Services</a></li>
                 <li><a href="#about">About</a></li>
                 <li><a href="#contact">Contact</a></li>
@@ -1386,6 +1457,32 @@
                 </div>
             </div>
         </div>
+    </section>
+
+    <!-- Case Studies Section -->
+    <section id="case-studies">
+        <h2>Case Studies</h2>
+        <p class="subtitle">Real projects, told as two-minute animated stories with their own soundtrack</p>
+
+        <div class="cs-grid">
+            <a class="cs-card" href="case-studies/ldah/">
+                <div class="cs-thumb" style="background: radial-gradient(circle at 70% 25%, #1f6f8b, #0B3A53 60%, #06202f);"><img src="case-studies/ldah/logo.png" alt="LDAH logo" loading="lazy" style="background:#fff;padding:8px;"></div>
+                <div class="cs-text"><div class="cs-meta">Nonprofit</div><h3>One platform. A whole nonprofit.</h3><p>The system behind LDAH: families, staff, events, grants and six Pacific islands.</p></div>
+            </a>
+            <a class="cs-card" href="case-studies/discover-more/">
+                <div class="cs-thumb" style="background: radial-gradient(circle at 70% 20%, #2a6a7c, #1B4B5A 55%, #0f2a33);"><img src="case-studies/discover-more/logo.png" alt="Discover More logo" loading="lazy" style="background:#F5F1E8;padding:10px 14px;"></div>
+                <div class="cs-text"><div class="cs-meta">Church</div><h3>Discover More</h3><p>Personality and spiritual gifts for Anchor Church guests, on iPhone, Android and the web.</p></div>
+            </a>
+            <a class="cs-card" href="case-studies/marie-borders/">
+                <div class="cs-thumb" style="background: linear-gradient(135deg, #1a1f24, #2b3440 60%, #a8854c 140%);"><img src="case-studies/marie-borders/mb-headshot.jpg" alt="Marie Borders" loading="lazy" style="border-radius:50%;aspect-ratio:1;object-fit:cover;border:3px solid #a8854c;"></div>
+                <div class="cs-text"><div class="cs-meta">Real estate</div><h3>Marie Borders</h3><p>A luxury real-estate website and CMS for a Marin County realtor.</p></div>
+            </a>
+            <a class="cs-card" href="case-studies/spiritual-gifts/">
+                <div class="cs-thumb" style="background: linear-gradient(180deg, #0F1A2E, #195FD9 75%, #4AA4A8 130%);"><img src="case-studies/spiritual-gifts/logo.jpg" alt="My Spiritual Gifts Assessment logo" loading="lazy"></div>
+                <div class="cs-text"><div class="cs-meta">Consumer app</div><h3>My Spiritual Gifts Assessment</h3><p>A private, no-account gifts app on the App Store and Google Play.</p></div>
+            </a>
+        </div>
+        <a class="cs-all" href="case-studies/">See all case studies &rarr;</a>
     </section>
 
     <!-- Services Section -->

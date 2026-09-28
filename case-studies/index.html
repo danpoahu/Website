@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Case Studies | Oahu App Design</title>
+<meta name="description" content="Short animated case studies of apps and websites built by Oahu App Design in Hawaiʻi: a nonprofit platform, a church app, a real-estate site and a spiritual gifts app.">
+<meta property="og:title" content="Case Studies | Oahu App Design">
+<meta property="og:description" content="Real projects, told as short animated stories with their own soundtrack.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://oahuappdesign.com/case-studies/">
+<meta property="og:image" content="https://oahuappdesign.com/Icon.jpg">
+<link rel="canonical" href="https://oahuappdesign.com/case-studies/">
+<style>
+:root{--ocean-blue:#0891b2;--deep-blue:#0e7490;--sky-blue:#22d3ee;--sunset-orange:#fb923c;--sunset-pink:#f472b6;--dark-bg:#0f172a;--darker-bg:#020617;--text-light:#f8fafc;--text-gray:#cbd5e1}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Oxygen,Ubuntu,Cantarell,sans-serif;background:linear-gradient(180deg,var(--darker-bg) 0%,var(--dark-bg) 60%,#0b2a3a 100%);color:var(--text-light);min-height:100vh;line-height:1.6}
+nav{position:sticky;top:0;background:rgba(15,23,42,.85);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);padding:1rem 2rem;z-index:100;border-bottom:1px solid rgba(8,145,178,.2)}
+nav .container{max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;gap:1rem}
+.logo{display:flex;align-items:center;gap:.8rem;font-size:1.35rem;font-weight:bold;color:var(--sky-blue);text-decoration:none}
+.logo img{width:44px;height:44px;border-radius:10px}
+nav ul{display:flex;list-style:none;gap:1.6rem;flex-wrap:wrap}
+nav a{color:var(--text-gray);text-decoration:none;transition:color .3s}
+nav a:hover,nav a[aria-current]{color:var(--sky-blue)}
+header.intro{max-width:900px;margin:0 auto;padding:4.5rem 1.5rem 2.5rem;text-align:center}
+header.intro .kick{font-size:.85rem;letter-spacing:.18em;text-transform:uppercase;color:var(--sunset-orange);font-weight:800}
+header.intro h1{font-size:clamp(2.2rem,5vw,3.4rem);line-height:1.1;margin:.5rem 0 1rem;color:var(--text-light);text-wrap:balance}
+header.intro h1 span{background:linear-gradient(90deg,var(--sky-blue),var(--sunset-pink));-webkit-background-clip:text;background-clip:text;color:transparent}
+header.intro p{color:var(--text-gray);font-size:1.15rem;max-width:640px;margin:0 auto;text-wrap:balance}
+.grid{max-width:1200px;margin:0 auto;padding:1rem 1.5rem 5rem;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,460px),1fr));gap:2rem}
+.card{display:flex;flex-direction:column;text-decoration:none;color:inherit;background:rgba(15,23,42,.6);border:1px solid rgba(8,145,178,.22);border-radius:18px;overflow:hidden;transition:transform .3s,border-color .3s,box-shadow .3s}
+.card:hover,.card:focus-visible{transform:translateY(-5px);border-color:rgba(34,211,238,.45);box-shadow:0 20px 40px rgba(8,145,178,.2);outline:none}
+.poster{position:relative;aspect-ratio:16/9;max-width:100%;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.poster img{max-height:62%;max-width:60%;object-fit:contain;position:relative;z-index:2;filter:drop-shadow(0 10px 24px rgba(0,0,0,.25))}
+.poster .play{position:absolute;right:16px;bottom:14px;z-index:3;display:flex;align-items:center;gap:8px;background:rgba(2,6,23,.72);color:#fff;font-weight:700;font-size:.9rem;padding:7px 14px 7px 10px;border-radius:999px}
+.poster .play i{width:0;height:0;border-left:11px solid #fff;border-top:7px solid transparent;border-bottom:7px solid transparent;margin-left:4px}
+.poster .ring{position:absolute;border-radius:50%;opacity:.35;z-index:1}
+.body{padding:1.4rem 1.6rem 1.7rem;display:flex;flex-direction:column;gap:.45rem;flex:1}
+.meta{font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;color:var(--sunset-orange);font-weight:800}
+.card h2{font-size:1.45rem;line-height:1.25;color:var(--sky-blue);text-wrap:balance}
+.card p{color:var(--text-gray)}
+.tags{display:flex;flex-wrap:wrap;gap:.45rem;margin-top:.5rem}
+.tags span{font-size:.8rem;padding:.25rem .7rem;border-radius:999px;background:rgba(8,145,178,.15);border:1px solid rgba(8,145,178,.3);color:#a5f3fc}
+.p-ldah{background:radial-gradient(circle at 70% 25%,#1f6f8b 0%,#0B3A53 55%,#06202f 100%)}
+.p-ldah img{max-height:70%;background:#fff;border-radius:22px;padding:14px}
+.p-dm{background:radial-gradient(circle at 70% 20%,#2a6a7c 0%,#1B4B5A 50%,#0f2a33 100%)}
+.p-dm img{background:#F5F1E8;border-radius:18px;padding:18px 22px;max-width:62%}
+.p-mb{background:linear-gradient(135deg,#1a1f24 0%,#2b3440 60%,#a8854c 140%)}
+.p-mb img{max-height:78%;border-radius:50%;aspect-ratio:1;object-fit:cover;border:4px solid #a8854c}
+.p-mb .name{position:absolute;left:24px;top:22px;z-index:2;font-family:Georgia,'Times New Roman',serif;letter-spacing:.22em;text-transform:uppercase;color:#f1ece2;font-size:1.05rem}
+.p-sg{background:linear-gradient(180deg,#0F1A2E 0%,#195FD9 70%,#4AA4A8 130%)}
+.p-sg img{max-height:66%;border-radius:24px}
+.cta{max-width:900px;margin:0 auto 5rem;padding:2.5rem 1.5rem;text-align:center;border-top:1px solid rgba(8,145,178,.2)}
+.cta h2{color:var(--sky-blue);font-size:1.8rem;margin-bottom:.5rem}
+.cta p{color:var(--text-gray);margin-bottom:1.4rem}
+.cta a{display:inline-block;background:linear-gradient(90deg,var(--ocean-blue),var(--sky-blue));color:#02131c;font-weight:800;padding:.85rem 2rem;border-radius:999px;text-decoration:none}
+footer{text-align:center;padding:2.5rem 1.5rem;background:rgba(15,23,42,.8);border-top:1px solid rgba(8,145,178,.2);color:var(--text-gray);font-size:.95rem}
+footer a{color:var(--sky-blue)}
+@media (max-width:640px){nav{padding:.8rem 1rem}nav ul{gap:1rem;font-size:.95rem}.logo span{display:none}}
+@media (prefers-reduced-motion:reduce){.card{transition:none}}
+</style>
+</head>
+<body>
+<nav><div class="container">
+ <a href="../" class="logo"><img src="../Icon.jpg" alt="Oahu App Design" width="44" height="44"><span>Oahu App Design</span></a>
+ <ul><li><a href="../#ios">Apps</a></li><li><a href="../#web">Web</a></li><li><a href="./" aria-current="page">Case Studies</a></li><li><a href="../#contact">Contact</a></li></ul>
+</div></nav>
+
+<header class="intro">
+ <div class="kick">Case studies</div>
+ <h1>Real projects, told as <span>two-minute stories.</span></h1>
+ <p>Each case study plays like a short film with its own original soundtrack, then ends with a tour of the features. Tap one to watch.</p>
+</header>
+
+<main class="grid">
+ <a class="card" href="ldah/">
+  <div class="poster p-ldah"><img src="ldah/logo.png" alt="LDAH logo" loading="lazy"><div class="play"><i></i>Watch · 2 min</div></div>
+  <div class="body"><div class="meta">Nonprofit · Hawaiʻi &amp; the Pacific</div>
+   <h2>One platform. A whole nonprofit.</h2>
+   <p>The system that runs Leadership in Disabilities &amp; Achievement of Hawaiʻi: families, staff, events, grants and six Pacific islands, in one place.</p>
+   <div class="tags"><span>Staff platform</span><span>Events &amp; signups</span><span>Case advocacy</span><span>AI</span></div></div>
+ </a>
+ <a class="card" href="discover-more/">
+  <div class="poster p-dm"><img src="discover-more/logo.png" alt="Discover More logo" loading="lazy"><div class="play"><i></i>Watch · 2 min</div></div>
+  <div class="body"><div class="meta">Church · Anchor Church</div>
+   <h2>Helping people discover how they were made.</h2>
+   <p>A personality and spiritual gifts journey on iPhone, Android and the web that helps every guest find where they fit, and helps the team follow up.</p>
+   <div class="tags"><span>iPhone</span><span>Android</span><span>Web app</span><span>Admin console</span></div></div>
+ </a>
+ <a class="card" href="marie-borders/">
+  <div class="poster p-mb"><div class="name">Marie Borders</div><img src="marie-borders/mb-headshot.jpg" alt="Marie Borders" loading="lazy"><div class="play"><i></i>Watch · 2 min</div></div>
+  <div class="body"><div class="meta">Real estate · Marin County, California</div>
+   <h2>A luxury real-estate site that works as hard as she does.</h2>
+   <p>Listings with self-compressing video, five ways for buyers and sellers to reach out, and a simple content manager, with privacy-first analytics.</p>
+   <div class="tags"><span>Website</span><span>Custom CMS</span><span>Lead capture</span><span>Cloud functions</span></div></div>
+ </a>
+ <a class="card" href="spiritual-gifts/">
+  <div class="poster p-sg"><img src="spiritual-gifts/logo.jpg" alt="My Spiritual Gifts Assessment logo" loading="lazy"><div class="play"><i></i>Watch · 2 min</div></div>
+  <div class="body"><div class="meta">Consumer app · App Store &amp; Google Play</div>
+   <h2>Discover the gifts God gave you.</h2>
+   <p>My Spiritual Gifts Assessment: a private, no-account app with a personality survey, 24 spiritual gifts, weekly devotionals and a shareable results card.</p>
+   <div class="tags"><span>SwiftUI</span><span>Jetpack Compose</span><span>On-device</span><span>PDF &amp; share card</span></div></div>
+ </a>
+</main>
+
+<section class="cta">
+ <h2>Have a project like these?</h2>
+ <p>Custom apps and websites for nonprofits, churches and small businesses in Hawaiʻi and the Pacific.</p>
+ <a href="../#contact">Get in touch</a>
+</section>
+
+<footer>&copy; 2026 Oahu App Design · Honolulu, Hawaiʻi · <a href="mailto:dan@oahuappdesign.com">dan@oahuappdesign.com</a></footer>
+</body>
+</html>

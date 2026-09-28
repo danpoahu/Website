@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Spiritual Gifts Case Study · Oahu App Design</title>
+<meta name="description" content="Case study: My Spiritual Gifts Assessment, a free and private personality and spiritual gifts app for iPhone, iPad and Android, built by Oahu App Design.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#13294B;--soft:#56637a;--cream:#FAF8F0;--teal:#4AA4A8;--tdark:#2E8589;--blue:#195FD9;--sky:#A1D4FF;--gold:#FADE57;--gdeep:#8a6d00;--navy:#0F1A2E;--teal2:#5CC4C7;--sky2:#7DB8E8;--line:#E3E6E4}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:#0F1A2E;color:var(--ink);font-family:"Nunito",ui-rounded,system-ui,-apple-system,"Segoe UI",sans-serif;overflow:hidden}
+#view{position:absolute;inset:0 0 58px 0;display:flex;align-items:center;justify-content:center}
+#stage{width:1280px;height:720px;position:relative;flex:none;overflow:hidden;border-radius:16px;background:linear-gradient(180deg,#EAF4FB 0%,var(--cream) 42%);transform-origin:center}
+.scene{position:absolute;inset:0;opacity:0;visibility:hidden;transition:opacity .8s ease,visibility 0s .8s}
+.scene.on{opacity:1;visibility:visible;transition:opacity .8s ease}
+.dark{background:radial-gradient(900px 420px at 50% 112%,rgba(250,222,87,.55) 0%,rgba(250,222,87,0) 60%),linear-gradient(180deg,#0F1A2E 0%,#15305a 42%,#25628a 72%,#5a9cc4 100%);color:#fff}
+.k{position:absolute;left:80px;top:68px;font-size:15px;font-weight:900;letter-spacing:.14em;text-transform:uppercase;color:var(--tdark)}
+.dark .k{color:var(--gold)}
+.h{position:absolute;left:80px;top:96px;font-size:46px;line-height:1.08;font-weight:900;margin:0;max-width:1120px;color:var(--ink)}
+.dark .h{color:#fff}
+.sub{position:absolute;left:80px;font-size:21px;line-height:1.45;color:var(--soft);max-width:900px;font-weight:600}
+.dark .sub{color:#dcecf7}
+.a{opacity:0;transform:translateY(22px)}
+.on .a{animation:up .8s cubic-bezier(.2,.8,.2,1) forwards}
+.on .a.d1{animation-delay:.25s}.on .a.d2{animation-delay:.5s}.on .a.d3{animation-delay:.75s}.on .a.d4{animation-delay:1s}.on .a.d5{animation-delay:1.25s}.on .a.d6{animation-delay:1.5s}.on .a.d7{animation-delay:1.75s}.on .a.d8{animation-delay:2s}.on .a.d9{animation-delay:2.4s}.on .a.d10{animation-delay:2.8s}
+@keyframes up{to{opacity:1;transform:none}}
+@keyframes pop{0%{opacity:0;transform:scale(.4)}70%{opacity:1;transform:scale(1.08)}100%{opacity:1;transform:scale(1)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes drift{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@keyframes grow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@keyframes flip{0%{opacity:0;transform:perspective(1200px) rotateY(-100deg) scale(.8)}60%{opacity:1}100%{opacity:1;transform:perspective(1200px) rotateY(0) scale(1)}}
+@keyframes slidein{0%{opacity:0;transform:translateY(-70px)}100%{opacity:1;transform:none}}
+@keyframes ripple{0%{opacity:.8;transform:scale(.2)}100%{opacity:0;transform:scale(2.2)}}
+@keyframes shimmer{0%,100%{opacity:.55}50%{opacity:1}}
+.hills{position:absolute;left:0;right:0;bottom:0;height:130px;overflow:hidden;pointer-events:none}
+.hills svg{position:absolute;bottom:0;width:200%;height:130px;animation:drift 26s linear infinite}
+.hills .w2{animation-duration:36s;opacity:.7}
+/* cover */
+.brand{position:absolute;left:80px;top:70px;font-size:15px;letter-spacing:.2em;text-transform:uppercase;color:var(--sky);font-weight:900}
+.title{position:absolute;left:80px;top:140px;font-size:62px;line-height:1.04;font-weight:900;margin:0;color:#fff;max-width:720px}
+.title em{font-style:normal;background:linear-gradient(90deg,#FFF3B0,var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent}
+.rays{position:absolute;right:60px;top:90px;width:440px;height:440px;animation:spin 60s linear infinite;opacity:.55}
+.logocard{position:absolute;right:160px;top:190px;width:240px;height:240px;border-radius:54px;overflow:hidden;box-shadow:0 30px 70px rgba(0,0,0,.4),0 0 0 6px rgba(255,255,255,.14);animation:float 7s ease-in-out infinite}
+.logocard img{display:block;width:100%;height:100%}
+.startbtn{position:absolute;left:80px;top:450px;display:flex;gap:14px}
+.btn{font:inherit;font-weight:900;font-size:20px;border:0;border-radius:14px;padding:15px 28px;cursor:pointer;background:linear-gradient(90deg,#FFEFA0,var(--gold));color:#13294B;box-shadow:0 12px 30px rgba(250,222,87,.3)}
+.btn.ghost{background:transparent;border:2px solid rgba(255,255,255,.55);color:#fff;box-shadow:none}
+.hint{position:absolute;left:84px;top:528px;font-size:14px;color:#cfe4f5;font-weight:600}
+/* why */
+.paper{position:absolute;width:175px;padding:12px 14px;background:#fff;border-radius:10px;box-shadow:0 12px 28px rgba(19,41,75,.15);font-size:14px;font-weight:700;color:#3d4656;line-height:1.35}
+.paper b{display:block;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--blue);margin-bottom:4px}
+.on .paper{animation:pop .7s cubic-bezier(.3,1.4,.5,1) both}
+.chaosx{position:absolute;left:830px;top:260px;width:370px;font-size:25px;font-weight:900;line-height:1.35;color:var(--ink)}
+.chaosx span{color:var(--tdark)}
+/* phone mock */
+.ph{position:absolute;top:228px;width:290px;height:450px;border-radius:42px;background:#111;border:9px solid #2b2b2b;box-shadow:0 28px 60px rgba(19,41,75,.28);overflow:hidden}
+.ph .scr{position:absolute;inset:8px;border-radius:32px;background:var(--cream);padding:26px 18px;text-align:center;overflow:hidden}
+.wl img{width:74px;height:74px;border-radius:18px;display:block;margin:6px auto 10px}
+.wl .t1{font-weight:900;font-size:22px;color:var(--ink)}
+.wl .t2{font-size:13px;color:var(--soft);margin-top:4px;font-weight:700}
+.wl .fld{margin:16px auto 0;width:92%;border:2px solid var(--teal);border-radius:12px;padding:10px 12px;font-size:17px;font-weight:800;color:var(--ink);background:#fff;text-align:left;min-height:46px}
+.wl .fld i{display:inline-block;width:2px;height:18px;background:var(--teal);vertical-align:-3px;margin-left:1px;animation:shimmer 1s infinite}
+.wl .go{margin:14px auto 0;width:92%;border-radius:12px;padding:11px;font-weight:900;color:#fff;font-size:16px;background:linear-gradient(90deg,var(--teal),var(--blue))}
+.wl .hi{margin-top:18px;font-size:24px;font-weight:900;color:var(--tdark);opacity:0;transform:translateY(8px);transition:all .6s}
+.wl .hi.show{opacity:1;transform:none}
+.wl .lk{margin-top:10px;font-size:12px;color:var(--soft);font-weight:700}
+.side{position:absolute;left:480px;top:240px;width:720px}
+.pt{display:flex;gap:14px;margin-bottom:18px;font-size:21px;line-height:1.4;color:var(--ink);font-weight:700}
+.pt i{flex:none;width:34px;height:34px;border-radius:50%;background:var(--teal);color:#fff;font-style:normal;font-weight:900;display:flex;align-items:center;justify-content:center;font-size:16px}
+.zero{position:absolute;left:980px;top:520px;width:220px;padding:16px 18px;border-radius:20px;background:#fff;box-shadow:0 16px 36px rgba(19,41,75,.14);text-align:center;border:3px solid var(--gold)}
+.zero b{display:block;font-size:56px;line-height:1;font-weight:900;color:var(--blue)}
+.zero span{font-size:15px;font-weight:800;color:var(--soft);letter-spacing:.06em;text-transform:uppercase}
+/* DISC */
+.quad{position:absolute;left:110px;top:250px;width:390px;height:390px;display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.quad div{position:relative;border-radius:20px;display:flex;align-items:center;justify-content:center;flex-direction:column;font-weight:900;font-size:40px;color:#fff;overflow:hidden}
+.quad div small{font-size:15px;font-weight:800;opacity:.95}
+.quad .D{background:var(--blue)}.quad .I{background:var(--gold);color:#5c4700}.quad .C{background:var(--sky);color:var(--ink)}.quad .S{background:var(--teal)}
+.quad .rp{position:absolute;width:120px;height:120px;border-radius:50%;background:rgba(255,255,255,.8);opacity:0;left:40px;top:40px}
+.quad .rp.go{animation:ripple 1s ease-out}
+.axis{position:absolute;font-size:13px;font-weight:900;color:var(--soft);letter-spacing:.06em;text-transform:uppercase}
+.me{position:absolute;width:30px;height:30px;border-radius:50%;background:#fff;border:6px solid var(--ink);box-shadow:0 8px 20px rgba(0,0,0,.25);left:290px;top:430px;transition:left 2.2s cubic-bezier(.2,.8,.2,1),top 2.2s cubic-bezier(.2,.8,.2,1)}
+.qcard{position:absolute;left:600px;top:240px;width:600px;background:#fff;border-radius:20px;box-shadow:0 16px 40px rgba(19,41,75,.12);padding:20px 24px}
+.qcard .prog{height:8px;border-radius:4px;background:var(--line);overflow:hidden;margin-bottom:14px}.qcard .prog i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--teal),var(--blue));transition:width 1.6s ease}
+.qcard .qn{font-size:12px;font-weight:900;color:var(--soft);margin-bottom:6px;letter-spacing:.04em}
+.qcard .q{font-size:22px;font-weight:800;color:var(--ink);line-height:1.3}
+.qcard .sc{display:flex;gap:10px;margin-top:16px}
+.qcard .sc span{flex:1;text-align:center;border:2px solid var(--line);border-radius:14px;padding:10px 0;font-weight:900;font-size:20px;color:var(--soft);transition:all .3s}
+.qcard .sc span.pick{border-color:var(--teal);background:#E6F5F5;color:var(--tdark);transform:scale(1.06)}
+.trait{position:absolute;left:600px;top:470px;width:600px;background:#fff;border-radius:20px;border-left:8px solid var(--gold);box-shadow:0 16px 40px rgba(19,41,75,.12);padding:16px 22px;opacity:0;transform:translateY(14px);transition:all .6s}
+.trait.show{opacity:1;transform:none}
+.trait b{display:block;font-size:20px;color:var(--ink)}
+.trait span{display:block;font-size:16px;color:var(--soft);line-height:1.45;margin-top:4px;font-weight:600}
+.trait em{font-style:normal;font-size:12px;font-weight:900;letter-spacing:.1em;text-transform:uppercase;color:var(--tdark)}
+/* gifts */
+.gifts{position:absolute;left:80px;top:230px;width:640px;display:flex;flex-wrap:wrap;gap:8px}
+.gifts span{font-size:14px;font-weight:800;border-radius:999px;padding:6px 12px;background:#fff;border:1px solid var(--line);color:var(--soft);opacity:0;transform:scale(.6);transition:all .4s cubic-bezier(.3,1.4,.5,1)}
+.gifts span.on{opacity:1;transform:none}
+.shuf{position:absolute;left:80px;top:470px;width:640px}
+.shuf h5{margin:0 0 10px;font-size:14px;letter-spacing:.1em;text-transform:uppercase;color:var(--tdark)}
+.shuf .row{position:relative;height:46px}
+.shuf .row u{position:absolute;top:0;width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;text-decoration:none;font-size:13px;font-weight:900;color:#fff;transition:left 1.2s cubic-bezier(.5,0,.2,1)}
+.shuf p{margin:12px 0 0;font-size:16px;color:var(--soft);font-weight:700;line-height:1.4}
+.topbox{position:absolute;left:770px;top:230px;width:430px;background:#fff;border-radius:20px;box-shadow:0 16px 40px rgba(19,41,75,.12);padding:18px 22px}
+.topbox h4{margin:0 0 4px;font-size:14px;letter-spacing:.1em;text-transform:uppercase;color:var(--blue)}
+.topbox .eq{font-size:16px;font-weight:800;color:var(--soft);margin-bottom:12px}
+.topbox .eq b{color:var(--ink)}
+.gb{margin-bottom:11px;position:relative}.gb b{display:flex;justify-content:space-between;font-size:17px;color:var(--ink)}
+.gb .bar{height:12px;border-radius:6px;background:var(--line);overflow:hidden;margin-top:4px}.gb .bar i{display:block;height:100%;border-radius:6px;background:linear-gradient(90deg,var(--teal),var(--blue));transform-origin:left;transform:scaleX(0)}
+.gb.low{opacity:.45}.gb.low .bar i{background:#9aa3b2}
+.on .gb .bar i{animation:grow 1.4s cubic-bezier(.2,.8,.2,1) forwards}
+.thr{position:absolute;left:calc(22px + 386px * 7 / 15);top:96px;bottom:44px;border-left:2px dashed var(--gold);}
+.thr span{position:absolute;bottom:-26px;left:-50px;width:100px;text-align:center;font-size:12px;font-weight:900;color:var(--gdeep)}
+.note{position:absolute;left:80px;bottom:24px;font-size:13px;color:#8a8f98;font-weight:700}
+.dark .note{color:#cfe4f5}
+/* results */
+.gcard{position:absolute;top:232px;width:350px;height:392px;background:#fff;border-radius:22px;box-shadow:0 18px 44px rgba(19,41,75,.14);padding:20px 22px;border-top:8px solid var(--teal)}
+.gcard .rk{display:inline-flex;width:34px;height:34px;border-radius:50%;background:var(--gold);color:#5c4700;font-weight:900;align-items:center;justify-content:center;font-size:17px}
+.gcard h4{margin:10px 0 2px;font-size:26px;color:var(--ink)}
+.gcard .scr2{font-size:15px;font-weight:900;color:var(--tdark)}
+.gcard .bar{height:10px;border-radius:5px;background:var(--line);overflow:hidden;margin:8px 0 12px}.gcard .bar i{display:block;height:100%;background:linear-gradient(90deg,var(--teal),var(--blue));transform-origin:left;transform:scaleX(0)}
+.on .gcard .bar i{animation:grow 1.4s cubic-bezier(.2,.8,.2,1) forwards}
+.gcard p{margin:0;font-size:15px;line-height:1.5;color:#3d4656;font-weight:600}
+.gcard .vs{position:absolute;left:22px;right:22px;bottom:18px;background:#F1F8FF;border-radius:12px;padding:10px 12px;font-size:13px;color:var(--blue);font-weight:800;line-height:1.45}
+.gcard .vs em{display:block;font-style:normal;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--soft)}
+/* devotional */
+.lock{background:linear-gradient(180deg,#0F1A2E 0%,#1d4470 55%,#4f8fbf 85%,#F6D96A 120%)!important;color:#fff}
+.lock .tm{font-size:64px;font-weight:800;margin-top:26px;line-height:1}
+.lock .dy{font-size:15px;font-weight:800;opacity:.9;margin-top:4px}
+.ntf{margin-top:30px;background:rgba(250,248,240,.94);color:var(--ink);border-radius:18px;padding:12px;text-align:left;display:flex;gap:10px;box-shadow:0 10px 26px rgba(0,0,0,.3);opacity:0}
+.on .ntf{animation:slidein .9s cubic-bezier(.2,.9,.3,1.2) 1.8s forwards}
+.ntf img{flex:none;width:38px;height:38px;border-radius:9px}
+.ntf .nt{font-size:13px;font-weight:900;display:flex;justify-content:space-between}
+.ntf .nt small{font-weight:700;color:var(--soft);font-size:11px}
+.ntf .nb{font-size:13px;font-weight:700;color:#3d4656;margin-top:2px}
+.dvp{margin-top:14px;background:rgba(255,255,255,.14);border-radius:14px;padding:10px 12px;font-size:12px;font-weight:700;text-align:left;opacity:0}
+.on .dvp{animation:up .8s ease 3.2s forwards}
+.dvp b{display:block;font-size:14px;margin-top:2px}
+.icn{position:absolute;left:490px;top:470px;width:96px;height:96px}
+.icn img{width:96px;height:96px;border-radius:22px;box-shadow:0 14px 30px rgba(19,41,75,.25)}
+.icn .bdg{position:absolute;right:-10px;top:-10px;width:34px;height:34px;border-radius:50%;background:#E5483B;color:#fff;font-weight:900;font-size:18px;display:flex;align-items:center;justify-content:center;border:3px solid var(--cream);opacity:0}
+.on .icn .bdg{animation:pop .7s cubic-bezier(.3,1.4,.5,1) 2.8s both}
+.icnlab{position:absolute;left:610px;top:488px;font-size:18px;font-weight:800;color:var(--soft);line-height:1.4}
+.icnlab b{color:var(--ink)}
+/* share + pdf */
+.scard{position:absolute;left:100px;top:232px;width:380px;height:380px;border-radius:26px;padding:24px 26px;color:#fff;background:linear-gradient(160deg,#4AA4A8 0%,#195FD9 100%);box-shadow:0 24px 54px rgba(19,41,75,.3);opacity:0}
+.on .scard{animation:flip 1.3s cubic-bezier(.2,.8,.2,1) .6s forwards}
+.scard .s1{font-size:14px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;color:var(--gold)}
+.scard .s2{font-size:34px;font-weight:900;line-height:1.1}
+.scard .s3{display:inline-block;margin-top:8px;background:rgba(255,255,255,.2);border-radius:999px;padding:4px 12px;font-size:14px;font-weight:800}
+.scard .rw{display:flex;align-items:center;gap:12px;margin-top:12px;background:rgba(255,255,255,.13);border-radius:14px;padding:8px 12px}
+.scard .rw i{flex:none;width:28px;height:28px;border-radius:50%;background:var(--gold);color:#5c4700;font-style:normal;font-weight:900;display:flex;align-items:center;justify-content:center;font-size:15px}
+.scard .rw span{flex:1;font-size:17px;font-weight:900;line-height:1.1}.scard .rw small{display:block;font-size:12px;font-weight:700;opacity:.85}
+.scard .rw b{font-size:20px}
+.scard .s4{position:absolute;left:26px;right:26px;bottom:16px;font-size:12px;font-weight:800;opacity:.85;display:flex;justify-content:space-between}
+.sclab{position:absolute;left:100px;top:628px;width:380px;text-align:center;font-weight:900;color:var(--ink);font-size:17px}
+.sclab small{display:block;font-weight:700;color:var(--soft);font-size:13px}
+.pdf{position:absolute;left:540px;top:236px;width:280px;height:370px;background:#fff;border-radius:6px;box-shadow:0 20px 44px rgba(19,41,75,.2);padding:20px 22px;rotate:3deg}
+.pdf .pt1{font-size:16px;font-weight:900;color:var(--ink);border-bottom:3px solid var(--teal);padding-bottom:8px}
+.pdf .pl{height:8px;border-radius:4px;background:#e9ecef;margin-top:9px}
+.pdf .ph2{font-size:12px;font-weight:900;color:var(--blue);margin-top:14px;letter-spacing:.06em;text-transform:uppercase}
+.pdf .mq{display:grid;grid-template-columns:1fr 1fr;gap:3px;width:90px;height:90px;margin-top:8px}
+.pdf .mq i{border-radius:5px}
+.pdf .tag{position:absolute;right:-14px;top:-14px;background:#E5483B;color:#fff;font-weight:900;font-size:13px;border-radius:8px;padding:5px 10px}
+.pdflab{position:absolute;left:540px;top:628px;width:280px;text-align:center;font-weight:900;color:var(--ink);font-size:17px}
+.pdflab small{display:block;font-weight:700;color:var(--soft);font-size:13px}
+.side2{position:absolute;left:880px;top:250px;width:320px}
+.side2 .pt{font-size:18px}
+/* private */
+.lockart{position:absolute;left:120px;top:236px;width:360px;height:380px}
+.facts{position:absolute;left:560px;top:236px;width:640px;display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.fx{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.22);border-radius:18px;padding:18px 20px}
+.fx b{display:block;font-size:24px;font-weight:900;color:#fff}
+.fx span{display:block;font-size:16px;color:#dcecf7;margin-top:4px;line-height:1.4;font-weight:600}
+.fx i{display:inline-flex;width:30px;height:30px;border-radius:50%;background:var(--gold);color:#13294B;font-style:normal;font-weight:900;align-items:center;justify-content:center;margin-bottom:8px}
+/* numbers */
+.grid{position:absolute;left:80px;top:220px;width:1120px;display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.stat{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.22);border-radius:20px;padding:22px 20px}
+.stat b{display:block;font-size:52px;font-weight:900;line-height:1;background:linear-gradient(90deg,#FFF6C4,var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent}
+.stat span{display:block;margin-top:8px;font-size:16px;color:#dcecf7;line-height:1.35;font-weight:700}
+/* advantages */
+.adv{position:absolute;left:80px;top:220px;width:1120px;display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.ad{background:#fff;border-radius:20px;padding:20px 22px;box-shadow:0 12px 30px rgba(19,41,75,.1)}
+.ad .n{width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:900;font-size:22px;margin-bottom:10px}
+.ad b{display:block;font-size:21px;margin-bottom:6px;color:var(--ink)}.ad span{font-size:16px;color:var(--soft);line-height:1.45;font-weight:600}
+/* cta (final slide block) */
+.cta{position:absolute;left:0;right:0;top:118px;text-align:center;color:#fff}
+.cta h2{margin:0;font-size:66px;font-weight:900;line-height:1.05}
+.cta p{font-size:23px;color:#dcecf7;margin:16px 0 0;font-weight:700}
+.stores{display:flex;gap:16px;justify-content:center;margin-top:28px}
+.store{display:inline-flex;flex-direction:column;align-items:flex-start;text-decoration:none;background:#0B1322;color:#fff;border:2px solid rgba(255,255,255,.35);border-radius:16px;padding:10px 24px 11px;min-width:230px;transition:transform .2s,border-color .2s}
+.store:hover{transform:translateY(-2px);border-color:var(--gold)}
+.store small{font-size:13px;font-weight:700;opacity:.85}.store b{font-size:24px;font-weight:900;line-height:1.1}
+.cta .url{display:inline-block;margin-top:26px;font-size:28px;font-weight:900;padding:13px 34px;border-radius:999px;background:linear-gradient(90deg,#FFF3B0,var(--gold));color:#13294B;text-decoration:none}
+.learn{display:inline-block;margin:26px 0 0 14px;font:inherit;font-weight:900;font-size:22px;padding:13px 30px;border-radius:999px;border:2px solid rgba(255,255,255,.7);background:transparent;color:#fff;cursor:pointer}
+.learn:hover{background:rgba(255,255,255,.12)}
+.cta .by{margin-top:18px;font-size:15px;letter-spacing:.18em;text-transform:uppercase;color:var(--sky);font-weight:900}
+/* explore */
+#explore{position:absolute;inset:0;z-index:60;background:linear-gradient(180deg,#EAF4FB,#FAF8F0 60%);display:none}
+#explore.on{display:block;animation:fadein .5s ease}
+@keyframes fadein{from{opacity:0}to{opacity:1}}
+#explore .xh{position:absolute;left:48px;top:30px;right:48px;display:flex;align-items:center;gap:16px}
+#explore .xh img{width:54px;height:54px;border-radius:14px}
+#explore .xh h2{margin:0;font-size:32px;font-weight:900;color:var(--ink)}
+#explore .k2{font-size:13px;font-weight:900;letter-spacing:.14em;text-transform:uppercase;color:var(--tdark);display:block;margin-bottom:2px}
+#explore .xback{font:inherit;font-weight:900;font-size:15px;border:2px solid var(--blue);color:var(--blue);background:#fff;border-radius:12px;padding:9px 16px;cursor:pointer}
+#xlist{position:absolute;left:48px;top:112px;width:360px;bottom:30px;overflow:auto;display:flex;flex-direction:column;gap:8px;padding-right:6px}
+#xlist button{display:flex;align-items:center;gap:12px;text-align:left;font:inherit;font-size:17px;font-weight:800;color:var(--ink);background:#fff;border:2px solid transparent;border-radius:14px;padding:10px 12px;cursor:pointer;box-shadow:0 4px 12px rgba(19,41,75,.07);transition:border-color .2s,transform .2s}
+#xlist button:hover{transform:translateX(4px)}
+#xlist button.on{border-color:var(--teal);background:#EEF8F8}
+#xlist button i{flex:none;width:12px;height:30px;border-radius:6px}
+#xdet{position:absolute;left:432px;top:112px;right:48px;bottom:30px;background:#fff;border-radius:20px;box-shadow:0 16px 40px rgba(19,41,75,.12);padding:26px 30px;overflow:auto}
+#xdet h3{margin:0 0 6px;font-size:28px;font-weight:900;color:var(--ink)}
+#xdet .lead{font-size:18px;color:var(--soft);line-height:1.5;margin:0 0 16px;font-weight:600}
+#xdet .fs{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+#xdet .f{background:#F6FAFB;border:1px solid var(--line);border-radius:14px;padding:12px 14px;animation:up .5s cubic-bezier(.2,.8,.2,1) both}
+#xdet .f b{display:block;font-size:15px;margin-bottom:3px;color:var(--ink)}#xdet .f span{font-size:14px;color:var(--soft);line-height:1.45;font-weight:600}
+#xdet .nums{display:flex;gap:10px;flex-wrap:wrap;margin:0 0 16px}
+#xdet .nums span{background:#FFF8D6;color:#6b5300;font-weight:900;font-size:14px;border-radius:999px;padding:5px 12px}
+/* bar */
+#bar{position:fixed;left:0;right:0;bottom:0;height:58px;display:flex;align-items:center;gap:10px;padding:0 16px;background:#0A1322;color:#dcecf7}
+#bar button{font:inherit;font-weight:800;font-size:14px;background:#1d3a63;color:#fff;border:0;border-radius:10px;padding:8px 14px;cursor:pointer}
+#bar button[aria-pressed="false"]{opacity:.55}
+#dots{display:flex;gap:6px;flex:1;justify-content:center}
+#dots i{width:9px;height:9px;border-radius:50%;background:#2a4468;cursor:pointer}
+#dots i.on{background:var(--gold)}#dots i.seen{background:var(--sky2)}
+#prog{position:absolute;left:0;top:0;height:3px;background:linear-gradient(90deg,var(--teal2),var(--gold));width:0}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.01s!important;transition-duration:.01s!important}}
+</style></head><body>
+<div id="view"><div id="stage">
+
+<!-- 0 COVER -->
+<section class="scene dark on" data-t="0">
+ <div class="brand a">Oahu App Design · Case study</div>
+ <h1 class="title a d1">Discover the gifts<br><em>God gave you.</em></h1>
+ <div class="sub a d2" style="top:300px;max-width:640px">My Spiritual Gifts Assessment: a free, private app for iPhone, iPad and Android that helps anyone find their personality style and spiritual gifts.</div>
+ <div class="startbtn a d3"><button class="btn" id="startMusic">Play with music</button><button class="btn ghost" id="startQuiet">Play without</button></div>
+ <div class="hint a d4">No sound on an iPad or iPhone? Turn the volume up and make sure silent mode is off.</div>
+ <svg class="rays" viewBox="0 0 440 440" aria-hidden="true"><g stroke="#FADE57" stroke-width="5" stroke-linecap="round" opacity=".8"></g></svg>
+ <div class="logocard a d2"><img src="logo.jpg" alt="My Spiritual Gifts Assessment app icon"></div>
+ <div class="hills"><svg viewBox="0 0 2560 130" preserveAspectRatio="none"><path fill="#4AA4A8" d="M0 70 Q160 30 320 70 T640 70 T960 70 T1280 70 T1600 70 T1920 70 T2240 70 T2560 70 V130 H0Z"/></svg><svg class="w2" viewBox="0 0 2560 130" preserveAspectRatio="none"><path fill="#A1D4FF" d="M0 90 Q220 60 440 90 T880 90 T1320 90 T1760 90 T2200 90 T2640 90 V130 H0Z"/></svg></div>
+</section>
+
+<!-- 1 WHY -->
+<section class="scene" data-t="8500">
+ <div class="k a">Why we built it</div>
+ <h2 class="h a d1">People wonder where they fit.<br>The usual tools get in the way.</h2>
+ <div class="paper" style="left:90px;top:262px;rotate:-6deg;animation-delay:.4s"><b>Paper tests</b>Scored by hand, then lost in a drawer</div>
+ <div class="paper" style="left:300px;top:318px;rotate:4deg;animation-delay:.7s"><b>Long websites</b>Page after page on a small screen</div>
+ <div class="paper" style="left:515px;top:258px;rotate:-3deg;animation-delay:1s"><b>Sign up first</b>Email and password before question one</div>
+ <div class="paper" style="left:120px;top:462px;rotate:5deg;animation-delay:1.3s"><b>Your data</b>Answers collected and kept on a server</div>
+ <div class="paper" style="left:350px;top:520px;rotate:-5deg;animation-delay:1.6s"><b>Results</b>Hard to find again later</div>
+ <div class="paper" style="left:560px;top:450px;rotate:3deg;animation-delay:1.9s"><b>Where do I fit?</b>A question many people carry quietly</div>
+ <div class="chaosx a d6">Knowing your gifts shouldn't cost you your privacy.<br><br><span>So we built a calm, private app for anyone.</span></div>
+</section>
+
+<!-- 2 FIRST NAME -->
+<section class="scene" data-t="9500">
+ <div class="k a">Just your first name</div>
+ <h2 class="h a d1">No sign-up. No account.<br>Just a first name, and you begin.</h2>
+ <div class="ph a d2" style="left:110px"><div class="scr wl"><img src="logo.jpg" alt=""><div class="t1">Welcome</div><div class="t2">What's your first name?</div>
+  <div class="fld"><span class="typed" data-text="Leilani"></span><i></i></div><div class="go">Continue</div>
+  <div class="hi">Hi, Leilani!</div><div class="lk">Stays on this device</div></div></div>
+ <div class="side">
+  <div class="pt a d3"><i>1</i><span>A first name is all it asks, so your results feel personal.</span></div>
+  <div class="pt a d4"><i>2</i><span>No email, no password, no account to create or forget.</span></div>
+  <div class="pt a d5"><i>3</i><span>No servers: your answers and results stay on your device.</span></div>
+  <div class="pt a d6"><i>4</i><span>Nothing is collected about you. For anyone, not tied to a church.</span></div>
+ </div>
+ <div class="zero a d8"><b data-count="0">0</b><span>accounts needed</span></div>
+ <div class="note" style="left:auto;right:80px">Names shown are made up.</div>
+</section>
+
+<!-- 3 PERSONALITY -->
+<section class="scene" data-t="10000">
+ <div class="k a">Personality</div>
+ <h2 class="h a d1">Twenty questions. A clear picture<br>of how you work with people.</h2>
+ <div class="quad a d2"><div class="D">D<small>Dominant</small></div><div class="I">I<small>Influential</small><span class="rp"></span></div><div class="C">C<small>Compliant</small></div><div class="S">S<small>Steady</small></div></div>
+ <div class="axis" style="left:257px;top:228px">Extroverted</div><div class="axis" style="left:260px;top:648px">Introverted</div>
+ <div class="axis" style="left:52px;top:437px;rotate:-90deg">Task</div><div class="axis" style="left:500px;top:437px;rotate:90deg">People</div>
+ <div class="me"></div>
+ <div class="qcard a d3"><div class="prog"><i></i></div><div class="qn">QUESTION 12 OF 20</div>
+  <div class="q">I enjoy meeting new people and getting a group talking.</div>
+  <div class="sc"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span></div></div>
+ <div class="trait"><em>Tap a quadrant to read its traits</em><b>Influential</b><span>Witty, easygoing, outgoing and people-oriented. You thrive on building relationships.</span></div>
+</section>
+
+<!-- 4 GIFTS -->
+<section class="scene" data-t="10500">
+ <div class="k a">Spiritual gifts</div>
+ <h2 class="h a d1">Seventy-two questions. Twenty-four gifts.<br>Scored simply, and fairly.</h2>
+ <div class="gifts"><span>Administration</span><span>Apostleship</span><span>Craftsmanship</span><span>Discernment</span><span>Evangelism</span><span>Exhortation</span><span>Faith</span><span>Giving</span><span>Healing</span><span>Helps</span><span>Hospitality</span><span>Intercession</span><span>Knowledge</span><span>Leadership</span><span>Mercy</span><span>Miracles</span><span>Missionary</span><span>Music / Worship</span><span>Pastor / Shepherd</span><span>Prophecy</span><span>Service</span><span>Teaching</span><span>Tongues</span><span>Wisdom</span></div>
+ <div class="shuf a d5"><h5>Three questions per gift, shuffled</h5><div class="row"></div><p>Questions are mixed so one gift's three never sit together, which keeps every answer honest.</p></div>
+ <div class="topbox a d4"><h4>How a gift is scored</h4><div class="eq">3 answers on a 1 to 5 scale: <b>5 + 5 + 4 = 14</b> of 15</div>
+  <div class="gb"><b><span>Hospitality</span><span>14</span></b><div class="bar"><i style="width:93.3%;animation-delay:1.6s"></i></div></div>
+  <div class="gb"><b><span>Teaching</span><span>13</span></b><div class="bar"><i style="width:86.7%;animation-delay:1.8s"></i></div></div>
+  <div class="gb"><b><span>Mercy</span><span>12</span></b><div class="bar"><i style="width:80%;animation-delay:2s"></i></div></div>
+  <div class="gb"><b><span>Wisdom</span><span>9</span></b><div class="bar"><i style="width:60%;animation-delay:2.2s"></i></div></div>
+  <div class="gb low"><b><span>Miracles</span><span>6 · not shown</span></b><div class="bar"><i style="width:40%;animation-delay:2.4s"></i></div></div>
+  <div class="thr"><span>Above 7 shown</span></div>
+ </div>
+ <div class="note">Example results for a made-up person.</div>
+</section>
+
+<!-- 5 RESULTS -->
+<section class="scene" data-t="10000">
+ <div class="k a">Your results</div>
+ <h2 class="h a d1">Every gift explained,<br>with scripture to read and reflect on.</h2>
+ <div class="gcard a d2" style="left:80px"><span class="rk">1</span><h4>Hospitality</h4><div class="scr2">Score 14 of 15</div><div class="bar"><i style="width:93.3%;animation-delay:1.2s"></i></div>
+  <p>You create spaces where people feel welcome, comfortable, and valued. Your warmth and openness help others feel at home.</p>
+  <div class="vs"><em>Scripture</em>Romans 12:13 · Hebrews 13:1-2 · 1 Peter 4:9</div></div>
+ <div class="gcard a d4" style="left:465px;border-top-color:var(--blue)"><span class="rk">2</span><h4>Teaching</h4><div class="scr2">Score 13 of 15</div><div class="bar"><i style="width:86.7%;animation-delay:1.7s"></i></div>
+  <p>You have a gift for making complex ideas understandable, and enjoy helping others learn and grow.</p>
+  <div class="vs"><em>Scripture</em>Acts 18:24-28 · 1 Corinthians 12:28 · Ephesians 4:11-14</div></div>
+ <div class="gcard a d6" style="left:850px;border-top-color:var(--gold)"><span class="rk">3</span><h4>Mercy</h4><div class="scr2">Score 12 of 15</div><div class="bar"><i style="width:80%;animation-delay:2.2s"></i></div>
+  <p>You are compassionate and empathetic, drawn to those who are struggling. You offer understanding, comfort, and a listening ear.</p>
+  <div class="vs"><em>Scripture</em>Matthew 9:35-36 · Romans 12:8 · 1 Thessalonians 5:14</div></div>
+ <div class="note">Example results for a made-up person. Descriptions are from the app; scripture lists shortened.</div>
+</section>
+
+<!-- 6 DEVOTIONAL -->
+<section class="scene" data-t="10000">
+ <div class="k a">Weekly devotional</div>
+ <h2 class="h a d1">Your gifts keep growing.<br>A new devotional every Monday.</h2>
+ <div class="ph a d2" style="left:110px"><div class="scr lock"><div class="dy">Monday</div><div class="tm">8:00</div>
+  <div class="ntf"><img src="logo.jpg" alt=""><div style="flex:1"><div class="nt">Spiritual Gifts<small>now</small></div><div class="nb">Your new weekly devotional is ready!</div></div></div>
+  <div class="dvp">This week, for your gift of Hospitality<b>Creating Space for Belonging</b></div></div></div>
+ <div class="side">
+  <div class="pt a d3"><i>72</i><span>Seventy-two devotionals, three written for each of the 24 gifts.</span></div>
+  <div class="pt a d4"><i>&#10003;</i><span>Chosen from your own top gifts, so every week speaks to you.</span></div>
+  <div class="pt a d5"><i>8</i><span>A gentle notification every Monday at 8 am.</span></div>
+ </div>
+ <div class="icn a d5"><img src="logo.jpg" alt=""><span class="bdg">1</span></div>
+ <div class="icnlab a d6"><b>A badge on the app icon</b><br>so this week's devotional is easy to find.</div>
+</section>
+
+<!-- 7 SHARE & PDF -->
+<section class="scene" data-t="10000">
+ <div class="k a">Share &amp; PDF</div>
+ <h2 class="h a d1">Share your gifts in one tap,<br>or keep a PDF of the full results.</h2>
+ <div class="scard"><div class="s1">My Spiritual Gifts</div><div class="s2">Noah</div><div class="s3">Personality: Steady</div>
+  <div class="rw"><i>1</i><span>Service<small>Meet practical needs</small></span><b>14</b></div>
+  <div class="rw"><i>2</i><span>Helps<small>Serve behind the scenes</small></span><b>13</b></div>
+  <div class="rw"><i>3</i><span>Giving<small>Give generously</small></span><b>12</b></div>
+  <div class="s4"><span>Spiritual Gifts Assessment</span><span>1080 × 1080</span></div></div>
+ <div class="sclab a d6">Share card<small>A 1080 × 1080 image: top 3 gifts, style and branding</small></div>
+ <div class="pdf a d4"><span class="tag">PDF</span><div class="pt1">Spiritual Gifts Results</div>
+  <div class="ph2">Personality</div><div class="mq"><i style="background:#195FD9"></i><i style="background:#FADE57"></i><i style="background:#A1D4FF"></i><i style="background:#4AA4A8"></i></div>
+  <div class="ph2">Your gifts</div><div class="pl" style="width:92%"></div><div class="pl" style="width:84%"></div><div class="pl" style="width:76%"></div><div class="pl" style="width:88%"></div><div class="pl" style="width:60%"></div><div class="pl" style="width:80%"></div></div>
+ <div class="pdflab a d7">PDF export<small>Full results to save, print or share</small></div>
+ <div class="side2">
+  <div class="pt a d7"><i>&#10003;</i><span>Sized for a square social post.</span></div>
+  <div class="pt a d8"><i>&#10003;</i><span>Your personality style sits beside your gifts.</span></div>
+  <div class="pt a d9"><i>&#10003;</i><span>Made on the device, sent only where you choose.</span></div>
+ </div>
+ <div class="note" style="left:auto;right:80px">Names shown are made up.</div>
+</section>
+
+<!-- 8 PRIVATE -->
+<section class="scene dark" data-t="9500">
+ <div class="k a">Private by design</div>
+ <h2 class="h a d1">Everything stays on your device.<br>There is nothing to leak.</h2>
+ <svg class="lockart a d2" viewBox="0 0 360 380" aria-hidden="true">
+  <circle cx="180" cy="190" r="160" fill="rgba(250,222,87,.12)"/><circle cx="180" cy="190" r="118" fill="rgba(250,222,87,.14)"/>
+  <rect x="112" y="80" width="136" height="240" rx="26" fill="#0F1A2E" stroke="#A1D4FF" stroke-width="6"/>
+  <rect x="124" y="96" width="112" height="208" rx="16" fill="#1d3a63"/>
+  <path d="M158 196 v-22 a22 22 0 0 1 44 0 v22" fill="none" stroke="#FADE57" stroke-width="9" stroke-linecap="round"/>
+  <rect x="146" y="194" width="68" height="56" rx="12" fill="#FADE57"/><circle cx="180" cy="218" r="7" fill="#0F1A2E"/><rect x="177" y="220" width="6" height="16" rx="3" fill="#0F1A2E"/>
+  <g transform="translate(262 70)"><path d="M10 40 a18 18 0 0 1 8-34 a24 24 0 0 1 44 6 a16 16 0 0 1 4 30 z" fill="rgba(255,255,255,.18)" stroke="#dcecf7" stroke-width="3"/><path d="M4 50 L70 -4" stroke="#E5483B" stroke-width="6" stroke-linecap="round"/></g>
+ </svg>
+ <div class="facts">
+  <div class="fx a d3"><i>0</i><b>No accounts</b><span>Nothing to sign up for, nothing to remember.</span></div>
+  <div class="fx a d4"><i>0</i><b>No servers</b><span>The app works entirely on the phone or tablet.</span></div>
+  <div class="fx a d5"><i>0</i><b>No data collected</b><span>Your answers are never sent anywhere.</span></div>
+  <div class="fx a d6"><i>1</i><b>Just a first name</b><span>Used for your greeting and results, kept on the device.</span></div>
+ </div>
+</section>
+
+<!-- 9 NUMBERS -->
+<section class="scene dark" data-t="9000">
+ <div class="k a">By the numbers</div>
+ <h2 class="h a d1">One small app. Serious craft.</h2>
+ <div class="grid">
+  <div class="stat a d2"><b data-count="2">0</b><span>native platforms: iOS and Android</span></div>
+  <div class="stat a d3"><b data-count="92">0</b><span>questions across two assessments</span></div>
+  <div class="stat a d4"><b data-count="24">0</b><span>spiritual gifts, each with scripture</span></div>
+  <div class="stat a d5"><b data-count="4">0</b><span>personality styles</span></div>
+  <div class="stat a d6"><b data-count="72">0</b><span>weekly devotionals, three per gift</span></div>
+  <div class="stat a d7"><b data-count="0">0</b><span>accounts, and zero data collected</span></div>
+  <div class="stat a d8"><b data-count="1080">0</b><span>pixels square: the 1080 × 1080 share card</span></div>
+  <div class="stat a d9"><b data-count="36" data-pre="~">0</b><span>minutes for Apple to approve version 2.1</span></div>
+ </div>
+</section>
+
+<!-- 10 ADVANTAGES -->
+<section class="scene" data-t="9500">
+ <div class="k a">The advantages</div>
+ <h2 class="h a d1">What makes it different.</h2>
+ <div class="adv">
+  <div class="ad a d2"><div class="n" style="background:var(--blue)">1</div><b>Private by design</b><span>No accounts, no servers, nothing collected. Only a first name, kept on the device.</span></div>
+  <div class="ad a d3"><div class="n" style="background:var(--teal)">2</div><b>Free, with no ads</b><span>Optional tips of $0.99, $1.99 or $4.99 on iPhone and iPad help keep it going.</span></div>
+  <div class="ad a d4"><div class="n" style="background:#13294B">3</div><b>Truly native</b><span>SwiftUI on iPhone, iPad and Vision Pro. Jetpack Compose on Android.</span></div>
+  <div class="ad a d5"><div class="n" style="background:var(--gold);color:#5c4700">4</div><b>Grows with you</b><span>A devotional chosen for your gifts, every Monday morning.</span></div>
+  <div class="ad a d6"><div class="n" style="background:var(--sky2)">5</div><b>Easy to share</b><span>A PDF of your results and a 1080 × 1080 share card.</span></div>
+  <div class="ad a d7"><div class="n" style="background:var(--tdark)">6</div><b>Open to everyone</b><span>Not tied to any church. Dark mode and an accessibility pass built in.</span></div>
+ </div>
+</section>
+
+<!-- 11 CTA -->
+<section class="scene dark" data-t="10500">
+ <div class="cta"><h2 class="a d1">Discover your gifts.</h2><p class="a d2">Free on iPhone, iPad and Android. No account, no ads, nothing collected.</p>
+  <div class="stores a d3"><a class="store" href="https://apps.apple.com/us/app/my-spiritual-gifts-assessment/id6748858523" target="_blank" rel="noopener"><small>Download on the</small><b>App Store</b></a><a class="store" href="https://play.google.com/store/apps/details?id=com.dpconsulting.spiritualgifts" target="_blank" rel="noopener"><small>Get it on</small><b>Google Play</b></a></div>
+  <div class="a d4"><a class="url" href="https://oahuappdesign.com" target="_blank" rel="noopener">oahuappdesign.com</a><button class="learn" id="learnMore">Learn more &rarr;</button></div>
+  <div class="by a d5">Built by Oahu App Design</div></div>
+ <div class="hills"><svg viewBox="0 0 2560 130" preserveAspectRatio="none"><path fill="#4AA4A8" d="M0 70 Q160 30 320 70 T640 70 T960 70 T1280 70 T1600 70 T1920 70 T2240 70 T2560 70 V130 H0Z"/></svg><svg class="w2" viewBox="0 0 2560 130" preserveAspectRatio="none"><path fill="#A1D4FF" d="M0 90 Q220 60 440 90 T880 90 T1320 90 T1760 90 T2200 90 T2640 90 V130 H0Z"/></svg></div>
+</section>
+
+<div id="explore"><div class="xh"><img src="logo.jpg" alt=""><div style="flex:1"><span class="k2">Inside My Spiritual Gifts Assessment</span><h2>Explore the app</h2></div><button class="xback" id="xback">&larr; Back to the story</button></div>
+ <div id="xlist"></div><div id="xdet"></div></div>
+</div></div>
+<div id="bar"><div id="prog"></div>
+ <a id="csBack" href="../" style="color:#d6ecef;font:700 14px system-ui,sans-serif;text-decoration:none;padding:8px 12px;border-radius:8px;background:rgba(255,255,255,.08)">&larr; Case studies</a>
+ <button id="prev">Back</button><button id="play">Play</button><button id="next">Next</button>
+ <div id="dots"></div>
+ <button id="mus" aria-pressed="true">Music on</button>
+</div>
+
+<script>
+const S=[...document.querySelectorAll('.scene')];
+const stage=document.getElementById('stage');
+function fit(){const v=document.getElementById('view');const k=Math.min(v.clientWidth/1280,v.clientHeight/720);stage.style.transform='scale('+k+')'}
+addEventListener('resize',fit);fit();
+let cur=0,playing=false,timer=null,t0=0,dur=0;
+const dots=document.getElementById('dots');
+S.forEach((_,i)=>{const d=document.createElement('i');d.onclick=()=>go(i,true);dots.appendChild(d)});
+function paintDots(){[...dots.children].forEach((d,i)=>{d.className=i===cur?'on':i<cur?'seen':''})}
+// cover rays
+(function(){const g=document.querySelector('.rays g');let h='';for(let i=0;i<24;i++){const a=i*Math.PI/12,r1=150,r2=i%2?190:212;
+ h+='<line x1="'+(220+r1*Math.cos(a)).toFixed(1)+'" y1="'+(220+r1*Math.sin(a)).toFixed(1)+'" x2="'+(220+r2*Math.cos(a)).toFixed(1)+'" y2="'+(220+r2*Math.sin(a)).toFixed(1)+'"/>'}g.innerHTML=h})();
+// shuffle tiles: 4 gifts x 3 questions
+const SHUF=(function(){const row=document.querySelector('.shuf .row');const G=[['H','#4AA4A8'],['T','#195FD9'],['M','#E0B400'],['W','#7DB8E8']];const tiles=[];
+ G.forEach((g,gi)=>{for(let q=0;q<3;q++){const u=document.createElement('u');u.textContent=g[0]+(q+1);u.style.background=g[1];row.appendChild(u);tiles.push(u)}});
+ const mixed=[0,3,6,9,1,7,4,10,2,11,5,8];// tile index at each slot
+ return{grouped(){tiles.forEach((u,i)=>{u.style.transition='none';u.style.left=(i*52)+'px'});void row.offsetWidth;tiles.forEach(u=>u.style.transition='')},
+  mix(){mixed.forEach((ti,slot)=>{tiles[ti].style.left=(slot*52)+'px'})}}})();
+function replay(sc){
+ sc.classList.remove('on');void sc.offsetWidth;sc.classList.add('on');
+ const on=()=>sc.classList.contains('on');
+ sc.querySelectorAll('[data-count]').forEach(el=>{const to=+el.dataset.count,pre=el.dataset.pre||'';const st=performance.now();
+  (function tick(n){const p=Math.min(1,(n-st)/1800),e=1-Math.pow(1-p,3);el.textContent=pre+Math.round(to*e);if(p<1&&on())requestAnimationFrame(tick)})(st)});
+ // welcome: type the first name, then greet
+ const ty=sc.querySelector('.typed');if(ty){const txt=ty.dataset.text,hi=sc.querySelector('.hi');ty.textContent='';hi.classList.remove('show');
+  [...txt].forEach((c,i)=>setTimeout(()=>{if(on())ty.textContent=txt.slice(0,i+1)},1600+i*160));
+  setTimeout(()=>{if(on())hi.classList.add('show')},1600+txt.length*160+700)}
+ // DISC: progress fills, answer picked, dot moves, quadrant tapped
+ const me=sc.querySelector('.me');if(me){me.style.transition='none';me.style.left='290px';me.style.top='430px';void me.offsetWidth;me.style.transition='';
+  const spans=[...sc.querySelectorAll('.sc span')];spans.forEach(s=>s.classList.remove('pick'));const pr=sc.querySelector('.prog i');pr.style.width='0';
+  const rp=sc.querySelector('.rp'),tr=sc.querySelector('.trait');rp.classList.remove('go');tr.classList.remove('show');
+  setTimeout(()=>{if(on())pr.style.width='60%'},900);setTimeout(()=>{if(on())spans[4].classList.add('pick')},2200);
+  setTimeout(()=>{if(on()){me.style.left='428px';me.style.top='278px'}},3000);
+  setTimeout(()=>{if(on())rp.classList.add('go')},5400);setTimeout(()=>{if(on())tr.classList.add('show')},5800)}
+ // gifts: chips appear, then questions shuffle
+ const gs=[...sc.querySelectorAll('.gifts span')];if(gs.length){gs.forEach(g=>g.classList.remove('on'));
+  gs.forEach((g,i)=>setTimeout(()=>{if(on())g.classList.add('on')},300+i*60));
+  SHUF.grouped();setTimeout(()=>{if(on())SHUF.mix()},3600)}
+}
+function go(i){
+ S[cur].classList.remove('on');cur=Math.max(0,Math.min(S.length-1,i));replay(S[cur]);paintDots();
+ clearTimeout(timer);dur=+S[cur].dataset.t||8000;t0=performance.now();
+ if(playing&&cur<S.length-1)timer=setTimeout(()=>go(cur+1),dur);
+ if(playing&&cur===S.length-1)setTimeout(()=>{playing=false;setPlay();Music.fadeOut()},dur);
+}
+function setPlay(){document.getElementById('play').textContent=playing?'Pause':'Play'}
+(function prog(){const p=document.getElementById('prog');const f=playing&&dur?Math.min(1,(performance.now()-t0)/dur):0;p.style.width=((cur+f)/S.length*100)+'%';requestAnimationFrame(prog)})();
+document.getElementById('play').onclick=()=>{if(!playing){playing=true;Music.start();go(cur===S.length-1?0:(cur===0?1:cur))}else{playing=false;clearTimeout(timer);Music.pause()}setPlay()};
+document.getElementById('next').onclick=()=>go(cur+1);
+document.getElementById('prev').onclick=()=>go(cur-1);
+addEventListener('keydown',e=>{if(e.key==='ArrowRight')go(cur+1);else if(e.key==='ArrowLeft')go(cur-1);else if(e.key===' '){e.preventDefault();document.getElementById('play').click()}});
+function begin(withMusic){Music.enabled=withMusic;const mb=document.getElementById('mus');mb.setAttribute('aria-pressed',withMusic);mb.textContent=withMusic?'Music on':'Music off';playing=true;setPlay();Music.start();go(1)}
+document.getElementById('startMusic').onclick=()=>begin(true);
+document.getElementById('startQuiet').onclick=()=>begin(false);
+document.getElementById('mus').onclick=function(){Music.enabled=!Music.enabled;this.setAttribute('aria-pressed',Music.enabled);this.textContent=Music.enabled?'Music on':'Music off';Music.enabled&&playing?Music.start():Music.pause()};
+paintDots();replay(S[0]);
+
+/* Learn more */
+const AREAS=[
+ {c:'#195FD9',t:'Personality (DISC)',lead:'A short personality assessment that shows how you tend to work with people and with tasks.',nums:['20 questions','4 styles'],f:[
+  ['Twenty questions','Each answered on a simple 1 to 5 scale.'],['A quadrant chart','Results appear on a chart you can tap to explore.'],
+  ['Two axes','Task or People, Extroverted or Introverted.'],['Four styles','Dominant, Influential, Steady and Compliant.'],
+  ['Trait descriptions','Each style comes with a plain-language description of its traits.'],['Part of one journey','With the gifts assessment, 92 questions in all.']]},
+ {c:'#4AA4A8',t:'Spiritual gifts assessment',lead:'Seventy-two questions that point to your strongest spiritual gifts, out of twenty-four.',nums:['72 questions','24 gifts'],f:[
+  ['Three per gift','Every gift is measured by three questions.'],['A 1 to 5 scale','Answer each statement from 1 to 5.'],
+  ['Shuffled order','Questions are mixed so one gift’s three never cluster together.'],['Simple scoring','A gift’s score is the sum of its three answers, from 3 to 15.'],
+  ['Only what fits','Gifts scoring above 7 are shown in your results.'],['Twenty-four gifts','From Administration and Apostleship to Teaching, Tongues and Wisdom.']]},
+ {c:'#FADE57',t:'Results',lead:'Clear results that explain each gift and point you to scripture.',nums:['Gift cards','Scripture'],f:[
+  ['Gift cards','One card for each gift that scored above 7.'],['Your score','Every card shows the score, from 3 to 15.'],
+  ['Description','A short, plain description of what the gift looks like.'],['Scripture references','Passages to read and reflect on for each gift.'],
+  ['Personality alongside','Your DISC style and its traits sit beside your gifts.'],['Always on your device','Results stay on your phone or tablet, ready any time.']]},
+ {c:'#7DB8E8',t:'Weekly devotional',lead:'Something new each week, chosen from your own gifts.',nums:['72 devotionals','Mondays, 8 am'],f:[
+  ['72 devotionals','Written for the app, three for each of the 24 gifts.'],['Tailored to you','Chosen from the gifts in your results.'],
+  ['Monday, 8 am','A notification arrives at the start of each week.'],['App-icon badge','A badge on the icon marks the new devotional.'],
+  ['On the device','Scheduled by the app itself, with no server involved.'],['Refreshed weekly','A new devotional at the start of each week.']]},
+ {c:'#2E8589',t:'Share & PDF',lead:'Two ways to take your results with you.',nums:['1080 × 1080','PDF export'],f:[
+  ['Share card','A 1080 × 1080 image made for sharing.'],['Top three gifts','The card lists your top three gifts.'],
+  ['Your style','Your DISC personality style appears on the card.'],['Branded','The app’s name and look, so friends can find it.'],
+  ['PDF export','Your full results as a PDF to save or print.'],['Your choice','Nothing is shared unless you share it.']]},
+ {c:'#13294B',t:'Privacy',lead:'Built so there is nothing to collect and nothing to leak.',nums:['0 accounts','0 data collected'],f:[
+  ['No accounts','No email, no password, no sign-up.'],['No servers','The app runs entirely on your device.'],
+  ['No data collected','Answers and results are never sent anywhere.'],['Just a first name','Asked once at the start, for a personal greeting.'],
+  ['No ads','No advertising, and no ad tracking.'],['For anyone','Not tied to any church or organization.']]},
+ {c:'#5CC4C7',t:'Native craft',lead:'Two genuinely native apps, each built with its platform’s own tools.',nums:['SwiftUI','Jetpack Compose'],f:[
+  ['iPhone and iPad','Built in SwiftUI, and available on Vision Pro.'],['Android','Built in Jetpack Compose, on Google Play.'],
+  ['Dark mode','Looks right in light and dark.'],['Accessibility pass','Reviewed for accessibility across the app.'],
+  ['Fast review','Version 2.1 was approved by Apple in about 36 minutes (August 2026).'],['Built by Oahu App Design','Designed and developed in Hawaiʻi.']]},
+ {c:'#A1D4FF',t:'Free & tip jar',lead:'Free for everyone, supported by people who want to give.',nums:['Free','No ads'],f:[
+  ['Free to use','Every assessment and result, at no cost.'],['No ads','Nothing competes for your attention.'],
+  ['Optional tips','$0.99, $1.99 or $4.99, entirely optional.'],['Apple StoreKit','Tips on iPhone and iPad go through StoreKit.'],
+  ['A thank-you','A tip is a way to say thanks; the app is free either way.'],['Two stores','On the App Store and Google Play.']]}
+];
+(function(){const L=document.getElementById('xlist'),D=document.getElementById('xdet'),X=document.getElementById('explore');
+ AREAS.forEach((a,i)=>{const b=document.createElement('button');b.innerHTML='<i style="background:'+a.c+'"></i>'+a.t;b.onclick=()=>show(i);L.appendChild(b)});
+ function show(i){const a=AREAS[i];[...L.children].forEach((b,j)=>b.classList.toggle('on',j===i));
+  D.innerHTML='<h3>'+a.t+'</h3><p class="lead">'+a.lead+'</p><div class="nums">'+a.nums.map(n=>'<span>'+n+'</span>').join('')+'</div><div class="fs">'+a.f.map((x,k)=>'<div class="f" style="animation-delay:'+(k*.06)+'s"><b>'+x[0]+'</b><span>'+x[1]+'</span></div>').join('')+'</div>';D.scrollTop=0}
+ document.getElementById('learnMore').onclick=()=>{playing=false;clearTimeout(timer);setPlay();X.classList.add('on');show(0)};
+ document.getElementById('xback').onclick=()=>X.classList.remove('on');})();
+
+/* Original soundtrack: hopeful and uplifting, 88 BPM. G - D - Em - C with a warm pad,
+   a plucked guitar-like arpeggio and a gentle kick. Generated live: no recordings, no licensing. */
+const Music=(()=>{
+ let ctx=null,master=null,verb=null,started=false,nextT=0,step=0;const api={enabled:true};
+ const SIX=60/88/4;
+ // [bass root, chord tones low to high]
+ const CH=[[43,55,59,62,67,71],[38,54,57,62,66,69],[40,52,55,59,64,67],[36,52,55,60,64,67]];
+ const hz=m=>440*Math.pow(2,(m-69)/12);
+ function init(){ctx=new (window.AudioContext||window.webkitAudioContext)();master=ctx.createGain();master.gain.value=0;master.connect(ctx.destination);
+  verb=ctx.createConvolver();const len=ctx.sampleRate*2.6,buf=ctx.createBuffer(2,len,ctx.sampleRate);
+  for(let c=0;c<2;c++){const d=buf.getChannelData(c);for(let i=0;i<len;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/len,2.4)}
+  verb.buffer=buf;const vg=ctx.createGain();vg.gain.value=.38;verb.connect(vg);vg.connect(master)}
+ function out(n,wet){n.connect(master);if(wet)n.connect(verb)}
+ function pad(t,ch,len){ch.slice(1,4).forEach(m=>{[-4,4].forEach(dt=>{const o=ctx.createOscillator(),g=ctx.createGain(),f=ctx.createBiquadFilter();
+  o.type='sawtooth';o.frequency.value=hz(m);o.detune.value=dt;f.type='lowpass';f.frequency.value=900;f.Q.value=.4;
+  g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(.018,t+1.1);g.gain.setValueAtTime(.018,t+len-.7);g.gain.linearRampToValueAtTime(0,t+len+.2);
+  o.connect(f);f.connect(g);out(g,true);o.start(t);o.stop(t+len+.3)})})}
+ function pluck(t,m,v){const o=ctx.createOscillator(),o2=ctx.createOscillator(),f=ctx.createBiquadFilter(),g=ctx.createGain();
+  o.type='triangle';o2.type='sawtooth';o.frequency.value=hz(m);o2.frequency.value=hz(m)*1.002;
+  const g2=ctx.createGain();g2.gain.value=.35;o2.connect(g2);g2.connect(f);o.connect(f);
+  f.type='lowpass';f.Q.value=2;f.frequency.setValueAtTime(3200,t);f.frequency.exponentialRampToValueAtTime(500,t+.35);
+  g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(v,t+.004);g.gain.exponentialRampToValueAtTime(.0005,t+.7);
+  f.connect(g);out(g,true);o.start(t);o2.start(t);o.stop(t+.75);o2.stop(t+.75)}
+ function bass(t,m,len){const o=ctx.createOscillator(),g=ctx.createGain(),f=ctx.createBiquadFilter();o.type='triangle';o.frequency.value=hz(m-12);f.type='lowpass';f.frequency.value=400;
+  g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(.24,t+.03);g.gain.exponentialRampToValueAtTime(.001,t+len);o.connect(f);f.connect(g);out(g,false);o.start(t);o.stop(t+len+.05)}
+ function kick(t,v){const o=ctx.createOscillator(),g=ctx.createGain();o.type='sine';o.frequency.setValueAtTime(120,t);o.frequency.exponentialRampToValueAtTime(42,t+.22);
+  g.gain.setValueAtTime(v,t);g.gain.exponentialRampToValueAtTime(.001,t+.32);o.connect(g);out(g,false);o.start(t);o.stop(t+.35)}
+ function bell(t,m,v){[1,2.01].forEach((mul,k)=>{const o=ctx.createOscillator(),g=ctx.createGain();o.type='sine';o.frequency.value=hz(m)*mul;
+  const vv=v*[1,.3][k];g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(vv,t+.01);g.gain.exponentialRampToValueAtTime(.0006,t+1.4);o.connect(g);out(g,true);o.start(t);o.stop(t+1.5)})}
+ const ARP=[1,2,3,4,5,4,3,2,1,3,4,5,4,3,2,3];
+ const MEL=[[5,-1,-1,-1,4,-1,-1,-1,3,-1,-1,-1,4,-1,-1,-1],[4,-1,-1,-1,3,-1,-1,-1,5,-1,-1,-1,-1,-1,-1,-1]];
+ function tick(){while(nextT<ctx.currentTime+.3){const bar=Math.floor(step/16)%4,s=step%16,ch=CH[bar],sec=Math.floor(step/64);
+   if(s===0){pad(nextT,ch,SIX*16);bass(nextT,ch[0],SIX*7)}
+   if(s===8)bass(nextT,ch[0],SIX*5);if(s===14)bass(nextT,ch[0]+7,SIX*2);
+   if(step>=32&&(s===0||s===8))kick(nextT,.3);
+   if(step>=16)pluck(nextT,ch[ARP[s]]+12,s%4===0?.09:.06);
+   if(sec>=2&&sec%2===0){const mm=MEL[bar%2][s];if(mm>=0)bell(nextT,ch[mm]+12,.06)}
+   nextT+=SIX;step++}}
+ function unlock(){try{if(navigator.audioSession)navigator.audioSession.type='playback'}catch(e){}
+  try{if(!api._el){const a=new Audio('data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQAAAAA=');a.loop=true;a.setAttribute('playsinline','');api._el=a}api._el.play().catch(()=>{})}catch(e){}
+  try{const b=ctx.createBuffer(1,1,22050),s=ctx.createBufferSource();s.buffer=b;s.connect(ctx.destination);s.start(0)}catch(e){}}
+ api.start=()=>{if(!api.enabled)return;if(!ctx)init();unlock();if(ctx.state!=='running')ctx.resume();
+  if(!started){started=true;nextT=ctx.currentTime+.1;setInterval(tick,70)}
+  master.gain.cancelScheduledValues(ctx.currentTime);master.gain.setTargetAtTime(.8,ctx.currentTime,.8)};
+ api.pause=()=>{if(ctx)master.gain.setTargetAtTime(0,ctx.currentTime,.25)};
+ api.fadeOut=()=>{if(ctx)master.gain.setTargetAtTime(0,ctx.currentTime,2)};
+ return api})();
+</script></body></html>

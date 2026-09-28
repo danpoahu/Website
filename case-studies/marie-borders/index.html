@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Marie Borders Case Study · Oahu App Design</title>
+<meta name="description" content="How Oahu App Design built marieborders.com: a luxury real-estate website and custom CMS for a Marin County realtor.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@400;500;600;700;800&family=Marcellus&display=swap" rel="stylesheet">
+<style>
+:root{--gold:#a8854c;--goldh:#8a6a36;--gold2:#d9bf8c;--cream:#faf8f4;--cream2:#f1ece2;--ink:#1a1f24;--ink2:#4a5057;--ink3:#7a7e84;--line:#e8e2d4;--navy:#1c2a3a;--navy2:#111a24}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--navy2);color:var(--ink);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;overflow:hidden}
+#view{position:absolute;inset:0 0 58px 0;display:flex;align-items:center;justify-content:center}
+#stage{width:1280px;height:720px;position:relative;flex:none;overflow:hidden;border-radius:14px;background:var(--cream);transform-origin:center}
+.scene{position:absolute;inset:0;opacity:0;visibility:hidden;transition:opacity .8s ease,visibility 0s .8s}
+.scene.on{opacity:1;visibility:visible;transition:opacity .8s ease}
+.dark{background:radial-gradient(1100px 650px at 72% 18%,#2d4058 0%,var(--navy) 48%,var(--navy2) 100%);color:#fff}
+.frame{position:absolute;inset:22px;border:1px solid rgba(168,133,76,.45);border-radius:6px;pointer-events:none}
+.scene:not(.dark) .frame{border-color:var(--line)}
+.k{position:absolute;left:80px;top:66px;font-size:13px;font-weight:700;letter-spacing:.24em;text-transform:uppercase;color:var(--gold)}
+.h{position:absolute;left:80px;top:92px;font-family:"Cormorant Garamond",Georgia,serif;font-size:52px;line-height:1.04;font-weight:600;margin:0;max-width:1120px;color:var(--ink)}
+.h em{font-style:italic;color:var(--gold)}
+.dark .h{color:#fff}.dark .h em{color:var(--gold2)}
+.sub{position:absolute;left:80px;font-size:20px;line-height:1.5;color:var(--ink2);max-width:900px}
+.dark .sub{color:#d5dae0}
+.a{opacity:0;transform:translateY(22px)}
+.on .a{animation:up .8s cubic-bezier(.2,.8,.2,1) forwards}
+.on .a.d1{animation-delay:.25s}.on .a.d2{animation-delay:.5s}.on .a.d3{animation-delay:.75s}.on .a.d4{animation-delay:1s}.on .a.d5{animation-delay:1.25s}.on .a.d6{animation-delay:1.5s}.on .a.d7{animation-delay:1.75s}.on .a.d8{animation-delay:2s}.on .a.d9{animation-delay:2.4s}.on .a.d10{animation-delay:2.8s}
+@keyframes up{to{opacity:1;transform:none}}
+@keyframes pop{0%{opacity:0;transform:scale(.4)}70%{opacity:1;transform:scale(1.06)}100%{opacity:1;transform:scale(1)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+@keyframes kb{from{transform:scale(1.02)}to{transform:scale(1.14) translateX(-2%)}}
+@keyframes grow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@keyframes growy{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+@keyframes wide{from{width:0}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes shine{0%{background-position:-200% 0}100%{background-position:200% 0}}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(168,133,76,.55)}50%{box-shadow:0 0 0 14px rgba(168,133,76,0)}}
+.note{position:absolute;left:80px;bottom:30px;font-size:13px;color:var(--ink3)}
+.dark .note{color:#9aa4b0}
+.gold{color:var(--gold)}
+/* cover */
+.cov-bg{position:absolute;inset:0;background:url(mb-hero.jpg) center 40%/cover no-repeat;animation:kb 22s ease-in-out infinite alternate}
+.cov-ov{position:absolute;inset:0;background:linear-gradient(90deg,rgba(17,26,36,.95) 0%,rgba(22,34,48,.86) 48%,rgba(28,42,58,.55) 100%)}
+.brand{position:absolute;left:80px;top:74px;font-size:13px;letter-spacing:.26em;text-transform:uppercase;color:var(--gold2);font-weight:700}
+.title{position:absolute;left:80px;top:140px;font-family:Cinzel,Georgia,serif;font-size:74px;line-height:1;font-weight:600;letter-spacing:.06em;margin:0;color:#fff}
+.tagl{position:absolute;left:84px;top:236px;font-family:Marcellus,Georgia,serif;font-size:18px;letter-spacing:.36em;text-transform:uppercase;color:var(--gold2)}
+.rule{position:absolute;left:84px;top:276px;width:120px;height:1px;background:var(--gold);transform-origin:left}
+.on .rule{animation:grow 1.2s .9s cubic-bezier(.2,.8,.2,1) both}
+.cov-line{position:absolute;left:80px;top:300px;max-width:640px;font-family:"Cormorant Garamond",Georgia,serif;font-size:38px;line-height:1.12;font-weight:500;color:#fff}
+.cov-line em{color:var(--gold2)}
+.portrait{position:absolute;right:120px;top:120px;width:300px;padding:12px;background:rgba(250,248,244,.06);border:1px solid rgba(217,191,140,.6);animation:float 8s ease-in-out infinite}
+.portrait img{display:block;width:100%;height:auto;filter:saturate(.92)}
+.portrait span{position:absolute;left:12px;right:12px;bottom:-40px;text-align:center;font-family:Marcellus,Georgia,serif;font-size:14px;letter-spacing:.24em;text-transform:uppercase;color:#d5dae0}
+.startbtn{position:absolute;left:80px;top:470px;display:flex;gap:14px}
+.btn{font:inherit;font-weight:700;font-size:17px;letter-spacing:.08em;text-transform:uppercase;border:0;border-radius:2px;padding:16px 28px;cursor:pointer;background:var(--gold);color:#fff;box-shadow:0 12px 30px rgba(0,0,0,.3)}
+.btn:hover{background:var(--goldh)}
+.btn.ghost{background:transparent;border:1px solid rgba(255,255,255,.55);box-shadow:none}
+.btn.ghost:hover{background:rgba(255,255,255,.08)}
+.hint{position:absolute;left:82px;top:546px;font-size:14px;color:#aab4c0}
+.cov-by{position:absolute;left:80px;bottom:52px;font-size:14px;color:#aab4c0;letter-spacing:.04em}
+/* challenge */
+.woe{position:absolute;width:230px;padding:16px 18px;background:#fff;border:1px solid var(--line);border-top:3px solid var(--gold);box-shadow:0 14px 30px rgba(26,31,36,.08);font-size:15px;line-height:1.4;color:var(--ink2)}
+.woe b{display:block;font-family:"Cormorant Garamond",Georgia,serif;font-size:23px;font-weight:700;color:var(--ink);margin-bottom:4px}
+.on .woe{animation:pop .7s cubic-bezier(.3,1.4,.5,1) both}
+.woe s{color:var(--ink3)}
+.chaosx{position:absolute;left:860px;top:260px;width:340px;font-family:"Cormorant Garamond",Georgia,serif;font-size:32px;font-weight:600;line-height:1.2;color:var(--ink)}
+.chaosx span{display:block;margin-top:22px;color:var(--gold);font-style:italic}
+/* browser mock */
+.brw{position:absolute;left:80px;top:228px;width:740px;height:430px;background:#fff;border-radius:10px;box-shadow:0 24px 60px rgba(26,31,36,.22);overflow:hidden}
+.brw-bar{height:34px;background:#eceae5;display:flex;align-items:center;gap:7px;padding:0 12px}
+.brw-bar i{width:11px;height:11px;border-radius:50%;background:#d6d1c7}
+.brw-bar i:nth-child(1){background:#e98b7c}.brw-bar i:nth-child(2){background:#e8c26c}.brw-bar i:nth-child(3){background:#8fc27c}
+.brw-url{margin-left:14px;flex:1;height:22px;border-radius:6px;background:#fff;font-size:12px;color:var(--ink2);display:flex;align-items:center;padding-left:12px}
+.site-nav{height:52px;display:flex;align-items:center;justify-content:space-between;padding:0 24px;border-bottom:1px solid var(--line);background:var(--cream)}
+.site-logo{font-family:Cinzel,Georgia,serif;font-weight:700;font-size:18px;letter-spacing:.12em;color:var(--ink)}
+.site-links{display:flex;gap:18px;font-size:10.5px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--ink2)}
+.site-links span:first-child{color:var(--gold)}
+.site-hero{position:relative;height:344px;overflow:hidden}
+.site-hero .img{position:absolute;inset:0;background:url(mb-hero.jpg) center 45%/cover no-repeat}
+.on .site-hero .img{animation:kb 14s ease-in-out infinite alternate}
+.site-hero .ov{position:absolute;inset:0;background:linear-gradient(180deg,rgba(20,32,48,.45),rgba(20,32,48,.72))}
+.site-hero .txt{position:absolute;left:0;right:0;top:92px;text-align:center;color:#fff}
+.site-hero h3{margin:0;font-family:Cinzel,Georgia,serif;font-weight:600;font-size:46px;letter-spacing:.1em}
+.site-hero p{margin:10px 0 0;font-family:Marcellus,Georgia,serif;font-size:16px;letter-spacing:.4em;text-transform:uppercase;color:var(--gold2)}
+.site-hero .go{display:inline-block;margin-top:24px;padding:11px 24px;background:var(--gold);font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase}
+.a11y{position:absolute;right:16px;bottom:16px;width:40px;height:40px;border-radius:50%;background:var(--navy);border:2px solid #fff;display:flex;align-items:center;justify-content:center;animation:pulse 2.4s ease-in-out infinite}
+.side{position:absolute;left:870px;top:236px;width:340px}
+.pt{display:flex;gap:14px;margin-bottom:18px;font-size:17px;line-height:1.45;color:var(--ink2)}
+.pt i{flex:none;width:28px;height:28px;border-radius:50%;border:1px solid var(--gold);color:var(--gold);font-style:normal;font-weight:700;display:flex;align-items:center;justify-content:center;font-size:13px;margin-top:1px}
+.pt b{color:var(--ink)}
+/* photos */
+.ph{position:relative;overflow:hidden;background:#ddd}
+.ph svg{display:block;width:100%;height:100%}
+/* listing card */
+.lcard{position:absolute;left:80px;top:232px;width:330px;background:#fff;border:1px solid var(--line);box-shadow:0 18px 40px rgba(26,31,36,.12)}
+.lcard .ph{height:200px}
+.ltag{position:absolute;left:12px;top:12px;background:var(--gold);color:#fff;font-size:10.5px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;padding:5px 10px;transition:background .4s}
+.ltag.sold{background:#8b2c2c}
+.lcard .bd{padding:14px 18px 16px}
+.price{font-family:"Cormorant Garamond",Georgia,serif;font-size:30px;font-weight:700;color:var(--ink);line-height:1}
+.addr{font-size:13px;color:var(--ink3);margin-top:6px}
+.pills{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.pills span{font-size:11.5px;font-weight:600;color:var(--ink2);background:var(--cream2);border:1px solid var(--line);border-radius:999px;padding:4px 10px}
+.arrow{position:absolute;left:426px;top:385px;width:40px;height:2px;background:var(--gold);transform-origin:left}
+.arrow::after{content:"";position:absolute;right:-2px;top:-5px;border:6px solid transparent;border-left:9px solid var(--gold);border-right:0}
+.on .arrow{animation:grow .7s 1.2s both}
+.ldet{position:absolute;left:484px;top:232px;width:716px;height:430px;background:#fff;border:1px solid var(--line);box-shadow:0 18px 40px rgba(26,31,36,.12);padding:16px;display:flex;gap:18px}
+.gal{position:relative;width:420px;flex:none}
+.gal .main{position:relative;height:300px;overflow:hidden}
+.gal .sl{position:absolute;inset:0;opacity:0;transition:opacity .7s}
+.gal .sl.cur{opacity:1}
+.gal .thumbs{display:flex;gap:6px;margin-top:8px}
+.gal .thumbs .ph{flex:1;height:58px;opacity:.55;outline:2px solid transparent;transition:all .3s}
+.gal .thumbs .ph.cur{opacity:1;outline-color:var(--gold)}
+.gal .count{position:absolute;right:10px;bottom:10px;background:rgba(17,26,36,.7);color:#fff;font-size:11px;padding:3px 8px;border-radius:3px}
+.ribbon{position:absolute;left:-60px;top:36px;width:240px;padding:9px 0;text-align:center;background:#8b2c2c;color:#fff;font-family:Cinzel,Georgia,serif;font-weight:700;font-size:20px;letter-spacing:.3em;transform:rotate(-38deg) scale(2.4);opacity:0;box-shadow:0 8px 20px rgba(0,0,0,.3);transition:transform .6s cubic-bezier(.3,1.4,.5,1),opacity .3s;z-index:3}
+.ribbon.show{opacity:1;transform:rotate(-38deg) scale(1)}
+.ldet .info{flex:1;min-width:0}
+.ldet .desc{font-family:"Cormorant Garamond",Georgia,serif;font-style:italic;font-size:18px;line-height:1.35;color:var(--ink2);margin-top:14px}
+.ldet .lbl{font-size:10.5px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:6px}
+.ldet .cta2{margin-top:16px;display:inline-block;background:var(--ink);color:#fff;font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;padding:10px 16px}
+/* video */
+.vup{position:absolute;left:80px;top:250px;width:330px;background:#fff;border:1px solid var(--line);box-shadow:0 18px 40px rgba(26,31,36,.1);padding:20px}
+.vup .lbl,.vres .lbl{font-size:10.5px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:12px}
+.vfile{display:flex;gap:12px;align-items:center}
+.vfile .ico{width:44px;height:54px;border:1px solid var(--line);background:var(--cream);position:relative;flex:none}
+.vfile .ico::after{content:"";position:absolute;left:15px;top:18px;border:9px solid transparent;border-left:13px solid var(--gold);border-right:0}
+.vfile b{display:block;font-size:14px;color:var(--ink)}.vfile small{font-size:13px;color:var(--ink3)}
+.upbar{height:6px;background:var(--cream2);margin-top:16px;overflow:hidden}.upbar i{display:block;height:100%;background:var(--gold);width:100%;transform-origin:left;transform:scaleX(0)}
+.on .upbar i{animation:grow 1.4s .9s cubic-bezier(.4,0,.2,1) forwards}
+.vup .st{margin-top:8px;font-size:13px;color:var(--ink3)}
+.vfn{position:absolute;left:466px;top:236px;width:300px;text-align:center}
+.gear{width:120px;height:120px;margin:0 auto;border-radius:50%;background:var(--navy);display:flex;align-items:center;justify-content:center;box-shadow:0 16px 36px rgba(28,42,58,.35)}
+.gear svg{width:70px;height:70px}
+.gear.run svg{animation:spin 2.2s linear infinite}
+.vfn .big{margin-top:18px;font-family:"Cormorant Garamond",Georgia,serif;font-size:60px;font-weight:700;color:var(--ink);line-height:1}
+.vfn .big small{font-size:26px;color:var(--ink3);margin-left:4px}
+.vfn .cap{font-size:14px;color:var(--ink3);margin-top:6px}
+.shrink{height:14px;width:300px;background:var(--cream2);margin-top:16px;border:1px solid var(--line)}
+.shrink i{display:block;height:100%;width:100%;background:linear-gradient(90deg,var(--goldh),var(--gold2));transition:width 2.6s cubic-bezier(.4,0,.2,1)}
+.vres{position:absolute;left:820px;top:250px;width:380px;background:#fff;border:1px solid var(--line);box-shadow:0 18px 40px rgba(26,31,36,.1);padding:16px;opacity:.25;filter:grayscale(1);transition:opacity .8s,filter .8s}
+.vres.ready{opacity:1;filter:none}
+.vres .ph{height:214px}
+.vres .ph svg{transform-origin:40% 60%}
+.vres.ready .ph svg{animation:kb 5s ease-in-out infinite alternate}
+.vchip{position:absolute;left:10px;top:10px;background:rgba(17,26,36,.72);color:#fff;font-size:11px;font-weight:600;padding:4px 9px;border-radius:3px;display:flex;align-items:center;gap:6px}
+.vchip::before{content:"";width:7px;height:7px;border-radius:50%;background:#e25b4a}
+.vprog{position:absolute;left:0;right:0;bottom:0;height:4px;background:rgba(255,255,255,.35)}
+.vprog i{display:block;height:100%;width:0;background:var(--gold2)}
+.vres.ready .vprog i{animation:wide 5s linear infinite;width:100%}
+.vres .meta{display:flex;justify-content:space-between;margin-top:10px;font-size:13px;color:var(--ink2)}
+.vpts{position:absolute;left:80px;top:560px;width:1120px;display:flex;gap:40px;font-size:16px;color:var(--ink2)}
+.vpts div{flex:1;border-top:1px solid var(--line);padding-top:12px}.vpts b{color:var(--ink)}
+/* five forms */
+.forms{position:absolute;left:80px;top:230px;width:1120px;display:grid;grid-template-columns:repeat(5,1fr);gap:16px}
+.fm{background:#fff;border:1px solid var(--line);padding:16px 16px 14px;box-shadow:0 12px 26px rgba(26,31,36,.07);transition:border-color .4s,box-shadow .4s}
+.fm.hot{border-color:var(--gold);box-shadow:0 14px 30px rgba(168,133,76,.25)}
+.fm svg{width:30px;height:30px;display:block;margin-bottom:8px}
+.fm b{display:block;font-family:"Cormorant Garamond",Georgia,serif;font-size:22px;font-weight:700;color:var(--ink);line-height:1.1}
+.fm span{display:block;font-size:13px;color:var(--ink3);margin-top:4px;line-height:1.35}
+.wish{position:absolute;left:80px;top:400px;width:660px;height:258px;background:#fff;border:1px solid var(--line);box-shadow:0 18px 40px rgba(26,31,36,.1);padding:20px 24px}
+.wish .top{display:flex;justify-content:space-between;align-items:baseline}
+.wish .top b{font-family:"Cormorant Garamond",Georgia,serif;font-size:24px;font-weight:700}
+.wish .top span{font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
+.steps{display:flex;gap:6px;margin:12px 0 16px}
+.steps i{flex:1;height:5px;background:var(--cream2);transition:background .4s}
+.steps i.done{background:var(--gold)}
+.wq{font-family:"Cormorant Garamond",Georgia,serif;font-size:27px;font-weight:600;color:var(--ink);min-height:36px}
+.wopts{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;min-height:40px}
+.wopts span{font-size:14px;color:var(--ink2);border:1px solid var(--line);padding:8px 14px;background:var(--cream);transition:all .3s}
+.wopts span.pick{border-color:var(--gold);background:#f5eddd;color:var(--goldh);font-weight:600}
+.wnext{position:absolute;right:24px;bottom:20px;background:var(--gold);color:#fff;font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;padding:10px 18px}
+.wdone{position:absolute;left:24px;bottom:22px;font-size:14px;color:var(--goldh);font-weight:600;opacity:0;transition:opacity .4s}
+.wdone.show{opacity:1}
+/* lead flow */
+.rsvp{position:absolute;left:80px;top:230px;width:300px;background:#fff;border:1px solid var(--line);box-shadow:0 18px 40px rgba(26,31,36,.1);padding:16px 18px}
+.rsvp .lbl{font-size:10.5px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--gold)}
+.rsvp h5{margin:4px 0 10px;font-family:"Cormorant Garamond",Georgia,serif;font-size:21px;font-weight:700;line-height:1.15}
+.fld{border:1px solid var(--line);background:var(--cream);font-size:13px;color:var(--ink);padding:7px 10px;margin-top:6px}
+.fld small{display:block;font-size:10px;color:var(--ink3);letter-spacing:.08em;text-transform:uppercase}
+.sendb{margin-top:10px;text-align:center;background:var(--gold);color:#fff;font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;padding:9px;transition:transform .15s,background .2s}
+.sendb.press{transform:scale(.95);background:var(--goldh)}
+.wire{position:absolute;top:345px;height:2px;background:repeating-linear-gradient(90deg,var(--gold) 0 6px,transparent 6px 12px)}
+.pkt{position:absolute;top:338px;width:16px;height:16px;border-radius:50%;background:var(--gold);box-shadow:0 0 0 5px rgba(168,133,76,.25);opacity:0;transition:left 1s cubic-bezier(.5,0,.3,1),opacity .2s}
+.dbn{position:absolute;left:470px;top:262px;width:170px;text-align:center;opacity:.3;transition:opacity .5s}
+.dbn.ok{opacity:1}
+.dbn .cyl{width:100px;height:120px;margin:0 auto;position:relative}
+.dbn .chk{position:absolute;right:-6px;top:-6px;width:34px;height:34px;border-radius:50%;background:#3d7a4f;color:#fff;font-weight:800;display:flex;align-items:center;justify-content:center;transform:scale(0);transition:transform .4s cubic-bezier(.3,1.6,.5,1)}
+.dbn.ok .chk{transform:scale(1)}
+.dbn b{display:block;margin-top:10px;font-family:"Cormorant Garamond",Georgia,serif;font-size:22px}.dbn small{font-size:13px;color:var(--ink3)}
+.mailn{position:absolute;left:730px;top:230px;width:470px;background:#fff;border:1px solid var(--line);box-shadow:0 18px 40px rgba(26,31,36,.12);opacity:0;transform:translateY(16px) scale(.97);transition:all .6s cubic-bezier(.2,.8,.2,1)}
+.mailn.show{opacity:1;transform:none}
+.mailn .mh{background:var(--navy);color:#fff;padding:12px 18px;display:flex;justify-content:space-between;align-items:center}
+.mailn .mh b{font-family:Cinzel,Georgia,serif;letter-spacing:.14em;font-size:15px}
+.mailn .mh span{font-size:11px;color:var(--gold2);letter-spacing:.12em;text-transform:uppercase}
+.mailn .mb{padding:14px 18px;font-size:14px;color:var(--ink2);line-height:1.55}
+.mailn .mb h5{margin:0 0 6px;font-family:"Cormorant Garamond",Georgia,serif;font-size:23px;color:var(--ink)}
+.mailn .row2{display:flex;border-top:1px solid var(--line);padding:5px 0}.mailn .row2 span{width:90px;color:var(--ink3);font-size:12px;text-transform:uppercase;letter-spacing:.08em;padding-top:2px}
+.elog{position:absolute;left:80px;top:516px;width:1120px;background:#fff;border:1px solid var(--line)}
+.elog .eh{display:grid;grid-template-columns:200px 1fr 260px 150px 120px;padding:8px 16px;font-size:10.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);border-bottom:1px solid var(--line);background:var(--cream)}
+.elog .er{display:grid;grid-template-columns:200px 1fr 260px 150px 120px;padding:8px 16px;font-size:14px;color:var(--ink2);border-bottom:1px solid var(--line);opacity:0;transform:translateX(-12px);transition:all .5s}
+.elog .er:last-child{border-bottom:0}
+.elog .er.show{opacity:1;transform:none}
+.elog .er.new{background:#fbf5ea}
+.elog .ok2{color:#3d7a4f;font-weight:600}
+/* cms */
+.cms{position:absolute;left:80px;top:228px;width:1120px;height:432px;background:#fff;border:1px solid var(--line);box-shadow:0 20px 50px rgba(26,31,36,.12);display:flex;overflow:hidden}
+.cms-nav{width:200px;flex:none;background:var(--navy);padding:16px 0;color:#c9d0d8}
+.cms-nav .logo{font-family:Cinzel,Georgia,serif;color:#fff;font-size:14px;letter-spacing:.14em;padding:0 18px 14px;border-bottom:1px solid rgba(255,255,255,.12);margin-bottom:8px}
+.cms-nav div{font-size:14px;padding:9px 18px;border-left:3px solid transparent;transition:all .3s}
+.cms-nav div.cur{background:rgba(168,133,76,.18);border-left-color:var(--gold);color:#fff;font-weight:600}
+.cms-main{position:relative;flex:1}
+.pane{position:absolute;inset:0;padding:20px 24px;opacity:0;visibility:hidden;transition:opacity .5s}
+.pane.cur{opacity:1;visibility:visible}
+.pane h6{margin:0 0 14px;font-family:"Cormorant Garamond",Georgia,serif;font-size:26px;font-weight:700;color:var(--ink)}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.fi{font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--ink3);margin-bottom:10px}
+.fi div{margin-top:5px;border:1px solid var(--line);background:var(--cream);padding:9px 11px;font-size:14px;letter-spacing:0;text-transform:none;font-weight:500;color:var(--ink)}
+.seg{display:flex;margin-top:5px;border:1px solid var(--line);width:max-content}
+.seg span{padding:8px 14px;font-size:13px;letter-spacing:0;text-transform:none;font-weight:500;color:var(--ink2);transition:all .3s}
+.seg span.cur{background:var(--gold);color:#fff}
+.thrs{display:flex;gap:8px;margin-top:5px}.thrs .ph{width:92px;height:62px}
+.vbadge{display:flex;align-items:center;justify-content:center;width:92px;height:62px;border:1px dashed var(--gold);font-size:11px;color:var(--goldh);text-align:center;letter-spacing:0;text-transform:none;font-weight:600}
+.save{position:absolute;right:24px;top:20px;background:var(--gold);color:#fff;font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;padding:9px 16px}
+.tsplit{display:flex;gap:20px;height:340px}
+.tsplit .ed{flex:1}
+.tsplit .ta{margin-top:5px;border:1px solid var(--line);background:var(--cream);padding:11px;font-size:14px;line-height:1.55;color:var(--ink);height:196px;letter-spacing:0;text-transform:none;font-weight:400;white-space:pre-wrap}
+.caret{display:inline-block;width:2px;height:16px;background:var(--gold);vertical-align:-3px;animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+.prev{flex:1;border:1px solid var(--line);background:var(--cream2);padding:14px;position:relative}
+.prev .lv{position:absolute;right:10px;top:-11px;background:#3d7a4f;color:#fff;font-size:10.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:3px 9px}
+.prev .em{background:#fff;height:100%;box-shadow:0 6px 16px rgba(26,31,36,.08)}
+.prev .emh{background:var(--navy);text-align:center;padding:14px;font-family:Cinzel,Georgia,serif;color:#fff;letter-spacing:.16em;font-size:15px}
+.prev .emh small{display:block;font-family:Marcellus,Georgia,serif;font-size:9px;letter-spacing:.34em;color:var(--gold2);margin-top:3px}
+.prev .emb{padding:14px 16px;font-size:13.5px;line-height:1.55;color:var(--ink2);white-space:pre-wrap;min-height:120px}
+.prev .emb b{color:var(--ink)}
+.prev .emf{margin:0 16px;border-top:1px solid var(--line);padding-top:8px;font-size:11px;color:var(--ink3)}
+/* analytics */
+.chart{position:absolute;left:80px;top:230px;width:740px;height:420px;background:#fff;border:1px solid var(--line);box-shadow:0 18px 40px rgba(26,31,36,.1);padding:20px 24px}
+.chart .ct{display:flex;justify-content:space-between;align-items:baseline}
+.chart .ct b{font-family:"Cormorant Garamond",Georgia,serif;font-size:24px}
+.chart .ct span{font-size:12px;color:var(--ink3)}
+.bars{position:absolute;left:64px;right:24px;top:84px;height:268px;display:flex;align-items:flex-end;gap:12px;border-bottom:1px solid var(--line)}
+.bars div{flex:1;position:relative;height:100%;display:flex;align-items:flex-end}
+.bars i{display:block;width:100%;background:var(--gold);transform-origin:bottom;transform:scaleY(0)}
+.bars div:nth-last-child(1) i{background:var(--goldh)}
+.on .bars i{animation:growy .9s cubic-bezier(.2,.8,.2,1) forwards}
+.bars em{position:absolute;left:0;right:0;bottom:-22px;text-align:center;font-style:normal;font-size:11px;color:var(--ink3)}
+.bars u{position:absolute;left:-10px;right:-10px;text-align:center;text-decoration:none;font-size:11px;font-weight:600;color:var(--ink2);opacity:0;transition:opacity .4s}
+.bars.lab u{opacity:1}
+.yax{position:absolute;left:24px;top:84px;height:268px;display:flex;flex-direction:column;justify-content:space-between;font-size:11px;color:var(--ink3);text-align:right;width:30px}
+.gridl{position:absolute;left:64px;right:24px;top:84px;height:268px;background:repeating-linear-gradient(180deg,var(--line) 0 1px,transparent 1px 67px);opacity:.6}
+.nos{position:absolute;left:870px;top:236px;width:330px;display:flex;flex-direction:column;gap:14px}
+.no{display:flex;gap:14px;align-items:center;background:#fff;border:1px solid var(--line);padding:14px 16px}
+.no svg{flex:none;width:40px;height:40px}
+.no b{display:block;font-family:"Cormorant Garamond",Georgia,serif;font-size:24px;line-height:1.05}
+.no span{font-size:13px;color:var(--ink3)}
+.nosub{font-size:16px;color:var(--ink2);line-height:1.5;margin-top:4px}
+/* numbers */
+.grid{position:absolute;left:80px;top:222px;width:1120px;display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.stat{background:rgba(255,255,255,.04);border:1px solid rgba(217,191,140,.35);padding:22px 20px 20px}
+.stat b{display:block;font-family:"Cormorant Garamond",Georgia,serif;font-size:64px;font-weight:600;line-height:.95;color:var(--gold2)}
+.stat b small{font-size:30px;margin-left:4px}
+.stat span{display:block;margin-top:10px;font-size:15px;color:#d5dae0;line-height:1.4}
+/* advantages */
+.adv{position:absolute;left:80px;top:226px;width:1120px;display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.ad{background:#fff;border:1px solid var(--line);padding:20px 22px;box-shadow:0 12px 30px rgba(26,31,36,.06)}
+.ad .n{font-family:Cinzel,Georgia,serif;font-size:14px;letter-spacing:.2em;color:var(--gold);margin-bottom:8px}
+.ad b{display:block;font-family:"Cormorant Garamond",Georgia,serif;font-size:27px;font-weight:700;line-height:1.1;margin-bottom:8px;color:var(--ink)}
+.ad span{font-size:15.5px;color:var(--ink2);line-height:1.5}
+/* cta */
+.cta{position:absolute;left:0;right:0;top:150px;text-align:center;color:#fff}
+.cta .k3{font-size:13px;font-weight:700;letter-spacing:.26em;text-transform:uppercase;color:var(--gold2)}
+.cta h2{margin:16px 0 0;font-family:"Cormorant Garamond",Georgia,serif;font-size:72px;font-weight:600;line-height:1.02}
+.cta h2 em{color:var(--gold2)}
+.cta p{font-size:21px;color:#d5dae0;margin:20px 0 0}
+.cta .url{display:inline-block;margin-top:34px;font-family:Cinzel,Georgia,serif;font-size:26px;font-weight:600;letter-spacing:.08em;padding:15px 34px;background:var(--gold);color:#fff}
+.cta .by{margin-top:24px;font-family:Marcellus,Georgia,serif;font-size:15px;letter-spacing:.3em;text-transform:uppercase;color:#aab4c0}
+.learn{display:inline-block;margin:24px 0 0 14px;font:inherit;font-weight:700;font-size:18px;letter-spacing:.1em;text-transform:uppercase;padding:17px 30px;border:1px solid rgba(255,255,255,.65);background:transparent;color:#fff;cursor:pointer;vertical-align:top}
+.learn:hover{background:rgba(255,255,255,.1)}
+/* explore */
+#explore{position:absolute;inset:0;z-index:60;background:linear-gradient(135deg,var(--cream),var(--cream2));display:none}
+#explore.on{display:block;animation:fadein .5s ease}
+@keyframes fadein{from{opacity:0}to{opacity:1}}
+#explore .xh{position:absolute;left:48px;top:28px;right:48px;display:flex;align-items:center;gap:16px}
+#explore .xh h2{margin:0;font-family:"Cormorant Garamond",Georgia,serif;font-size:38px;font-weight:700;color:var(--ink)}
+#explore .k2{font-size:12px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);display:block;margin-bottom:2px}
+#explore .xback{font:inherit;font-weight:700;font-size:14px;letter-spacing:.06em;border:1px solid var(--gold);color:var(--goldh);background:#fff;padding:10px 16px;cursor:pointer}
+#explore .xback:hover{background:var(--gold);color:#fff}
+#xlist{position:absolute;left:48px;top:112px;width:340px;bottom:30px;overflow:auto;display:flex;flex-direction:column;gap:8px;padding-right:6px}
+#xlist button{display:flex;align-items:center;gap:12px;text-align:left;font:inherit;font-size:16px;font-weight:600;color:var(--ink);background:#fff;border:1px solid var(--line);padding:11px 12px;cursor:pointer;transition:border-color .2s,transform .2s}
+#xlist button:hover{transform:translateX(4px)}
+#xlist button.on{border-color:var(--gold);background:#fbf5ea}
+#xlist button i{flex:none;width:4px;height:26px}
+#xdet{position:absolute;left:412px;top:112px;right:48px;bottom:30px;background:#fff;border:1px solid var(--line);box-shadow:0 16px 40px rgba(26,31,36,.08);padding:26px 30px;overflow:auto}
+#xdet h3{margin:0 0 6px;font-family:"Cormorant Garamond",Georgia,serif;font-size:34px;font-weight:700;color:var(--ink)}
+#xdet .lead{font-size:17px;color:var(--ink2);line-height:1.5;margin:0 0 16px}
+#xdet .fs{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+#xdet .f{background:var(--cream);border:1px solid var(--line);padding:12px 14px;animation:up .5s cubic-bezier(.2,.8,.2,1) both}
+#xdet .f b{display:block;font-size:15px;margin-bottom:3px;color:var(--ink)}#xdet .f span{font-size:14px;color:var(--ink2);line-height:1.45}
+#xdet .nums{display:flex;gap:10px;flex-wrap:wrap;margin:0 0 16px}
+#xdet .nums span{background:#f5eddd;color:var(--goldh);font-weight:700;font-size:13px;padding:5px 12px;border-radius:999px}
+/* bar */
+#bar{position:fixed;left:0;right:0;bottom:0;height:58px;display:flex;align-items:center;gap:10px;padding:0 16px;background:#0c131b;color:#d5dae0}
+#bar button{font:inherit;font-weight:600;font-size:14px;background:var(--navy);color:#fff;border:1px solid rgba(217,191,140,.3);border-radius:4px;padding:8px 14px;cursor:pointer}
+#bar button:hover{border-color:var(--gold)}
+#bar button[aria-pressed="false"]{opacity:.55}
+#dots{display:flex;gap:6px;flex:1;justify-content:center}
+#dots i{width:9px;height:9px;border-radius:50%;background:#2c3a4b;cursor:pointer}
+#dots i.on{background:var(--gold)}#dots i.seen{background:#6c7a8b}
+#prog{position:absolute;left:0;top:0;height:3px;background:linear-gradient(90deg,var(--goldh),var(--gold2));width:0}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.01s!important;transition-duration:.01s!important}}
+</style></head><body>
+<div id="view"><div id="stage">
+
+<!-- 0 COVER -->
+<section class="scene dark on" data-t="0">
+ <div class="cov-bg"></div><div class="cov-ov"></div><div class="frame"></div>
+ <div class="brand a">Oahu App Design · Case study</div>
+ <h1 class="title a d1">Marie Borders</h1>
+ <div class="tagl a d2">Marin's Finest</div>
+ <div class="rule"></div>
+ <div class="cov-line a d3">A luxury real-estate site that <em>works as hard as she does.</em></div>
+ <div class="startbtn a d4"><button class="btn" id="startMusic">Play with music</button><button class="btn ghost" id="startQuiet">Play without</button></div>
+ <div class="hint a d5">No sound on an iPad or iPhone? Turn the volume up and make sure silent mode is off.</div>
+ <div class="cov-by a d6">Website and custom CMS for a Marin County realtor · marieborders.com · live since June 2026</div>
+ <div class="portrait a d2"><img src="mb-headshot.jpg" alt="Marie Borders" width="288" height="360"><span>Marin County, California</span></div>
+</section>
+
+<!-- 1 CHALLENGE -->
+<section class="scene" data-t="8500">
+ <div class="frame"></div>
+ <div class="k a">The challenge</div>
+ <h2 class="h a d1">Marin buyers and sellers expect polish.<br>Off-the-shelf sites <em>fall short.</em></h2>
+ <div class="woe" style="left:80px;top:262px;rotate:-3deg;animation-delay:.5s"><b>Template sites</b>The same look as every other agent in town.</div>
+ <div class="woe" style="left:340px;top:238px;rotate:2deg;animation-delay:.8s"><b>Leads lost in inboxes</b>A buyer writes in, and the message gets buried.</div>
+ <div class="woe" style="left:600px;top:280px;rotate:-2deg;animation-delay:1.1s"><b>Videos too big</b>A walkthrough straight off the camera is far too heavy for the web.</div>
+ <div class="woe" style="left:160px;top:452px;rotate:3deg;animation-delay:1.4s"><b>Paying for tools</b>A form tool, an email tool, a stats tool, each with its own bill.</div>
+ <div class="woe" style="left:450px;top:470px;rotate:-3deg;animation-delay:1.7s"><b>Visitor tracking</b>Cookie banners and trackers that follow people around.</div>
+ <div class="chaosx a d7">Marin's finest agent deserved more than a template.<span>So we built her own.</span></div>
+</section>
+
+<!-- 2 THE SITE -->
+<section class="scene" data-t="9000">
+ <div class="frame"></div>
+ <div class="k a">The site</div>
+ <h2 class="h a d1">Elegant from the first glance.<br>Built around <em>her</em> brand.</h2>
+ <div class="brw a d2"><div class="brw-bar"><i></i><i></i><i></i><div class="brw-url">marieborders.com</div></div>
+  <div class="site-nav"><div class="site-logo">MARIE BORDERS</div><div class="site-links"><span>Home</span><span>Listings</span><span>Buyers</span><span>Sellers</span><span>Contact</span></div></div>
+  <div class="site-hero"><div class="img"></div><div class="ov"></div><div class="txt"><h3>MARIE BORDERS</h3><p>Marin's Finest</p><div class="go">View listings</div></div>
+   <div class="a11y" title="Accessibility"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="4.5" r="1.8" fill="#fff" stroke="none"/><path d="M5 8.5 L12 10 L19 8.5 M12 10 V14.5 M12 14.5 L9 21 M12 14.5 L15 21"/></svg></div></div></div>
+ <div class="side">
+  <div class="pt a d4"><i>1</i><span><b>12 public pages</b>, all in her gold, cream and navy palette.</span></div>
+  <div class="pt a d5"><i>2</i><span><b>Classic type:</b> Cinzel for headers, Cormorant Garamond for headings, Inter for easy reading.</span></div>
+  <div class="pt a d6"><i>3</i><span><b>Accessibility widget</b> on every page, so everyone can read in comfort.</span></div>
+  <div class="pt a d7"><i>4</i><span><b>Fast, secure hosting</b> with no site-builder subscription.</span></div>
+ </div>
+</section>
+
+<!-- 3 LISTINGS -->
+<section class="scene" data-t="10000">
+ <div class="frame"></div>
+ <div class="k a">Listings</div>
+ <h2 class="h a d1">Every home, <em>beautifully presented.</em><br>From card to gallery to sold.</h2>
+ <div class="lcard a d2"><div class="ph" data-v="0"></div><div class="ltag" id="ltag">Featured</div>
+  <div class="bd"><div class="price">$1,895,000</div><div class="addr">24 Madrone Ridge Lane, Novato</div><div class="pills"><span>4 beds</span><span>3 baths</span><span>2,650 sq ft</span></div></div></div>
+ <div class="arrow"></div>
+ <div class="ldet a d4"><div class="gal"><div class="main"><div class="ph sl cur" data-v="0"></div><div class="ph sl" data-v="1"></div><div class="ph sl" data-v="2"></div><div class="ph sl" data-v="3"></div><div class="count">1 / 4</div><div class="ribbon">SOLD</div></div>
+   <div class="thumbs"><div class="ph cur" data-v="0"></div><div class="ph" data-v="1"></div><div class="ph" data-v="2"></div><div class="ph" data-v="3"></div></div></div>
+  <div class="info"><div class="lbl">For sale · Novato</div><div class="price">$1,895,000</div><div class="addr">24 Madrone Ridge Lane</div>
+   <div class="pills"><span>4 beds</span><span>3 baths</span><span>2,650 sq ft</span><span>Two-car garage</span><span>Hillside views</span><span>Chef's kitchen</span></div>
+   <div class="desc">Sun-filled rooms open to a wraparound deck, with oak-studded hills beyond. A quiet lane, minutes from town.</div>
+   <div class="cta2">Schedule a showing</div></div></div>
+ <div class="note">Listing shown is made up.</div>
+</section>
+
+<!-- 4 VIDEO -->
+<section class="scene" data-t="10000">
+ <div class="frame"></div>
+ <div class="k a">Listing video</div>
+ <h2 class="h a d1">Upload the tour straight from the camera.<br>The site <em>does the rest.</em></h2>
+ <div class="vup a d2"><div class="lbl">CMS · Listing video</div><div class="vfile"><div class="ico"></div><div><b>madrone-ridge-tour.mov</b><small>200 MB</small></div></div><div class="upbar"><i></i></div><div class="st" id="vst">Uploading…</div></div>
+ <div class="vfn a d3"><div class="gear" id="gear"><svg viewBox="0 0 24 24" fill="none" stroke="#d9bf8c" stroke-width="1.6"><circle cx="12" cy="12" r="3.2"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M5.3 18.7l2.1-2.1M16.6 7.4l2.1-2.1"/></svg></div>
+  <div class="big"><span id="mb">200</span><small>MB</small></div><div class="shrink"><i id="shr"></i></div><div class="cap">A cloud function compresses it, automatically</div></div>
+ <div class="vres a d4" id="vres"><div class="lbl">On the listing page</div><div class="ph" data-v="3"><div class="vchip">Autoplay</div><div class="vprog"><i></i></div></div><div class="meta"><span>Gallery video</span><b>about 9 MB</b></div></div>
+ <div class="vpts"><div class="a d6"><b>Up to 200 MB</b> uploaded from the CMS, no video editing needed.</div><div class="a d7"><b>About 9 MB</b> web video, light enough for any phone.</div><div class="a d8"><b>Autoplays</b> right in the listing's photo gallery.</div></div>
+</section>
+
+<!-- 5 FIVE FORMS -->
+<section class="scene" data-t="10500">
+ <div class="frame"></div>
+ <div class="k a">Lead capture</div>
+ <h2 class="h a d1">Five ways to say hello.<br>Each one <em>built for a real moment.</em></h2>
+ <div class="forms">
+  <div class="fm a d2"><svg viewBox="0 0 24 24" fill="none" stroke="#a8854c" stroke-width="1.5"><rect x="3" y="5" width="18" height="14"/><path d="M3 6l9 7 9-7"/></svg><b>Contact</b><span>A simple note to Marie.</span></div>
+  <div class="fm a d3" id="fwish"><svg viewBox="0 0 24 24" fill="none" stroke="#a8854c" stroke-width="1.5"><path d="M3 11l9-7 9 7v9H3z"/><path d="M12 17.5s-3-1.8-3-3.8a1.6 1.6 0 013-.8 1.6 1.6 0 013 .8c0 2-3 3.8-3 3.8z"/></svg><b>Wish List</b><span>Five steps: the home a buyer wants.</span></div>
+  <div class="fm a d4"><svg viewBox="0 0 24 24" fill="none" stroke="#a8854c" stroke-width="1.5"><path d="M3 11l9-7 9 7v9H3z"/><path d="M12 10v7M10 12.5h3a1.2 1.2 0 010 2.4h-2a1.2 1.2 0 000 2.4h3"/></svg><b>Home Valuation</b><span>Sellers ask what their home is worth.</span></div>
+  <div class="fm a d5"><svg viewBox="0 0 24 24" fill="none" stroke="#a8854c" stroke-width="1.5"><rect x="3" y="5" width="18" height="16"/><path d="M3 10h18M8 3v4M16 3v4M9 15l2 2 4-4"/></svg><b>Open House RSVP</b><span>Guests reserve a spot.</span></div>
+  <div class="fm a d6"><svg viewBox="0 0 24 24" fill="none" stroke="#a8854c" stroke-width="1.5"><path d="M5 3h10l4 4v14H5z"/><path d="M12 10v6M9 13l3 3 3-3"/></svg><b>Buyer &amp; Seller Guides</b><span>Downloads, shared for an email.</span></div>
+ </div>
+ <div class="wish a d7"><div class="top"><b>Your Wish List</b><span id="wstep">Step 1 of 5</span></div><div class="steps"><i></i><i></i><i></i><i></i><i></i></div>
+  <div class="wq" id="wq"></div><div class="wopts" id="wopts"></div><div class="wdone" id="wdone">Sent to Marie, and saved.</div><div class="wnext">Next</div></div>
+ <div class="side" style="left:790px;top:414px;width:410px">
+  <div class="pt a d8"><i>&#10003;</i><span>The <b>Wish List</b> walks a buyer through five short steps, so Marie knows exactly what to look for.</span></div>
+  <div class="pt a d9"><i>&#10003;</i><span>Every form is <b>saved and emailed</b> the moment it is sent.</span></div>
+ </div>
+</section>
+
+<!-- 6 EVERY LEAD -->
+<section class="scene" data-t="10000">
+ <div class="frame"></div>
+ <div class="k a">Every lead, instantly</div>
+ <h2 class="h a d1">Sent, saved and in Marie's inbox<br><em>in seconds.</em> Nothing gets buried.</h2>
+ <div class="rsvp a d2"><div class="lbl">Open House RSVP</div><h5>24 Madrone Ridge Lane<br>Sunday, 1 to 4 pm</h5>
+  <div class="fld"><small>Name</small>Priya Shah</div><div class="fld"><small>Guests</small>2</div><div class="sendb" id="sendb">Reserve my spot</div></div>
+ <div class="wire" style="left:392px;width:92px"></div><div class="wire" style="left:652px;width:66px"></div>
+ <div class="pkt" id="pkt" style="left:384px"></div>
+ <div class="dbn" id="dbn"><div class="cyl"><svg viewBox="0 0 100 120" width="100" height="120"><g fill="#fff" stroke="#a8854c" stroke-width="2.5"><path d="M8 20 V100 A42 12 0 0 0 92 100 V20"/><ellipse cx="50" cy="20" rx="42" ry="12"/></g><g fill="none" stroke="#a8854c" stroke-width="2"><path d="M8 47 A42 12 0 0 0 92 47"/><path d="M8 74 A42 12 0 0 0 92 74"/></g></svg><div class="chk">&#10003;</div></div><b>Saved</b><small>Stored safely, every time</small></div>
+ <div class="mailn" id="mailn"><div class="mh"><b>MARIE BORDERS</b><span>New lead</span></div><div class="mb"><h5>New Open House RSVP</h5>
+  <div class="row2"><span>Name</span>Priya Shah</div><div class="row2"><span>Listing</span>24 Madrone Ridge Lane</div><div class="row2"><span>Guests</span>2</div></div></div>
+ <div class="elog a d3"><div class="eh"><span>Email log</span><span>Form</span><span>From</span><span>Status</span><span>Time</span></div>
+  <div class="er new"><span>Lead notification</span><span>Open House RSVP</span><span>Priya Shah</span><span class="ok2">Delivered</span><span>10:42 am</span></div>
+  <div class="er"><span>Lead notification</span><span>Wish List</span><span>Kai &amp; Lena Moreno</span><span class="ok2">Delivered</span><span>9:15 am</span></div>
+ </div>
+ <div class="note">Names and listing shown are made up.</div>
+</section>
+
+<!-- 7 CMS -->
+<section class="scene" data-t="10500">
+ <div class="frame"></div>
+ <div class="k a">The CMS</div>
+ <h2 class="h a d1">Her assistant runs it all.<br><em>No code,</em> no waiting on a developer.</h2>
+ <div class="cms a d2"><div class="cms-nav"><div class="logo">MARIE BORDERS</div><div class="cur" id="cn0">Listings</div><div>Page content</div><div id="cn1">Email templates</div><div>Email log</div><div>Analytics</div><div>Privacy policy</div></div>
+  <div class="cms-main">
+   <div class="pane cur" id="pn0"><h6>Edit listing</h6><div class="save">Save</div>
+    <div class="frow"><div class="fi">Address<div>24 Madrone Ridge Lane, Novato</div></div><div class="fi">Price<div>$1,895,000</div></div></div>
+    <div class="frow"><div class="fi">Features<div>4 beds · 3 baths · 2,650 sq ft</div></div><div class="fi">Status<div class="seg" id="seg"><span>For sale</span><span class="cur">Featured</span><span>Sold</span></div></div></div>
+    <div class="fi">Photos and video<div class="thrs" style="border:0;background:none;padding:0"><div class="ph" data-v="0"></div><div class="ph" data-v="1"></div><div class="ph" data-v="2"></div><div class="ph" data-v="3"></div><div class="vbadge">Tour video<br>ready</div></div></div>
+    <div class="fi">Description<div style="font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-size:16px">Sun-filled rooms open to a wraparound deck…</div></div></div>
+   <div class="pane" id="pn1"><h6>Email template · Wish List thank-you</h6><div class="tsplit">
+    <div class="ed"><div class="fi">Subject<div>Thank you for your Wish List</div></div><div class="fi">Message<div class="ta"><span id="typed"></span><span class="caret"></span></div></div></div>
+    <div class="prev"><div class="lv">Live preview</div><div class="em"><div class="emh">MARIE BORDERS<small>MARIN'S FINEST</small></div><div class="emb" id="pvw"></div><div class="emf">Sent from marieborders.com</div></div></div></div></div>
+  </div></div>
+ <div class="note">Listing shown is made up.</div>
+</section>
+
+<!-- 8 ANALYTICS -->
+<section class="scene" data-t="9500">
+ <div class="frame"></div>
+ <div class="k a">Privacy-first analytics</div>
+ <h2 class="h a d1">Know what's working.<br><em>Without following anyone.</em></h2>
+ <div class="chart a d2"><div class="ct"><b>Daily visits</b><span>Last 14 days · CMS Analytics tab</span></div>
+  <div class="gridl"></div><div class="yax"><span>120</span><span>90</span><span>60</span><span>30</span><span>0</span></div>
+  <div class="bars" id="bars"></div></div>
+ <div class="nos">
+  <div class="no a d4"><svg viewBox="0 0 40 40" fill="none" stroke="#a8854c" stroke-width="2"><circle cx="20" cy="20" r="11"/><circle cx="16" cy="17" r="1.6" fill="#a8854c"/><circle cx="23" cy="23" r="1.6" fill="#a8854c"/><circle cx="23" cy="15" r="1.2" fill="#a8854c"/><path d="M6 34 L34 6" stroke="#8b2c2c" stroke-width="2.5"/></svg><div><b>No cookies</b><span>No banner to click away.</span></div></div>
+  <div class="no a d5"><svg viewBox="0 0 40 40" fill="none" stroke="#a8854c" stroke-width="2"><rect x="8" y="11" width="24" height="17" rx="2"/><path d="M14 33h12M20 28v5"/><path d="M6 34 L34 6" stroke="#8b2c2c" stroke-width="2.5"/></svg><div><b>No IP addresses</b><span>Nothing that identifies a device.</span></div></div>
+  <div class="no a d6"><svg viewBox="0 0 40 40" fill="none" stroke="#a8854c" stroke-width="2"><path d="M20 35s-10-10-10-18a10 10 0 0120 0c0 8-10 18-10 18z"/><circle cx="20" cy="17" r="3.5"/><path d="M6 34 L34 6" stroke="#8b2c2c" stroke-width="2.5"/></svg><div><b>No location</b><span>Visitors are counted, not tracked.</span></div></div>
+  <div class="nosub a d7">Simple daily counters, first-party, right inside her CMS.</div>
+ </div>
+ <div class="note">Numbers shown are made up.</div>
+</section>
+
+<!-- 9 NUMBERS -->
+<section class="scene dark" data-t="9000">
+ <div class="frame"></div>
+ <div class="k a">By the numbers</div>
+ <h2 class="h a d1">One site. <em>Serious craft.</em></h2>
+ <div class="grid">
+  <div class="stat a d2"><b data-count="84">0</b><span>updates shipped, April to September 2026</span></div>
+  <div class="stat a d3"><b data-count="12">0</b><span>public pages</span></div>
+  <div class="stat a d4"><b data-count="7">0</b><span>cloud functions working behind the scenes</span></div>
+  <div class="stat a d5"><b data-count="5">0</b><span>lead-capture forms, each saved and emailed instantly</span></div>
+  <div class="stat a d6"><b data-count="200">0</b><span>MB listing video uploads from the CMS</span></div>
+  <div class="stat a d7"><b>~<span data-count="9" style="display:inline;margin:0;font-size:inherit;color:inherit">0</span><small>MB</small></b><span>web video after automatic compression</span></div>
+  <div class="stat a d8"><b data-count="0">0</b><span>cookies. Analytics without tracking</span></div>
+  <div class="stat a d9"><b data-count="6">0</b><span>CMS areas: listings, pages, templates, email log, analytics, privacy</span></div>
+ </div>
+ <div class="sub a d10" style="top:612px;font-size:18px">Live since June 2026 at marieborders.com, and still improving.</div>
+</section>
+
+<!-- 10 ADVANTAGES -->
+<section class="scene" data-t="9500">
+ <div class="frame"></div>
+ <div class="k a">The advantages</div>
+ <h2 class="h a d1">What Marie gets.</h2>
+ <div class="adv">
+  <div class="ad a d2"><div class="n">I</div><b>Unmistakably hers</b><span>A custom design in her own colors and type, not a template shared with other agents.</span></div>
+  <div class="ad a d3"><div class="n">II</div><b>No lead slips away</b><span>Five forms, each saved and emailed the moment someone reaches out.</span></div>
+  <div class="ad a d4"><div class="n">III</div><b>Video without the hassle</b><span>Upload a 200 MB tour; it becomes a light web video that autoplays.</span></div>
+  <div class="ad a d5"><div class="n">IV</div><b>Edits without code</b><span>Listings, page content and emails, all changed by her assistant in the CMS.</span></div>
+  <div class="ad a d6"><div class="n">V</div><b>Privacy built in</b><span>Analytics with no cookies, no IP addresses and no location.</span></div>
+  <div class="ad a d7"><div class="n">VI</div><b>One place for it all</b><span>Listings, leads, email log and visits live together in one CMS.</span></div>
+ </div>
+</section>
+
+<!-- 11 CTA -->
+<section class="scene dark" data-t="10000">
+ <div class="frame"></div>
+ <div class="cta"><div class="k3 a">Oahu App Design</div><h2 class="a d1">Your listings deserve<br><em>better than a template.</em></h2><p class="a d2">Custom websites, CMS tools and apps, designed and built to fit your business.</p>
+ <div class="url a d3">oahuappdesign.com</div><button class="learn a d3" id="learnMore">Learn more &rarr;</button><div class="by a d4">Websites · Apps · Custom CMS</div></div>
+</section>
+
+<div id="explore"><div class="xh"><div style="flex:1"><span class="k2">Inside marieborders.com</span><h2>Explore the site</h2></div><button class="xback" id="xback">&larr; Back to the story</button></div>
+ <div id="xlist"></div><div id="xdet"></div></div>
+</div></div>
+<div id="bar"><div id="prog"></div>
+ <a id="csBack" href="../" style="color:#d6ecef;font:700 14px system-ui,sans-serif;text-decoration:none;padding:8px 12px;border-radius:8px;background:rgba(255,255,255,.08)">&larr; Case studies</a>
+ <button id="prev">Back</button><button id="play">Play</button><button id="next">Next</button>
+ <div id="dots"></div>
+ <button id="mus" aria-pressed="true">Music on</button>
+</div>
+
+<script>
+const S=[...document.querySelectorAll('.scene')];
+const stage=document.getElementById('stage');
+function fit(){const v=document.getElementById('view');const k=Math.min(v.clientWidth/1280,v.clientHeight/720);stage.style.transform='scale('+k+')'}
+addEventListener('resize',fit);fit();
+let cur=0,playing=false,timer=null,t0=0,dur=0,GEN=0;
+const dots=document.getElementById('dots');
+S.forEach((_,i)=>{const d=document.createElement('i');d.onclick=()=>go(i,true);dots.appendChild(d)});
+function paintDots(){[...dots.children].forEach((d,i)=>{d.className=i===cur?'on':i<cur?'seen':''})}
+
+/* Made-up listing "photos", drawn in SVG (no stock images) */
+let PID=0;
+function photo(v){const id='p'+(PID++);const A=[
+ '<defs><linearGradient id="'+id+'" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6f83a6"/><stop offset=".75" stop-color="#f1c797"/></linearGradient></defs><rect width="400" height="260" fill="url(#'+id+')"/><path d="M0 170 Q100 118 200 148 T400 136 V260 H0Z" fill="#7a8762"/><rect y="206" width="400" height="54" fill="#5d6b4a"/><rect x="112" y="122" width="186" height="88" fill="#efe6d6"/><path d="M98 126 L205 80 L312 126Z" fill="#3b4048"/><rect x="132" y="146" width="34" height="30" fill="#ffd88a"/><rect x="180" y="146" width="50" height="30" fill="#ffd88a"/><rect x="244" y="146" width="34" height="30" fill="#ffd88a"/><rect x="196" y="182" width="20" height="28" fill="#6b5236"/><circle cx="66" cy="168" r="34" fill="#4a5a3b"/><circle cx="96" cy="186" r="22" fill="#56663f"/><circle cx="350" cy="172" r="28" fill="#4a5a3b"/>',
+ '<rect width="400" height="260" fill="#efe6d8"/><rect x="40" y="36" width="210" height="130" fill="#9fb6c9"/><path d="M40 136 Q110 104 170 124 T250 118 V166 H40Z" fill="#8a9a70"/><path d="M40 36h210v130H40z M145 36v130" fill="none" stroke="#fff" stroke-width="6"/><rect y="200" width="400" height="60" fill="#b58c5e"/><rect x="60" y="176" width="200" height="44" rx="8" fill="#8e9ba5"/><rect x="60" y="160" width="200" height="22" rx="8" fill="#a3aeb7"/><rect x="290" y="120" width="60" height="100" fill="#d9c7a8"/><circle cx="320" cy="108" r="16" fill="#6f8a5a"/><ellipse cx="170" cy="238" rx="120" ry="12" fill="#d8c3a0"/>',
+ '<rect width="400" height="260" fill="#f3efe8"/><rect y="150" width="400" height="110" fill="#d8cdbb"/><rect x="0" y="70" width="400" height="56" fill="#e2d8c8"/><path d="M40 70v56M110 70v56M180 70v56M250 70v56M320 70v56" stroke="#cbbfac" stroke-width="2"/><rect x="90" y="168" width="220" height="60" fill="#2f3a45"/><rect x="84" y="160" width="232" height="12" fill="#f7f4ee"/><path d="M140 0v38M200 0v38M260 0v38" stroke="#a8854c" stroke-width="2"/><path d="M128 38h24l-6 14h-12zM188 38h24l-6 14h-12zM248 38h24l-6 14h-12z" fill="#a8854c"/><circle cx="140" cy="60" r="10" fill="#ffe7a8" opacity=".6"/><circle cx="200" cy="60" r="10" fill="#ffe7a8" opacity=".6"/><circle cx="260" cy="60" r="10" fill="#ffe7a8" opacity=".6"/>',
+ '<defs><linearGradient id="'+id+'" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8fb3d6"/><stop offset="1" stop-color="#d7e5ee"/></linearGradient></defs><rect width="400" height="260" fill="url(#'+id+')"/><path d="M0 132 Q70 96 150 118 T300 104 T400 112 V160 H0Z" fill="#8c9a78"/><rect y="150" width="400" height="60" fill="#4f8a95"/><path d="M0 162h400M0 178h400" stroke="#6fa3ac" stroke-width="2" opacity=".6"/><rect y="200" width="400" height="60" fill="#9c7a55"/><path d="M0 196h400" stroke="#6b5236" stroke-width="5"/><path d="M20 196V150M80 196V150M140 196V150M200 196V150M260 196V150M320 196V150M380 196V150" stroke="#6b5236" stroke-width="4"/><path d="M0 152h400" stroke="#6b5236" stroke-width="5"/>'];
+ return '<svg viewBox="0 0 400 260" preserveAspectRatio="xMidYMid slice">'+A[v]+'</svg>'}
+document.querySelectorAll('.ph[data-v]').forEach(el=>el.insertAdjacentHTML('afterbegin',photo(+el.dataset.v)));
+
+/* Analytics bars (made-up counts) */
+(function(){const V=[46,52,61,58,49,72,88,64,59,70,77,95,83,104],D=['M','T','W','T','F','S','S','M','T','W','T','F','S','S'];
+ document.getElementById('bars').innerHTML=V.map((v,i)=>'<div><u style="bottom:'+(v/120*100+2)+'%">'+v+'</u><i style="height:'+(v/120*100)+'%;animation-delay:'+(.9+i*.09)+'s"></i><em>'+D[i]+'</em></div>').join('')})();
+
+const WISH=[['What kind of home?',['Single family','Condo','Townhome'],0],['Your price range?',['Up to $1M','$1M to $2M','$2M and up'],1],['Bedrooms and baths?',['2+ beds','3+ beds','4+ beds'],2],['Must-haves?',['Home office','Yard','Views','Garage'],2],['How can Marie reach you?',['Email','Phone','Text'],0]];
+const TPL='Hi Kai and Lena,\n\nThank you for sharing your Wish List. I will start looking right away and send you homes that match.\n\nWarmly,\nMarie';
+
+function replay(sc){
+ const g=++GEN;
+ sc.classList.remove('on');void sc.offsetWidth;sc.classList.add('on');
+ const on=()=>g===GEN&&sc.classList.contains('on');
+ const at=(ms,f)=>setTimeout(()=>{if(on())f()},ms);
+ sc.querySelectorAll('[data-count]').forEach(el=>{const to=+el.dataset.count;const st=performance.now();el.textContent='0';
+  (function tick(n){const p=Math.min(1,(n-st)/1800),e=1-Math.pow(1-p,3);el.textContent=Math.round(to*e).toLocaleString();if(p<1&&on())requestAnimationFrame(tick)})(st)});
+ // listings: gallery cycles, then SOLD
+ const sl=[...sc.querySelectorAll('.gal .sl')];if(sl.length){const th=[...sc.querySelectorAll('.gal .thumbs .ph')],cnt=sc.querySelector('.gal .count'),rb=sc.querySelector('.ribbon'),tg=sc.querySelector('#ltag');
+  const show=k=>{sl.forEach((s,j)=>s.classList.toggle('cur',j===k));th.forEach((s,j)=>s.classList.toggle('cur',j===k));cnt.textContent=(k+1)+' / 4'};
+  show(0);rb.classList.remove('show');tg.textContent='Featured';tg.classList.remove('sold');
+  [1,2,3,0].forEach((k,i)=>at(2000+i*1100,()=>show(k)));
+  at(6600,()=>{rb.classList.add('show');tg.textContent='Sold';tg.classList.add('sold')})}
+ // video: upload, compress 200 -> 9, ready
+ const mb=sc.querySelector('#mb');if(mb){const shr=sc.querySelector('#shr'),gear=sc.querySelector('#gear'),vres=sc.querySelector('#vres'),vst=sc.querySelector('#vst');
+  mb.textContent='200';shr.style.transition='none';shr.style.width='100%';void shr.offsetWidth;shr.style.transition='';gear.classList.remove('run');vres.classList.remove('ready');vst.textContent='Uploading…';
+  at(2300,()=>{vst.textContent='Uploaded. Compressing…';gear.classList.add('run');shr.style.width='4.5%';const st=performance.now();
+   (function tk(n){const p=Math.min(1,(n-st)/2600),e=1-Math.pow(1-p,2);mb.textContent=Math.round(200-191*e);if(p<1&&on())requestAnimationFrame(tk)})(st)});
+  at(5000,()=>{gear.classList.remove('run');vst.textContent='Done. Live on the listing.';vres.classList.add('ready')})}
+ // wish list: five steps
+ const wq=sc.querySelector('#wq');if(wq){const steps=[...sc.querySelectorAll('.steps i')],wo=sc.querySelector('#wopts'),ws=sc.querySelector('#wstep'),wd=sc.querySelector('#wdone'),fw=sc.querySelector('#fwish');
+  const step=k=>{const q=WISH[k];wq.textContent=q[0];ws.textContent='Step '+(k+1)+' of 5';steps.forEach((s,j)=>s.classList.toggle('done',j<=k));
+   wo.innerHTML=q[1].map(o=>'<span>'+o+'</span>').join('');at(650,()=>wo.children[q[2]].classList.add('pick'))};
+  wd.classList.remove('show');fw.classList.remove('hot');step(0);at(1900,()=>fw.classList.add('hot'));
+  [1,2,3,4].forEach((k,i)=>at(2900+i*1350,()=>step(k)));at(2900+4*1350,()=>wd.classList.add('show'))}
+ // lead flow
+ const pkt=sc.querySelector('#pkt');if(pkt){const sb=sc.querySelector('#sendb'),db=sc.querySelector('#dbn'),ml=sc.querySelector('#mailn'),rows=[...sc.querySelectorAll('.er')];
+  pkt.style.transition='none';pkt.style.left='384px';pkt.style.opacity='0';void pkt.offsetWidth;pkt.style.transition='';
+  sb.classList.remove('press');db.classList.remove('ok');ml.classList.remove('show');rows.forEach(r=>r.classList.remove('show'));
+  at(1700,()=>sb.classList.add('press'));at(1900,()=>{sb.classList.remove('press');pkt.style.opacity='1';pkt.style.left='540px'});
+  at(2950,()=>{db.classList.add('ok');pkt.style.opacity='0'});
+  at(3500,()=>{pkt.style.transition='none';pkt.style.left='640px';void pkt.offsetWidth;pkt.style.transition='';pkt.style.opacity='1';pkt.style.left='712px'});
+  at(4500,()=>{pkt.style.opacity='0';ml.classList.add('show')});
+  at(5400,()=>rows[0].classList.add('show'));at(5800,()=>rows[1].classList.add('show'))}
+ // CMS: listing -> sold status, then template typing with live preview
+ const ty=sc.querySelector('#typed');if(ty){const p0=sc.querySelector('#pn0'),p1=sc.querySelector('#pn1'),c0=sc.querySelector('#cn0'),c1=sc.querySelector('#cn1'),pv=sc.querySelector('#pvw'),seg=[...sc.querySelectorAll('#seg span')];
+  p0.classList.add('cur');p1.classList.remove('cur');c0.classList.add('cur');c1.classList.remove('cur');ty.textContent='';pv.textContent='';seg.forEach((s,j)=>s.classList.toggle('cur',j===1));
+  at(2200,()=>seg.forEach((s,j)=>s.classList.toggle('cur',j===2)));
+  at(3800,()=>{p0.classList.remove('cur');p1.classList.add('cur');c0.classList.remove('cur');c1.classList.add('cur')});
+  let st=0;const type=()=>{if(!on())return;const n=Math.min(TPL.length,Math.floor((performance.now()-st)/28));const t=TPL.slice(0,n);ty.textContent=t;pv.textContent=t;if(n<TPL.length)setTimeout(type,28)};at(4400,()=>{st=performance.now();type()})}
+ // analytics labels
+ const bars=sc.querySelector('#bars');if(bars){bars.classList.remove('lab');at(3000,()=>bars.classList.add('lab'))}
+}
+function go(i){
+ S[cur].classList.remove('on');cur=Math.max(0,Math.min(S.length-1,i));replay(S[cur]);paintDots();
+ clearTimeout(timer);dur=+S[cur].dataset.t||8000;t0=performance.now();
+ if(playing&&cur<S.length-1)timer=setTimeout(()=>go(cur+1),dur);
+ if(playing&&cur===S.length-1)setTimeout(()=>{playing=false;setPlay();Music.fadeOut()},dur);
+}
+function setPlay(){document.getElementById('play').textContent=playing?'Pause':'Play'}
+(function prog(){const p=document.getElementById('prog');const f=playing&&dur?Math.min(1,(performance.now()-t0)/dur):0;p.style.width=((cur+f)/S.length*100)+'%';requestAnimationFrame(prog)})();
+document.getElementById('play').onclick=()=>{if(!playing){playing=true;Music.start();go(cur===S.length-1?0:(cur===0?1:cur))}else{playing=false;clearTimeout(timer);Music.pause()}setPlay()};
+document.getElementById('next').onclick=()=>go(cur+1);
+document.getElementById('prev').onclick=()=>go(cur-1);
+addEventListener('keydown',e=>{if(e.key==='ArrowRight')go(cur+1);else if(e.key==='ArrowLeft')go(cur-1);else if(e.key===' '){e.preventDefault();document.getElementById('play').click()}});
+function begin(withMusic){Music.enabled=withMusic;const mb=document.getElementById('mus');mb.setAttribute('aria-pressed',withMusic);mb.textContent=withMusic?'Music on':'Music off';playing=true;setPlay();Music.start();go(1)}
+document.getElementById('startMusic').onclick=()=>begin(true);
+document.getElementById('startQuiet').onclick=()=>begin(false);
+document.getElementById('mus').onclick=function(){Music.enabled=!Music.enabled;this.setAttribute('aria-pressed',Music.enabled);this.textContent=Music.enabled?'Music on':'Music off';Music.enabled&&playing?Music.start():Music.pause()};
+paintDots();replay(S[0]);
+
+/* Learn more */
+const AREAS=[
+ {c:'#a8854c',t:'Listings',lead:'Every home Marie represents, presented with the care a Marin buyer expects.',nums:['For-sale page','Detail page per home'],f:[
+  ['For-sale page','All of Marie’s current listings in one elegant place.'],['Listing detail','A page for each home, with everything a buyer wants to see.'],
+  ['Photo gallery','Large photos with thumbnails, easy to browse on any screen.'],['Feature pills','Key facts at a glance: beds, baths, size and highlights.'],
+  ['Rich descriptions','Room for the story of the home, not just the numbers.'],['Featured and sold','Mark a home as featured, or show it as sold.']]},
+ {c:'#8a6a36',t:'Listing video',lead:'Walkthrough tours go straight from the camera to the listing, with no editing software.',nums:['Up to 200 MB in','About 9 MB out'],f:[
+  ['Upload from the CMS','Add a tour of up to 200 MB right from the listing editor.'],['Automatic compression','A cloud function shrinks it without anyone lifting a finger.'],
+  ['About 9 MB for the web','Light enough to load quickly on a phone.'],['Autoplays in the gallery','The tour plays right alongside the listing photos.'],
+  ['No video skills needed','No exporting, no settings, no special software.'],['Part of the listing','Added or replaced from the same place as the photos.']]},
+ {c:'#1c2a3a',t:'Lead capture',lead:'Five forms, each designed for a different moment in a buyer’s or seller’s journey.',nums:['5 forms','Saved + emailed'],f:[
+  ['Contact','A simple way to send Marie a note.'],['Wish List','Five short steps where a buyer describes the home they want.'],
+  ['Home Valuation','Sellers ask what their home could be worth.'],['Open House RSVP','Guests reserve a spot at an open house.'],
+  ['Buyer guide','A downloadable guide, shared in exchange for an email.'],['Seller guide','The same, for homeowners getting ready to sell.']]},
+ {c:'#3d7a4f',t:'Instant notifications',lead:'Every lead is saved and emailed the moment it arrives, so nothing gets buried.',nums:['Instant','Every send logged'],f:[
+  ['Saved every time','Each submission is stored safely before anything else happens.'],['Emailed right away','Marie hears about a new lead within seconds.'],
+  ['Every form covered','All five forms notify the same way.'],['Email log','Every email the site sends is listed in the CMS.'],
+  ['Branded templates','Emails match the site’s gold and navy look.'],['Reliable delivery','Sent through Resend, a dedicated email service.']]},
+ {c:'#4a5057',t:'The CMS',lead:'A private dashboard built for Marie’s assistant. No code, ever.',nums:['6 areas','No code'],f:[
+  ['Listings','Add, edit and mark homes as featured or sold.'],['Page content','Update the words on the site’s pages.'],
+  ['Email templates','Edit every email, with a live preview beside it.'],['Email log','See what was sent, and when.'],
+  ['Analytics tab','Daily visits, right where the team already works.'],['Privacy policy editor','Keep the privacy policy page up to date without a developer.']]},
+ {c:'#7a7e84',t:'Privacy-first analytics',lead:'Useful numbers without following anyone around the internet.',nums:['0 cookies','First-party'],f:[
+  ['Daily counters','Simple counts of visits, day by day.'],['No cookies','Nothing stored in visitors’ browsers for tracking.'],
+  ['No IP addresses','Nothing that identifies a visitor’s device.'],['No location','Visitors are counted, never placed on a map.'],
+  ['First-party','The numbers stay with Marie, not an ad network.'],['Inside the CMS','Visits sit next to listings and leads.']]},
+ {c:'#d9bf8c',t:'Brand & design',lead:'A classic, luxury look that feels like Marin, and like Marie.',nums:['4 typefaces','Gold, cream, navy'],f:[
+  ['Golden Gate hero','A sweeping bay view under a soft navy overlay.'],['Cinzel headers','Engraved, classic capitals for the name and page titles.'],
+  ['Marcellus tagline','“Marin’s Finest” set in refined, spaced capitals.'],['Cormorant Garamond','Elegant serif headings throughout.'],
+  ['Inter for reading','A clean body font, easy on any screen.'],['Accessibility widget','Visitors can adjust the page to read in comfort.']]},
+ {c:'#2d4058',t:'Under the hood',lead:'Modern, dependable building blocks, kept current with steady updates.',nums:['84 updates','7 cloud functions'],f:[
+  ['Fast static hosting','Pages served quickly and securely from GitHub Pages.'],['Firebase backend','Database, file storage and secure sign-in for the CMS.'],
+  ['7 cloud functions','Background jobs, such as automatic video compression.'],['Email by Resend','A dedicated service for dependable delivery.'],
+  ['12 public pages','Listings, guides, forms and more.'],['Steady improvement','84 updates between April and September 2026.']]}
+];
+(function(){const L=document.getElementById('xlist'),D=document.getElementById('xdet'),X=document.getElementById('explore');
+ AREAS.forEach((a,i)=>{const b=document.createElement('button');b.innerHTML='<i style="background:'+a.c+'"></i>'+a.t;b.onclick=()=>show(i);L.appendChild(b)});
+ function show(i){const a=AREAS[i];[...L.children].forEach((b,j)=>b.classList.toggle('on',j===i));
+  D.innerHTML='<h3>'+a.t+'</h3><p class="lead">'+a.lead+'</p><div class="nums">'+a.nums.map(n=>'<span>'+n+'</span>').join('')+'</div><div class="fs">'+a.f.map((x,k)=>'<div class="f" style="animation-delay:'+(k*.06)+'s"><b>'+x[0]+'</b><span>'+x[1]+'</span></div>').join('')+'</div>';D.scrollTop=0}
+ document.getElementById('learnMore').onclick=()=>{playing=false;clearTimeout(timer);setPlay();X.classList.add('on');show(0)};
+ document.getElementById('xback').onclick=()=>X.classList.remove('on');})();
+
+/* Original soundtrack: an easy lounge groove, 84 BPM, swung.
+   Dmaj9 - Bm9 - Em9 - A13, soft electric piano, brushed hi-hat and a walking bass.
+   Generated live: no recordings, no licensing. */
+const Music=(()=>{
+ let ctx=null,master=null,verb=null,noise=null,started=false,nextT=0,step=0;const api={enabled:true};
+ const BEAT=60/84,LONG=BEAT*.62,SHORT=BEAT*.38;
+ const CH=[[54,57,61,64],[50,54,57,61],[55,59,62,66],[55,59,61,66]];
+ const WALK=[[38,42,45,36],[35,38,42,39],[40,43,47,44],[45,43,40,39]];
+ const MEL=[[69,-1,-1,71,73,-1,71,-1],[-1,-1,66,-1,69,-1,-1,-1],[71,-1,69,-1,67,-1,66,-1],[64,-1,-1,-1,-1,-1,61,-1]];
+ const hz=m=>440*Math.pow(2,(m-69)/12);
+ function init(){ctx=new (window.AudioContext||window.webkitAudioContext)();master=ctx.createGain();master.gain.value=0;master.connect(ctx.destination);
+  verb=ctx.createConvolver();const len=ctx.sampleRate*2.6,buf=ctx.createBuffer(2,len,ctx.sampleRate);
+  for(let c=0;c<2;c++){const d=buf.getChannelData(c);for(let i=0;i<len;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/len,2.4)}
+  verb.buffer=buf;const vg=ctx.createGain();vg.gain.value=.35;verb.connect(vg);vg.connect(master);
+  const nl=ctx.sampleRate*.5;noise=ctx.createBuffer(1,nl,ctx.sampleRate);const nd=noise.getChannelData(0);for(let i=0;i<nl;i++)nd[i]=Math.random()*2-1}
+ function out(n,wet){n.connect(master);if(wet)n.connect(verb)}
+ // electric piano: sine carrier with a bell-like FM tine and gentle tremolo
+ function ep(t,m,v,len){const c=ctx.createOscillator(),mo=ctx.createOscillator(),mg=ctx.createGain(),g=ctx.createGain(),tr=ctx.createOscillator(),tg=ctx.createGain(),f=ctx.createBiquadFilter();
+  c.type='sine';c.frequency.value=hz(m);mo.type='sine';mo.frequency.value=hz(m)*14;
+  mg.gain.setValueAtTime(hz(m)*1.4,t);mg.gain.exponentialRampToValueAtTime(hz(m)*.05,t+.35);mo.connect(mg);mg.connect(c.frequency);
+  tr.frequency.value=4.6;tg.gain.value=v*.18;tr.connect(tg);tg.connect(g.gain);
+  f.type='lowpass';f.frequency.value=2600;
+  g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(v,t+.01);g.gain.exponentialRampToValueAtTime(v*.35,t+.5);g.gain.exponentialRampToValueAtTime(.0005,t+len);
+  c.connect(f);f.connect(g);out(g,true);[c,mo,tr].forEach(o=>{o.start(t);o.stop(t+len+.05)})}
+ function bass(t,m,len){const o=ctx.createOscillator(),o2=ctx.createOscillator(),g=ctx.createGain(),f=ctx.createBiquadFilter();o.type='triangle';o2.type='sine';o.frequency.value=hz(m);o2.frequency.value=hz(m);
+  f.type='lowpass';f.frequency.value=700;g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(.24,t+.02);g.gain.exponentialRampToValueAtTime(.08,t+len*.7);g.gain.exponentialRampToValueAtTime(.001,t+len);
+  o.connect(f);o2.connect(f);f.connect(g);out(g,false);o.start(t);o2.start(t);o.stop(t+len+.05);o2.stop(t+len+.05)}
+ function brush(t,v,len){const s=ctx.createBufferSource(),f=ctx.createBiquadFilter(),g=ctx.createGain();s.buffer=noise;f.type='highpass';f.frequency.value=6500;
+  g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(v,t+.012);g.gain.exponentialRampToValueAtTime(.0005,t+len);s.connect(f);f.connect(g);out(g,false);s.start(t,Math.random()*.3);s.stop(t+len+.02)}
+ function tick(){while(nextT<ctx.currentTime+.3){const bar=Math.floor(step/8)%4,s=step%8,beat=s>>1,off=s&1,d=off?SHORT:LONG;
+   if(s===0)CH[bar].forEach((m,k)=>ep(nextT+k*.012,m,.045,BEAT*3.4));
+   if(s===5)CH[bar].slice(1).forEach((m,k)=>ep(nextT+k*.01,m,.03,BEAT*1.4));
+   if(!off)bass(nextT,WALK[bar][beat],BEAT*.92);
+   brush(nextT,off?.035:(beat%2?.06:.04),off?.06:.14);
+   if(step>=32){const n=MEL[bar][s];if(n>0)ep(nextT,n+12,.05,BEAT*1.6)}
+   nextT+=d;step++}}
+ function unlock(){try{if(navigator.audioSession)navigator.audioSession.type='playback'}catch(e){}
+  try{if(!api._el){const a=new Audio('data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQAAAAA=');a.loop=true;a.setAttribute('playsinline','');api._el=a}api._el.play().catch(()=>{})}catch(e){}
+  try{const b=ctx.createBuffer(1,1,22050),s=ctx.createBufferSource();s.buffer=b;s.connect(ctx.destination);s.start(0)}catch(e){}}
+ api.start=()=>{if(!api.enabled)return;if(!ctx)init();unlock();if(ctx.state!=='running')ctx.resume();
+  if(!started){started=true;nextT=ctx.currentTime+.1;setInterval(tick,70)}
+  master.gain.cancelScheduledValues(ctx.currentTime);master.gain.setTargetAtTime(.85,ctx.currentTime,.8)};
+ api.pause=()=>{if(ctx)master.gain.setTargetAtTime(0,ctx.currentTime,.25)};
+ api.fadeOut=()=>{if(ctx)master.gain.setTargetAtTime(0,ctx.currentTime,2)};
+ return api})();
+</script></body></html>
