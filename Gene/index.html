@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Remembering Gene Pellegrini</title>
+<meta name="description" content="Eugene (Gene) Paul Pellegrini, May 18, 1937 – October 1, 2026. Share a memory or offer a prayer.">
+<meta property="og:title" content="Remembering Gene Pellegrini">
+<meta property="og:description" content="May 18, 1937 – October 1, 2026. Share a memory or offer a prayer.">
+<meta property="og:image" content="https://oahuappdesign.com/Gene/gene.png">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f7f4ee;--card:#fffdf9;--ink:#2b2a28;--soft:#6b665e;--line:#e4ddd0;--gold:#a8874e;--gold2:#c9ab72;--sea:#3e5c6e}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:18px/1.75 "Source Sans 3",-apple-system,system-ui,sans-serif}
+.wrap{max-width:720px;margin:0 auto;padding:56px 20px 80px}
+header{text-align:center}
+.photo{width:176px;height:176px;border-radius:50%;object-fit:cover;display:block;margin:0 auto 26px;border:4px solid var(--card);box-shadow:0 0 0 1.5px var(--gold2),0 10px 30px rgba(60,45,20,.15)}
+.kicker{font-size:13px;letter-spacing:.24em;text-transform:uppercase;color:var(--gold);margin:0 0 8px}
+h1{font-family:"Cormorant Garamond",Georgia,serif;font-weight:600;font-size:clamp(34px,7vw,50px);line-height:1.1;margin:0}
+.nick{font-family:"Cormorant Garamond",Georgia,serif;font-style:italic;font-size:24px;color:var(--soft);margin:4px 0 10px}
+.dates{font-size:17px;letter-spacing:.06em;color:var(--soft);margin:0}
+.rule{display:flex;align-items:center;gap:14px;justify-content:center;margin:34px auto;max-width:320px;color:var(--gold2)}
+.rule:before,.rule:after{content:"";height:1px;background:var(--line);flex:1}
+.story p{margin:0 0 1.15em}
+.story p:first-child:first-letter{font-family:"Cormorant Garamond",Georgia,serif;float:left;font-size:64px;line-height:.9;padding:6px 10px 0 0;color:var(--gold)}
+.service{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 22px;text-align:center;color:var(--soft);font-size:16px;margin-top:8px}
+h2{font-family:"Cormorant Garamond",Georgia,serif;font-weight:600;font-size:32px;text-align:center;margin:0 0 6px}
+.lead{text-align:center;color:var(--soft);margin:0 0 22px;font-size:16px}
+form{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px}
+.kinds{display:flex;gap:10px;margin-bottom:16px}
+.kinds button{flex:1;font:600 16px "Source Sans 3",system-ui,sans-serif;color:var(--soft);background:transparent;border:1.5px solid var(--line);border-radius:10px;padding:10px 8px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px}
+.kinds button[aria-pressed="true"]{color:var(--ink);border-color:var(--gold2);background:#fbf6ea}
+.kinds svg{width:18px;height:18px}
+label{display:block;font-weight:600;font-size:15px;margin:12px 0 5px}
+label .req{color:var(--gold)}
+input,textarea{width:100%;font:17px/1.5 "Source Sans 3",system-ui,sans-serif;color:var(--ink);background:#fff;border:1.5px solid var(--line);border-radius:10px;padding:11px 13px}
+input:focus,textarea:focus{outline:none;border-color:var(--gold2);box-shadow:0 0 0 3px rgba(201,171,114,.22)}
+textarea{min-height:130px;resize:vertical}
+.hp{position:absolute;left:-5000px;width:1px;height:1px;overflow:hidden}
+.send{margin-top:16px;width:100%;font:600 17px "Source Sans 3",system-ui,sans-serif;color:#fff;background:var(--sea);border:0;border-radius:10px;padding:13px;cursor:pointer}
+.send:disabled{opacity:.6;cursor:default}
+.note{min-height:24px;margin-top:10px;font-size:15px;text-align:center;color:var(--soft)}
+.note.err{color:#a3392c}
+.count{text-align:center;color:var(--soft);font-size:15px;margin:30px 0 14px}
+.msgs{display:grid;gap:14px}
+.msg{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 20px}
+.msg .top{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+.msg .icon{flex:none;width:30px;height:30px;border-radius:50%;background:#f3ecdc;color:var(--gold);display:flex;align-items:center;justify-content:center}
+.msg .icon svg{width:16px;height:16px}
+.msg .who{font-weight:600}
+.msg .rel{color:var(--soft);font-size:15px}
+.msg .when{margin-left:auto;color:var(--soft);font-size:14px;white-space:nowrap}
+.msg .body{white-space:pre-wrap;margin:0}
+.empty{text-align:center;color:var(--soft);font-style:italic}
+footer{text-align:center;color:var(--soft);font-size:14px;margin-top:48px}
+footer button{font:inherit;color:var(--sea);background:none;border:0;text-decoration:underline;cursor:pointer;padding:0}
+.stats{display:none;margin-top:8px}
+@media (max-width:480px){body{font-size:17px}.wrap{padding-top:40px}.photo{width:150px;height:150px}.msg .top{flex-wrap:wrap}.msg .when{margin-left:40px;width:100%}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+ <img class="photo" src="gene.png" alt="Gene Pellegrini, smiling">
+ <p class="kicker">In loving memory</p>
+ <h1>Eugene Paul Pellegrini</h1>
+ <p class="nick">“Gene”</p>
+ <p class="dates">May 18, 1937 &ndash; October 1, 2026</p>
+</header>
+
+<div class="rule" aria-hidden="true">&#10022;</div>
+
+<section class="story">
+ <p>Eugene (Gene) Paul Pellegrini, a resident of Santa Rosa, California, passed away on October 1, 2026, at the age of 90.</p>
+ <p>Gene was born on May 18, 1937, in Healdsburg at the “old hospital.” He was raised in Cloverdale and attended school there. He was a 1955 graduate of Cloverdale High School.</p>
+ <p>Gene received a BA in Liberal Arts from San Francisco State University in 1960. The class was so large that the ceremony was held at the Cow Palace. He also served in the U.S. Navy Reserve for six years, reporting to the Alameda Naval Air Base. His training was in Millington, TN.</p>
+ <p>After graduation, Gene worked at the Chevron Headquarters at 225 Bush St. in San Francisco for 12 years. During this time in the city, he met his partner of 52 years, the late Lee Morris. Gene loved every minute of living in the city, and driving his Chevy Malibu convertible around the Bay Area.</p>
+ <p>Later, Gene and Lee owned and operated a Prudential Real Estate franchise in San Anselmo for 20 years. They resided in Fairfax until 2015, when they moved to the Fountaingrove Lodge in Santa Rosa to be closer to family. They traveled locally and also vacationed in Palm Springs.</p>
+ <p>Gene was an avid art collector, with a special interest in California artists. He enjoyed dining out, fine cuisine, and the theater. North Beach was a favorite spot. He kept up with city news through daily readings of the Chronicle.</p>
+ <p>He leaves behind a beloved family of six nieces and nephews, their spouses, many grandnieces and nephews, a sister-in-law, and friends at Fountaingrove Lodge.</p>
+ <p>Gene was predeceased by his parents, Ruth Finney Pellegrini and Raoul Pellegrini, sister Fay Seghesio, brother-in-law Ed Seghesio, and brother Richard Pellegrini. Gene and Lee were together until Lee’s passing in 2023.</p>
+ <p>The family wishes to thank the Fountaingrove Lodge staff for their care and support.</p>
+ <div class="service">A private family service will be held. Arrangements by The Neptune Society.</div>
+</section>
+
+<div class="rule" aria-hidden="true">&#10022;</div>
+
+<section aria-labelledby="gbTitle">
+ <h2 id="gbTitle">Memories &amp; Prayers</h2>
+ <p class="lead">Share a memory of Gene, or offer a prayer for him and his family.</p>
+ <form id="gb" novalidate>
+  <div class="kinds" role="group" aria-label="What would you like to share?">
+   <button type="button" data-kind="memory" aria-pressed="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>A memory</button>
+   <button type="button" data-kind="prayer" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2c1.5 2 2.5 3.3 2.5 4.8A2.5 2.5 0 0 1 12 9.3a2.5 2.5 0 0 1-2.5-2.5C9.5 5.3 10.5 4 12 2z"/><rect x="9" y="11" width="6" height="11" rx="1"/></svg>A prayer</button>
+  </div>
+  <label for="gbName">Your name <span class="req">*</span></label>
+  <input id="gbName" maxlength="80" autocomplete="name" required>
+  <label for="gbRel">How you knew Gene</label>
+  <input id="gbRel" maxlength="80" placeholder="Nephew, neighbor at Fountaingrove, friend from the city…">
+  <label for="gbMsg" id="gbMsgLabel">Your memory <span class="req">*</span></label>
+  <textarea id="gbMsg" maxlength="2000" required></textarea>
+  <div class="hp" aria-hidden="true"><label for="gbWeb">Leave this empty</label><input id="gbWeb" tabindex="-1" autocomplete="off"></div>
+  <button class="send" id="gbSend" type="submit">Share</button>
+  <div class="note" id="gbNote" role="status"></div>
+ </form>
+ <p class="count" id="gbCount"></p>
+ <div class="msgs" id="gbList"><p class="empty">Loading…</p></div>
+</section>
+
+<footer>
+ <p>With love from Gene’s family &middot; <button type="button" id="share">Copy link to this page</button></p>
+ <p class="stats" id="stats"></p>
+</footer>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-app.js";
+import { getFirestore, collection, addDoc, query, orderBy, onSnapshot, doc, getDoc, setDoc, updateDoc, increment, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-firestore.js";
+
+const db = getFirestore(initializeApp({
+  apiKey: "AIzaSyBNqa6JHHe2yuriloiCA_yjzzBAf0KQmbY",
+  authDomain: "dm-auth-65cc4.firebaseapp.com",
+  projectId: "dm-auth-65cc4",
+  storageBucket: "dm-auth-65cc4.appspot.com",
+  messagingSenderId: "331110328467",
+  appId: "1:331110328467:web:060b48abefdff486330566"
+}));
+const MSGS = "memorialGeneMessages";
+const STATS = doc(db, "memorialGeneStats", "visits");
+const ICON = {
+  memory: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>',
+  prayer: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2c1.5 2 2.5 3.3 2.5 4.8A2.5 2.5 0 0 1 12 9.3a2.5 2.5 0 0 1-2.5-2.5C9.5 5.3 10.5 4 12 2z"/><rect x="9" y="11" width="6" height="11" rx="1"/></svg>'
+};
+
+/* Visits: every page load is a view; the first load in a browser is also a visitor. */
+(async () => {
+  let first = false;
+  try { first = !localStorage.getItem("geneVisited"); localStorage.setItem("geneVisited", "1"); } catch (e) {}
+  try {
+    await updateDoc(STATS, { views: increment(1), visitors: increment(first ? 1 : 0), updatedAt: serverTimestamp() });
+  } catch (e) {
+    try { await setDoc(STATS, { views: 1, visitors: 1, updatedAt: serverTimestamp() }); } catch (e2) {}
+  }
+  if (new URLSearchParams(location.search).has("stats")) {
+    try {
+      const s = (await getDoc(STATS)).data() || {};
+      const el = document.getElementById("stats");
+      el.textContent = (s.views || 0) + " page views · " + (s.visitors || 0) + " visitors";
+      el.style.display = "block";
+    } catch (e) {}
+  }
+})();
+
+/* Memory or prayer */
+let kind = "memory";
+const kindBtns = document.querySelectorAll(".kinds button");
+kindBtns.forEach(b => b.onclick = () => {
+  kind = b.dataset.kind;
+  kindBtns.forEach(x => x.setAttribute("aria-pressed", x === b ? "true" : "false"));
+  document.getElementById("gbMsgLabel").innerHTML = (kind === "prayer" ? "Your prayer" : "Your memory") + ' <span class="req">*</span>';
+  document.getElementById("gbSend").textContent = kind === "prayer" ? "Offer this prayer" : "Share";
+});
+
+const loadedAt = Date.now();
+const note = document.getElementById("gbNote");
+document.getElementById("gb").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  note.className = "note";
+  const name = document.getElementById("gbName").value.trim();
+  const relation = document.getElementById("gbRel").value.trim();
+  const message = document.getElementById("gbMsg").value.trim();
+  if (document.getElementById("gbWeb").value) return;            // bots fill the hidden box
+  if (!name) { note.className = "note err"; note.textContent = "Please add your name."; document.getElementById("gbName").focus(); return; }
+  if (!message) { note.className = "note err"; note.textContent = kind === "prayer" ? "Please write your prayer." : "Please write your memory."; document.getElementById("gbMsg").focus(); return; }
+  if (Date.now() - loadedAt < 3000) { note.className = "note err"; note.textContent = "One moment, then try again."; return; }
+  const btn = document.getElementById("gbSend");
+  btn.disabled = true;
+  try {
+    const data = { name, message, kind, createdAt: serverTimestamp() };
+    if (relation) data.relation = relation;
+    await addDoc(collection(db, MSGS), data);
+    document.getElementById("gbMsg").value = "";
+    note.textContent = kind === "prayer" ? "Thank you. Your prayer has been added." : "Thank you. Your memory has been added.";
+  } catch (err) {
+    note.className = "note err";
+    note.textContent = "Sorry, that didn’t save. Please try again in a moment.";
+  } finally { btn.disabled = false; }
+});
+
+/* The list, newest first. A message the family hides (hidden: true) is left out. */
+const list = document.getElementById("gbList");
+const fmt = ts => ts && ts.toDate ? ts.toDate().toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" }) : "Just now";
+onSnapshot(query(collection(db, MSGS), orderBy("createdAt", "desc")), snap => {
+  const rows = snap.docs.map(d => d.data()).filter(m => m.hidden !== true);
+  const prayers = rows.filter(m => m.kind === "prayer").length, memories = rows.length - prayers;
+  document.getElementById("gbCount").textContent = rows.length
+    ? [memories ? memories + (memories === 1 ? " memory" : " memories") : "", prayers ? prayers + (prayers === 1 ? " prayer" : " prayers") : ""].filter(Boolean).join(" and ") + " shared"
+    : "";
+  list.innerHTML = "";
+  if (!rows.length) { list.innerHTML = '<p class="empty">Be the first to share a memory or a prayer.</p>'; return; }
+  rows.forEach(m => {
+    const card = document.createElement("article"); card.className = "msg";
+    const top = document.createElement("div"); top.className = "top";
+    const icon = document.createElement("span"); icon.className = "icon"; icon.innerHTML = ICON[m.kind === "prayer" ? "prayer" : "memory"];
+    const who = document.createElement("span"); who.className = "who"; who.textContent = m.name || "";
+    top.append(icon, who);
+    if (m.relation) { const rel = document.createElement("span"); rel.className = "rel"; rel.textContent = "· " + m.relation; top.append(rel); }
+    const when = document.createElement("span"); when.className = "when"; when.textContent = fmt(m.createdAt); top.append(when);
+    const body = document.createElement("p"); body.className = "body"; body.textContent = m.message || "";
+    card.append(top, body); list.append(card);
+  });
+}, () => { list.innerHTML = '<p class="empty">Memories and prayers will appear here.</p>'; });
+
+document.getElementById("share").onclick = async () => {
+  const url = "https://oahuappdesign.com/Gene/";
+  try { await navigator.clipboard.writeText(url); document.getElementById("share").textContent = "Link copied"; }
+  catch (e) { prompt("Copy this link:", url); }
+};
+</script>
+</body>
+</html>
