@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Spiritual Gifts Case Study · Oahu App Design</title>
 <meta name="description" content="Case study: My Spiritual Gifts Assessment, a free and private personality and spiritual gifts app for iPhone, iPad and Android, built by Oahu App Design.">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -571,4 +571,65 @@ const Music=(()=>{
  api.pause=()=>{if(ctx)master.gain.setTargetAtTime(0,ctx.currentTime,.25)};
  api.fadeOut=()=>{if(ctx)master.gain.setTargetAtTime(0,ctx.currentTime,2)};
  return api})();
-</script></body></html>
+</script><!-- Phone layout (2026-10-01). The deck is a 1280x720 stage scaled to fit, so on
+     an iPhone it needs every pixel: landscape gets the whole screen with the
+     controls floating over it (they tuck away while it plays), portrait asks to
+     turn the phone and keeps the controls on screen instead of running off the
+     right edge. Safe-area insets keep the deck clear of the notch. -->
+<style>
+#csRotate{display:none}
+#csRotate{position:fixed;inset:0;z-index:200;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:32px;text-align:center;background:rgba(4,12,20,.94);color:#fff;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif}
+html,body{height:100dvh}
+@media (orientation:landscape) and (max-height:500px){
+ #view{inset:0 env(safe-area-inset-right) 0 env(safe-area-inset-left)!important}
+ #stage{border-radius:0}
+ #bar{height:46px;gap:8px;padding:0 max(12px,env(safe-area-inset-right)) env(safe-area-inset-bottom) max(12px,env(safe-area-inset-left));background:rgba(6,19,29,.86);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);transition:transform .35s ease}
+ #bar button,#bar #csBack{padding:6px 10px!important;font-size:13px!important}
+ #dots{gap:4px}#dots i{width:7px;height:7px}
+ body.cs-tuck #bar{transform:translateY(100%)}
+}
+@media (orientation:portrait) and (max-width:600px){
+ #bar{height:auto;flex-wrap:wrap;justify-content:center;gap:8px;padding:10px 12px calc(10px + env(safe-area-inset-bottom))}
+ #bar button,#bar #csBack{padding:8px 12px!important;font-size:14px!important}
+ #dots{order:9;flex-basis:100%;flex-wrap:wrap;gap:6px}
+ #csRotate{display:flex}
+ html.cs-rotate-ok #csRotate{display:none}
+}
+#csRotate svg{width:84px;height:84px;animation:csTurn 2.4s ease-in-out infinite}
+#csRotate h2{margin:0;font-size:24px;font-weight:800}
+#csRotate p{margin:0;font-size:16px;line-height:1.5;color:#c9d6e0;max-width:300px}
+#csRotate button{margin-top:6px;font:700 15px system-ui,sans-serif;color:#fff;background:transparent;border:1.5px solid rgba(255,255,255,.4);border-radius:10px;padding:10px 18px}
+@keyframes csTurn{0%,30%{transform:rotate(0)}55%,85%{transform:rotate(-90deg)}100%{transform:rotate(0)}}
+@media (prefers-reduced-motion:reduce){#csRotate svg{animation:none}}
+</style>
+<div id="csRotate" role="dialog" aria-label="Turn your phone sideways">
+ <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="20" y="6" width="24" height="44" rx="4"/><line x1="29" y1="43" x2="35" y2="43"/><path d="M50 52a18 18 0 0 1-14 6"/><path d="M38 54l-2 4 4 1"/></svg>
+ <h2>Turn your phone sideways</h2>
+ <p>This case study is made for a wide screen. Turn your phone to see it full size.</p>
+ <button type="button" id="csRotateOk">View it anyway</button>
+</div>
+<script>
+(function(){
+ try{if(sessionStorage.getItem('csRotateOk'))document.documentElement.classList.add('cs-rotate-ok')}catch(e){}
+ document.getElementById('csRotateOk').onclick=function(){document.documentElement.classList.add('cs-rotate-ok');try{sessionStorage.setItem('csRotateOk','1')}catch(e){}};
+ var bar=document.getElementById('bar'),view=document.getElementById('view');
+ var landPhone=matchMedia('(orientation:landscape) and (max-height:500px)');
+ /* Keep the deck clear of the bar wherever the bar takes up its own space. */
+ function refit(){
+  if(landPhone.matches){view.style.bottom='';}
+  else{view.style.bottom=bar.offsetHeight+'px';}
+  if(typeof fit==='function')fit();
+ }
+ addEventListener('resize',refit);
+ addEventListener('orientationchange',function(){setTimeout(refit,250)});
+ if(window.visualViewport)visualViewport.addEventListener('resize',refit);
+ refit();setTimeout(refit,300);
+ /* Landscape phone: the controls tuck away after a few seconds; any touch brings them back. */
+ var idle=null;
+ function wake(){document.body.classList.remove('cs-tuck');clearTimeout(idle);if(landPhone.matches)idle=setTimeout(function(){document.body.classList.add('cs-tuck')},3500)}
+ ['pointerdown','keydown'].forEach(function(ev){addEventListener(ev,wake,{passive:true})});
+ landPhone.addEventListener&&landPhone.addEventListener('change',function(){refit();wake()});
+ wake();
+})();
+</script>
+</body></html>
