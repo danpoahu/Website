@@ -1,0 +1,1220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Stone Tablets to Robots</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+html{color-scheme:light}
+:root{--sand:#FFFBEB;--ink:#1E293B;--soft:#64748B;--navy:#1a3c6e;--ocean:#0891B2;--deep:#004E7C;--purple:#7C3AED;--green:#16A34A;--amber:#D97706;--red:#DC2626;--pink:#D63384;--line:#E2E8F0}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:#0B2A40;color:var(--ink);font-family:"Source Sans 3",system-ui,sans-serif;overflow:hidden}
+#wrap{position:fixed;left:0;right:0;top:0;bottom:58px;display:flex;align-items:center;justify-content:center}
+#stage{width:1280px;height:720px;position:relative;transform-origin:center center;flex:none;background:var(--sand);overflow:hidden;border-radius:6px;box-shadow:0 20px 60px rgba(0,0,0,.35)}
+.slide{position:absolute;inset:0;opacity:0;pointer-events:none;transition:opacity .6s ease}
+.slide.cur{opacity:1;pointer-events:auto}
+[data-s]{opacity:0;transform:translateY(14px);transition:opacity .55s ease,transform .55s ease}
+[data-s].on{opacity:1;transform:none}
+h1,h2,h3,.k,.yr{font-family:Outfit,system-ui,sans-serif}
+.abs{position:absolute}
+.k{font-size:15px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--ocean)}
+.stripe{position:absolute;left:0;top:0;bottom:0;width:8px;background:linear-gradient(180deg,var(--ocean),var(--pink))}
+
+/* ---------- covers ---------- */
+.cover{background:linear-gradient(135deg,#0B3A53 0%,#0E7490 55%,#1a5f7a 100%);color:#fff}
+.cover .brand{position:absolute;left:90px;top:70px;font:600 16px Outfit;letter-spacing:.08em;opacity:.85}
+.cover h1{position:absolute;left:90px;top:150px;width:760px;font-size:84px;line-height:1;font-weight:800;letter-spacing:-.02em}
+.cover .sub{position:absolute;left:92px;top:380px;width:640px;font-size:25px;line-height:1.35;opacity:.92}
+.cover .gate{position:absolute;left:92px;top:500px;display:flex;gap:16px}
+.btn{font:600 19px Outfit;border:0;border-radius:999px;padding:15px 28px;cursor:pointer;background:#fff;color:#0B3A53}
+.btn.ghost{background:transparent;color:#fff;box-shadow:inset 0 0 0 2px rgba(255,255,255,.7)}
+.cover .tabletArt{position:absolute;right:70px;top:120px;width:360px}
+.waves{position:absolute;left:0;right:0;bottom:0;height:120px}
+
+/* ---------- era slides ---------- */
+.artCard{position:absolute;left:56px;top:84px;width:640px;height:520px;border-radius:26px;overflow:hidden;box-shadow:0 12px 30px rgba(15,23,42,.12)}
+.artCard svg{width:100%;height:100%;display:block}
+.eraTxt{position:absolute;left:750px;top:96px;width:480px}
+.eraTxt .yr{font-size:76px;font-weight:800;color:var(--navy);line-height:1;margin:10px 0 14px;letter-spacing:-.02em}
+.eraTxt h2{font-size:38px;line-height:1.08;color:var(--ink);font-weight:700;margin-bottom:18px}
+.eraTxt p{font-size:23px;line-height:1.4;color:#334155}
+.reach{position:absolute;left:750px;top:500px;width:470px}
+.reach .lbl{font:700 13px Outfit;letter-spacing:.14em;text-transform:uppercase;color:var(--soft);margin-bottom:10px}
+.reach .track{display:flex;gap:6px}
+.reach .seg{flex:1;height:14px;border-radius:7px;background:#E7E2CF}
+.reach .seg.f{background:linear-gradient(90deg,var(--ocean),var(--deep))}
+.reach .seg.now{background:linear-gradient(90deg,var(--ocean),var(--pink));animation:pulse 1.6s ease-in-out infinite}
+@keyframes pulse{50%{opacity:.55}}
+.reach .where{margin-top:10px;font:700 22px Outfit;color:var(--deep)}
+
+/* ---------- map ---------- */
+.mapBox{position:absolute;left:400px;top:0;right:0;bottom:0;border-left:1px solid var(--line)}
+.mapBox iframe{width:100%;height:100%;border:0;pointer-events:none;display:block}
+.mapCard{position:absolute;left:28px;top:60px;width:344px;background:rgba(255,255,255,.95);border-radius:20px;padding:20px 24px;box-shadow:0 12px 34px rgba(15,23,42,.18)}
+.mapCard h2{font-size:34px;color:var(--navy);font-weight:800;margin:6px 0 14px}
+.stat{display:flex;align-items:baseline;gap:12px;margin-top:10px}
+.stat b{font:800 30px Outfit;color:var(--deep);min-width:92px}
+.stat span{font-size:18px;color:#334155;line-height:1.2}
+.stat.p b{color:var(--purple)}
+.mapCard small{display:block;margin-top:14px;color:var(--soft);font-size:15px}
+
+/* ---------- what's new ---------- */
+.head{position:absolute;left:64px;top:44px;right:64px}
+.head h2{font-size:44px;font-weight:800;color:var(--navy);margin-top:4px}
+.head .n{position:absolute;right:0;top:4px;font:700 16px Outfit;color:var(--soft)}
+.cards{position:absolute;left:64px;right:64px;top:160px;display:flex;gap:36px}
+.card{flex:1;background:#fff;border-radius:22px;box-shadow:0 10px 28px rgba(15,23,42,.10);overflow:hidden;height:470px;display:flex;flex-direction:column}
+.mock{height:262px;background:#F1F5F9;position:relative;display:flex;align-items:center;justify-content:center;border-bottom:1px solid var(--line)}
+.card .tx{padding:20px 26px}
+.card h3{font-size:27px;font-weight:700;color:var(--ink);margin-bottom:8px}
+.card p{font-size:19.5px;line-height:1.38;color:#475569}
+.who{display:inline-block;font:700 12.5px Outfit;letter-spacing:.1em;text-transform:uppercase;color:#fff;background:var(--ocean);border-radius:999px;padding:4px 11px;margin-bottom:10px}
+.who.pip{background:var(--purple)}.who.scr{background:var(--green)}.who.fam{background:var(--amber)}
+/* mock bits */
+.ui{background:#fff;border-radius:14px;box-shadow:0 6px 18px rgba(15,23,42,.12);font-size:15px;color:var(--ink)}
+.pb{display:inline-block;border-radius:9px;padding:7px 13px;font:600 14px Outfit;border:1.5px solid var(--line);background:#fff;color:var(--ink)}
+.pb.t{background:var(--ocean);border-color:var(--ocean);color:#fff}
+.pb.g{background:#DCFCE7;border-color:var(--green);color:#166534}
+.pb.o{background:var(--amber);border-color:var(--amber);color:#fff}
+.chip{display:inline-block;border-radius:999px;padding:4px 11px;font:700 13px Outfit}
+.dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;vertical-align:middle}
+
+/* ---------- next ---------- */
+.nextList{position:absolute;left:64px;top:140px;width:640px}
+.ni{display:flex;gap:18px;align-items:flex-start;margin-bottom:13px}
+.ni .ic{flex:none;width:46px;height:46px;border-radius:14px;background:#E0F2FE;color:var(--deep);display:flex;align-items:center;justify-content:center;font:800 18px Outfit}
+.ni h3{font-size:22px;font-weight:700;color:var(--ink)}
+.ni p{font-size:17px;color:#475569;line-height:1.35;margin-top:2px}
+.flyers{position:absolute;left:740px;top:150px;width:490px;height:500px}
+.flyer{position:absolute;width:210px;height:290px;background:#fff;border-radius:14px;box-shadow:0 10px 26px rgba(15,23,42,.16);padding:18px;overflow:hidden}
+.flyer .fh{font:800 23px Outfit;color:var(--navy);line-height:1.1}
+.flyer .ln{height:9px;border-radius:5px;background:#E2E8F0;margin-top:9px}
+.flyer .img{height:84px;border-radius:10px;margin:14px 0 6px;background:linear-gradient(135deg,#BAE6FD,#FBCFE8)}
+[data-only]{opacity:0;transform:translateX(60px) rotate(2deg);transition:opacity .6s ease,transform .7s cubic-bezier(.2,.8,.2,1);pointer-events:none}
+[data-only].on{opacity:1;transform:none}
+.vis{position:absolute;left:740px;top:150px;width:490px;height:460px;display:flex;align-items:center;justify-content:center}
+.vcard{background:#fff;border-radius:18px;box-shadow:0 12px 30px rgba(15,23,42,.16);padding:20px 22px;font-size:15px;color:var(--ink)}
+.vcard h4{font:800 20px Outfit;color:var(--navy);margin-bottom:12px}
+.aiArrow{position:absolute;left:204px;top:100px;width:84px;text-align:center;font:800 16px Outfit;color:var(--purple)}
+
+/* ---------- character animation (runs each time a slide comes on) ---------- */
+.pulseB,.zap,.chiselArm,.sparks,.flame,.hop,.platen,.sheetOut,.floaty,.app,.drift,.upA,.downA,.ping,.convoy,.wheelBig,.wheelSmall,.legL,.legR,.bobA,.bobB,.waveArm,.blink,.heart,.cloudA,.cloudB{transform-box:fill-box}
+.cur .chiselArm{transform-origin:0% 50%;animation:chisel .45s ease-in-out infinite alternate}
+@keyframes chisel{from{transform:rotate(-14deg)}to{transform:rotate(8deg)}}
+.cur .sparks{animation:spark .45s ease-out infinite}
+@keyframes spark{0%,55%{opacity:0;transform:scale(.4)}70%{opacity:1;transform:scale(1.2)}100%{opacity:0;transform:translate(-8px,-10px) scale(.6)}}
+.cur .flame{transform-origin:50% 100%;animation:flick .38s ease-in-out infinite alternate}
+@keyframes flick{from{transform:scale(1,1)}to{transform:scale(.9,1.13) skewX(3deg)}}
+.cur .hop{transform-origin:50% 100%;animation:hop 1.1s ease-in-out infinite}
+@keyframes hop{0%,60%,100%{transform:none}75%{transform:translateY(-12px)}}
+.cur .lever{transform-box:view-box;transform-origin:303px 140px;animation:lever 1.6s ease-in-out infinite}
+@keyframes lever{0%,100%{transform:rotate(0)}45%{transform:rotate(22deg)}}
+.cur .platen{animation:platen 1.6s ease-in-out infinite}
+@keyframes platen{0%,100%{transform:none}45%{transform:translateY(40px)}}
+.cur .sheetOut{animation:sheet 1.6s ease-in-out infinite}
+@keyframes sheet{0%,50%{opacity:0;transform:none}60%{opacity:1}100%{opacity:0;transform:translate(150px,-120px) rotate(18deg)}}
+.cur .floaty{animation:floaty 3s ease-in-out infinite alternate}.cur .f2{animation-delay:-1s}.cur .f3{animation-delay:-2s}
+@keyframes floaty{from{transform:translateY(0) rotate(0)}to{transform:translateY(-14px) rotate(2deg)}}
+.cur .app{transform-origin:50% 50%;animation:pop .45s cubic-bezier(.3,1.6,.5,1) both}
+@keyframes pop{from{transform:scale(0);opacity:0}to{transform:scale(1);opacity:1}}
+.cur .drift{animation:floaty 3.4s ease-in-out infinite alternate}
+.cur .upA{animation:upA 1.2s ease-in-out infinite}.cur .downA{animation:downA 1.2s ease-in-out infinite}
+@keyframes upA{0%{transform:translateY(8px);opacity:.2}60%{opacity:1}100%{transform:translateY(-8px);opacity:.2}}
+@keyframes downA{0%{transform:translateY(-8px);opacity:.2}60%{opacity:1}100%{transform:translateY(8px);opacity:.2}}
+.cur .ping{transform-origin:50% 50%;animation:ping 1.8s ease-out infinite}.cur .p2{animation-delay:.9s}
+@keyframes ping{from{transform:scale(1);opacity:1}to{transform:scale(3.4);opacity:0}}
+/* robots: roll in from the left, wheels turning, then wave */
+.cur .convoy{animation:rollIn 4.6s cubic-bezier(.25,.6,.3,1) both}
+@keyframes rollIn{from{transform:translateX(-600px)}to{transform:none}}
+.cur .wheelBig{transform-origin:50% 50%;animation:spinBig 4.6s cubic-bezier(.25,.6,.3,1) both}
+@keyframes spinBig{from{transform:rotate(-553deg)}to{transform:rotate(0)}}
+.cur .wheelSmall{transform-origin:50% 50%;animation:spinSmall 4.6s cubic-bezier(.25,.6,.3,1) both}
+@keyframes spinSmall{from{transform:rotate(-2148deg)}to{transform:rotate(0)}}
+.cur .legL{transform-origin:50% 0%;animation:step .38s ease-in-out 12 alternate}
+.cur .legR{transform-origin:50% 0%;animation:step .38s ease-in-out 12 alternate-reverse}
+@keyframes step{from{transform:rotate(-16deg)}to{transform:rotate(16deg)}}
+.cur .bobA,.cur .bobB{animation:bob .38s ease-in-out 12 alternate}
+@keyframes bob{to{transform:translateY(-5px)}}
+.cur .waveArm{transform-origin:0% 100%;animation:wave .5s ease-in-out 4.6s infinite alternate}
+@keyframes wave{from{transform:rotate(-10deg)}to{transform:rotate(22deg)}}
+.cur .blink{animation:blink 1s steps(2,jump-none) infinite}.cur .b2{animation-delay:.5s}
+@keyframes blink{50%{opacity:.25}}
+.cur .pulseB{animation:beat 1.2s ease-in-out infinite}.cur .zap{animation:pop .5s cubic-bezier(.3,1.6,.5,1) .4s both}
+.cur .heart{transform-origin:50% 50%;animation:beat 1s ease-in-out 4.6s infinite}
+@keyframes beat{0%,100%{transform:scale(1)}15%{transform:scale(1.25)}30%{transform:scale(1)}45%{transform:scale(1.15)}}
+.cur .cloudA{animation:cloud 9s ease-in-out infinite alternate}.cur .cloudB{animation:cloud 11s ease-in-out infinite alternate-reverse}
+@keyframes cloud{to{transform:translateX(40px)}}
+
+/* ---------- player chrome ---------- */
+#cap{position:fixed;left:50%;transform:translateX(-50%);bottom:72px;max-width:min(1100px,92vw);background:rgba(11,42,64,.92);color:#fff;font-size:21px;line-height:1.35;padding:10px 20px;border-radius:12px;text-align:center}
+#cap.off,#cap:empty{display:none}
+#bar{position:fixed;left:0;right:0;bottom:0;height:58px;background:#081F30;display:flex;align-items:center;gap:10px;padding:0 16px;color:#CBD5E1;font:600 14px Outfit}
+#bar button{background:#12344D;color:#fff;border:0;border-radius:9px;padding:9px 14px;font:600 14px Outfit;cursor:pointer;min-width:44px}
+#bar button[aria-pressed="false"]{opacity:.55}
+#prog{flex:1;height:6px;background:#12344D;border-radius:3px;overflow:hidden}
+#progI{height:100%;width:0;background:linear-gradient(90deg,var(--ocean),var(--pink));transition:width .4s}
+</style>
+</head>
+<body>
+<script type="text/plain" id="mapSrc"><!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LDAH Pacific Reach</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0F2A3A; --ink2:#3D5A6B; --mute:#6F8794; --line:#D9E6EB;
+  --paper:#FBFAF6; --card:#FFFFFF;
+  --ocean1:#F2FAFB; --ocean2:#CFE9EF; --ocean3:#A9D7E2;
+  --teal:#0E7C86; --teal2:#14A3A8; --deep:#0B4F6C; --sand:#F3EBD8; --sandEdge:#C9B488; --land:#E7EFD9; --landEdge:#9DB48A;
+  --purple:#7C3AED; --purple2:#A78BFA; --amber:#D97706;
+  --serif:'Fraunces', Georgia, 'Times New Roman', serif;
+  --sans:'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:13px;-webkit-font-smoothing:antialiased;overflow:hidden}
+.app{display:grid;grid-template-rows:auto 1fr;height:100vh}
+header{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;padding:12px 20px 10px;border-bottom:1px solid var(--line);background:linear-gradient(180deg,#fff, var(--paper))}
+.kicker{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);font-weight:700}
+h1{font-family:var(--serif);font-weight:600;font-size:25px;line-height:1.1;margin:2px 0 3px;letter-spacing:-.01em}
+h1 em{font-style:italic;color:var(--teal)}
+.asof{font-size:11.5px;color:var(--mute)}
+.controls{display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.seg{display:inline-flex;background:#EEF4F6;border-radius:999px;padding:3px;border:1px solid var(--line)}
+.seg button{border:0;background:transparent;font:600 12px var(--sans);color:var(--ink2);padding:6px 12px;border-radius:999px;cursor:pointer;white-space:nowrap}
+.seg button.on{background:#fff;color:var(--deep);box-shadow:0 1px 3px rgba(11,79,108,.18)}
+.tour{border:0;background:var(--deep);color:#fff;font:600 12px var(--sans);padding:8px 14px;border-radius:999px;cursor:pointer;display:inline-flex;gap:7px;align-items:center}
+.tour:hover{background:var(--teal)}
+.tour svg{width:12px;height:12px}
+main{display:grid;grid-template-columns:minmax(0,1fr) 360px;min-height:0}
+header>*{min-width:0;max-width:100%}
+.seg{max-width:100%}
+.mapwrap{position:relative;min-width:0;min-height:0;overflow:hidden;background:var(--ocean1)}
+#map{width:100%;height:100%;display:block;touch-action:manipulation}
+.crumbs{position:absolute;top:12px;left:14px;display:flex;gap:4px;align-items:center;background:rgba(255,255,255,.88);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);border:1px solid var(--line);border-radius:999px;padding:4px 6px;font-weight:600;font-size:12px;box-shadow:0 2px 10px rgba(15,42,58,.06)}
+.crumbs button{border:0;background:none;font:inherit;color:var(--teal);cursor:pointer;padding:3px 8px;border-radius:999px}
+.crumbs button:hover{background:#E6F4F5}
+.crumbs button.cur{color:var(--ink);cursor:default;background:none}
+.crumbs .sep{color:#AFC3CB}
+.legend{position:absolute;left:14px;bottom:14px;background:rgba(255,255,255,.92);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);border:1px solid var(--line);border-radius:12px;padding:10px 12px;font-size:11px;color:var(--ink2);box-shadow:0 4px 18px rgba(15,42,58,.07);max-width:300px}
+.legend h4{margin:0 0 6px;font:700 10px var(--sans);letter-spacing:.12em;text-transform:uppercase;color:var(--mute)}
+.legend .row{display:flex;align-items:center;gap:7px;margin:3px 0}
+.legend .dot{width:11px;height:11px;border-radius:50%;flex:none}
+.legend svg{display:block}
+.scalebar{position:absolute;right:14px;bottom:14px;font-size:10.5px;color:var(--ink2);text-align:right;background:rgba(255,255,255,.85);border:1px solid var(--line);border-radius:10px;padding:6px 9px}
+.scalebar .bar{height:5px;border:1.5px solid var(--ink2);border-top:0;margin-top:3px}
+.insight{position:absolute;top:56px;right:14px;width:236px;background:#fff;border:1px solid var(--line);border-left:4px solid var(--amber);border-radius:10px;padding:10px 12px;box-shadow:0 6px 22px rgba(15,42,58,.09);font-size:12px;color:var(--ink2);transition:opacity .5s, transform .5s}
+.insight b{color:var(--ink)}
+.insight .big{font:600 22px var(--serif);color:var(--amber);line-height:1.1;margin:2px 0}
+.insight .k{font:700 10px var(--sans);letter-spacing:.12em;text-transform:uppercase;color:var(--amber)}
+.insight.hide{opacity:0;transform:translateY(-6px);pointer-events:none}
+.caption{position:absolute;left:50%;top:14px;transform:translateX(-50%);background:var(--deep);color:#fff;padding:9px 16px;border-radius:999px;font:500 13px var(--sans);box-shadow:0 6px 20px rgba(11,79,108,.3);opacity:0;transition:opacity .4s;pointer-events:none;white-space:nowrap;max-width:92%;overflow:hidden;text-overflow:ellipsis}
+.caption.show{opacity:1}
+.tip{position:absolute;pointer-events:none;background:#fff;border:1px solid var(--line);border-radius:10px;padding:8px 11px;box-shadow:0 8px 26px rgba(15,42,58,.16);font-size:12px;color:var(--ink2);opacity:0;transition:opacity .12s;min-width:140px;z-index:5}
+.tip .t{font:600 14px var(--serif);color:var(--ink)}
+.tip .n{font:700 13px var(--sans);color:var(--teal);margin-top:2px}
+.tip .n.p{color:var(--purple)}
+.tip .s{font-size:11px;color:var(--mute);margin-top:1px}
+/* rail */
+aside{border-left:1px solid var(--line);background:var(--card);overflow-y:auto;padding:16px 18px 24px;min-height:0}
+aside::-webkit-scrollbar{width:8px}aside::-webkit-scrollbar-thumb{background:#DCE7EB;border-radius:8px}
+.hero{display:flex;align-items:baseline;gap:8px}
+.hero .num{font:600 40px/1 var(--serif);color:var(--deep);letter-spacing:-.02em}
+.hero .lbl{font-size:12px;color:var(--ink2)}
+.split{display:flex;height:8px;border-radius:6px;overflow:hidden;margin:10px 0 6px;background:#EEF3F5}
+.split span{display:block;height:100%}
+.splitkey{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:11px;color:var(--ink2)}
+.splitkey i{display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:4px;vertical-align:0}
+.sec{margin-top:18px}
+.sec h3{font:700 10.5px var(--sans);letter-spacing:.13em;text-transform:uppercase;color:var(--mute);margin:0 0 8px;display:flex;justify-content:space-between;align-items:baseline}
+.sec h3 small{letter-spacing:0;text-transform:none;font-weight:500;font-size:10.5px}
+.rowb{display:grid;grid-template-columns:96px 1fr 44px;align-items:center;gap:8px;padding:4px 6px;margin:0 -6px;border-radius:7px;cursor:pointer}
+.rowb:hover{background:#F1F8F9}
+.rowb .nm{font-weight:600;font-size:12.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rowb .nm small{display:block;font-weight:500;color:var(--mute);font-size:10.5px}
+.rowb .track{height:7px;background:#EEF3F5;border-radius:5px;overflow:hidden}
+.rowb .fill{height:100%;background:linear-gradient(90deg,var(--teal2),var(--deep));border-radius:5px;width:0;transition:width .9s cubic-bezier(.2,.8,.2,1)}
+.rowb .fill.p{background:linear-gradient(90deg,var(--purple2),var(--purple))}
+.rowb .ct{text-align:right;font:700 12.5px var(--sans);color:var(--ink);font-variant-numeric:tabular-nums}
+ol.top{list-style:none;margin:0;padding:0;counter-reset:t}
+ol.top li{counter-increment:t;display:grid;grid-template-columns:20px 1fr auto;gap:8px;align-items:center;padding:5px 6px;margin:0 -6px;border-radius:7px;cursor:pointer}
+ol.top li:hover{background:#F1F8F9}
+ol.top li::before{content:counter(t);font:600 12px var(--serif);color:var(--teal);text-align:center}
+ol.top .c{font-weight:600;font-size:12.5px}
+ol.top .c small{color:var(--mute);font-weight:500;margin-left:5px;font-size:11px}
+ol.top .v{font:700 12.5px var(--sans);font-variant-numeric:tabular-nums}
+.partner{display:grid;grid-template-columns:1fr auto;gap:2px 8px;padding:7px 8px;margin:0 -6px 4px;border-radius:9px;cursor:pointer;border:1px solid transparent}
+.partner:hover{background:#F6F2FE;border-color:#E6DAFD}
+.partner .pn{font-weight:600;font-size:12.5px;display:flex;align-items:center;gap:6px}
+.partner .pn i{width:9px;height:9px;border-radius:50%;background:var(--purple);display:inline-block}
+.partner .pv{font:700 12.5px var(--sans);color:var(--purple);text-align:right}
+.partner .meta{grid-column:1/-1;font-size:10.5px;color:var(--mute);display:flex;gap:10px;padding-left:15px}
+.partner .meta b{color:var(--ink2);font-weight:600}
+.offmap{display:grid;grid-template-columns:1fr auto;gap:6px 10px;font-size:12px}
+.offmap .v{font-weight:700;text-align:right}
+.offmap small{display:block;color:var(--mute);font-size:10.5px}
+.notes{margin-top:18px;padding-top:12px;border-top:1px solid var(--line);font-size:10.5px;color:var(--mute);line-height:1.5}
+.notes p{margin:0 0 6px}
+.notes b{color:var(--ink2)}
+.back{border:0;background:#EEF4F6;color:var(--teal);font:600 12px var(--sans);padding:5px 10px;border-radius:999px;cursor:pointer;margin-bottom:10px}
+.ititle{font:600 28px/1.05 var(--serif);color:var(--ink);margin:0}
+.isub{font-size:12px;color:var(--ink2);margin-top:4px}
+.statgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+.stat{background:#F5FAFB;border:1px solid var(--line);border-radius:10px;padding:9px 10px}
+.stat .v{font:600 22px var(--serif);color:var(--deep)}
+.stat .k{font-size:10.5px;color:var(--mute)}
+.hood{padding-left:22px !important}
+.hood .nm{font-weight:500 !important;color:var(--ink2)}
+/* svg */
+.isl{cursor:pointer;transition:fill .25s}
+.isl:hover,.isl.hl{fill:#DCEBC9}
+.bub{cursor:pointer;transition:opacity .45s}
+.bub circle.b{fill:rgba(14,124,134,.78);stroke:#fff}
+.bub.p circle.b{fill:rgba(124,58,237,.80)}
+.bub.hiagg circle.b{fill:rgba(14,124,134,.5)}
+.bub.nz circle.b{fill:rgba(255,255,255,.55);stroke:var(--teal)}
+.bub:hover circle.b{fill:rgba(11,79,108,.92)}
+.bub.p:hover circle.b{fill:rgba(91,33,182,.95)}
+.bub.nz:hover circle.b{fill:rgba(14,124,134,.18)}
+.bub.pulse circle.b{animation:pulse 1.1s ease-in-out 3}
+@keyframes pulse{50%{fill:var(--amber)}}
+.lbl{font-family:var(--sans);font-weight:600;fill:var(--ink);paint-order:stroke;stroke:rgba(251,250,246,.92);stroke-linejoin:round;pointer-events:none;transition:opacity .45s}
+.lbl .cnt{fill:var(--teal);font-weight:700}
+.lbl.p .cnt{fill:var(--purple)}
+.ilbl{font-family:var(--serif);font-style:italic;fill:#5E7D5A;pointer-events:none;paint-order:stroke;stroke:rgba(242,250,251,.85);stroke-linejoin:round}
+.olbl{font-family:var(--sans);font-weight:600;letter-spacing:.3em;text-transform:uppercase;fill:#7FAFBF;pointer-events:none}
+.glbl{font-family:var(--sans);fill:#7FA3B0;pointer-events:none}
+.heat{pointer-events:none;mix-blend-mode:multiply;transition:opacity .45s}
+.fade{opacity:0;pointer-events:none}
+.still *{transition:none !important;animation:none !important}
+@media (max-width:1000px){
+  body{overflow:auto}
+  .app{height:auto}
+  main{grid-template-columns:minmax(0,1fr)}
+  .seg{flex-wrap:wrap}
+  h1 em{white-space:normal}
+  .mapwrap{height:68vh;min-height:420px}
+  aside{border-left:0;border-top:1px solid var(--line)}
+  header{flex-direction:column;align-items:flex-start;padding:12px 16px}
+  .controls{justify-content:flex-start}
+  .insight{display:none}
+}
+@media (max-width:560px){
+  h1{font-size:20px}
+  .legend{max-width:190px;font-size:10px;padding:7px 9px}
+  .legend svg{display:none}
+  .scalebar{display:none}
+  .controls{gap:6px}
+  .seg button{padding:5px 9px;font-size:11px}
+}
+
+/* Sign-in background (2026-10-03): the map only, no right-hand rail, no
+   controls, tour or captions. Shown behind the LDAH Int sign-in box, which is
+   public, so this is the baked 10-03 snapshot (aggregate counts, <3 rule). */
+aside#rail,.controls,#tourBtn,.crumbs,.insight,.caption{display:none!important}
+main{grid-template-columns:minmax(0,1fr)!important}
+</style>
+</head>
+<body>
+<div class="app">
+<header>
+  <div>
+    <div class="kicker">Leadership in Disabilities and Achievement of Hawaiʻi</div>
+    <h1>Where LDAH reaches: <em>Hawaiʻi &amp; the Pacific</em></h1>
+    <div class="asof">Data as of Oct 3, 2026 · contacts in LDAH Internal · aggregate counts only</div>
+  </div>
+  <div class="controls">
+    <div class="seg" id="layerSeg" role="group" aria-label="Who to count">
+      <button data-l="all" class="on">Everyone</button>
+      <button data-l="families">Families</button>
+      <button data-l="pros">Professionals</button>
+      <button data-l="members">Paid members</button>
+    </div>
+    <div class="seg" id="styleSeg" role="group" aria-label="Map style">
+      <button data-s="bubbles" class="on">Bubbles</button>
+      <button data-s="heat">Heat</button>
+    </div>
+    <button class="tour" id="tourBtn"><svg viewBox="0 0 12 12"><path d="M2 1l9 5-9 5z" fill="currentColor"/></svg>Take the tour</button>
+  </div>
+</header>
+<main>
+  <div class="mapwrap" id="wrap">
+    <svg id="map" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Map of LDAH contacts across Hawaiʻi and the Pacific partner areas">
+      <defs>
+        <radialGradient id="oceanG" cx="62%" cy="42%" r="75%">
+          <stop offset="0" stop-color="#F7FCFD"/><stop offset=".55" stop-color="#DDF0F4"/><stop offset="1" stop-color="#B9DFE8"/>
+        </radialGradient>
+        <radialGradient id="heatT"><stop offset="0" stop-color="#0B4F6C" stop-opacity=".95"/><stop offset=".35" stop-color="#0E7C86" stop-opacity=".6"/><stop offset=".7" stop-color="#14A3A8" stop-opacity=".22"/><stop offset="1" stop-color="#14A3A8" stop-opacity="0"/></radialGradient>
+        <radialGradient id="heatP"><stop offset="0" stop-color="#5B21B6" stop-opacity=".95"/><stop offset=".35" stop-color="#7C3AED" stop-opacity=".55"/><stop offset=".7" stop-color="#A78BFA" stop-opacity=".2"/><stop offset="1" stop-color="#A78BFA" stop-opacity="0"/></radialGradient>
+        <radialGradient id="glow"><stop offset="0" stop-color="#fff" stop-opacity="1"/><stop offset=".4" stop-color="#C4B5FD" stop-opacity=".9"/><stop offset="1" stop-color="#7C3AED" stop-opacity="0"/></radialGradient>
+        <filter id="landShadow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="0" stdDeviation="0" flood-color="#0B4F6C" flood-opacity=".18" id="lsd"/></filter>
+      </defs>
+      <rect id="oceanRect" x="-2000" y="-2000" width="5000" height="5000" fill="url(#oceanG)"/>
+      <g id="gGrat"></g>
+      <g id="gGhost"></g>
+      <g id="gDate"></g>
+      <g id="gReef"></g>
+      <g id="gLand"></g>
+      <g id="gArcs"></g>
+      <g id="gIlbl"></g>
+      <g id="gHeat"></g>
+      <g id="gBub"></g>
+      <g id="gLbl"></g>
+    </svg>
+    <div class="crumbs" id="crumbs"></div>
+    <div class="insight hide" id="insight"></div>
+    <div class="caption" id="caption"></div>
+    <div class="legend" id="legend"></div>
+    <div class="scalebar" id="scalebar"><span id="sbLbl"></span><div class="bar" id="sbBar"></div></div>
+    <div class="tip" id="tip"></div>
+  </div>
+  <aside id="rail"></aside>
+</main>
+</div>
+<script>
+const D = {"asOf": "2026-10-03", "places": [{"c": "Hilo", "h": null, "i": "Hawaii", "lat": 19.707, "lon": -155.082, "n": {"all": 223, "families": 209, "pros": 13, "members": 0}}, {"c": "Honolulu", "h": "Mānoa", "i": "Oahu", "lat": 21.31, "lon": -157.81, "n": {"all": 74, "families": 73, "pros": -1, "members": 0}}, {"c": "Keaʻau", "h": null, "i": "Hawaii", "lat": 19.622, "lon": -155.037, "n": {"all": 62, "families": 60, "pros": -1, "members": -1}}, {"c": "Honolulu", "h": "Kaimukī", "i": "Oahu", "lat": 21.285, "lon": -157.8, "n": {"all": 62, "families": 62, "pros": 0, "members": 0}}, {"c": "Pāhoa", "h": null, "i": "Hawaii", "lat": 19.494, "lon": -154.946, "n": {"all": 51, "families": 49, "pros": -1, "members": 0}}, {"c": "Honolulu", "h": "Mōʻiliʻili & McCully", "i": "Oahu", "lat": 21.29, "lon": -157.83, "n": {"all": 50, "families": 48, "pros": -1, "members": 0}}, {"c": "Honolulu", "h": "Nuʻuanu & Kalihi", "i": "Oahu", "lat": 21.33, "lon": -157.86, "n": {"all": 46, "families": 46, "pros": 0, "members": -1}}, {"c": "Kāneʻohe", "h": null, "i": "Oahu", "lat": 21.41, "lon": -157.8, "n": {"all": 44, "families": 43, "pros": -1, "members": 0}}, {"c": "Honolulu", "h": "Salt Lake", "i": "Oahu", "lat": 21.352, "lon": -157.925, "n": {"all": 39, "families": 38, "pros": -1, "members": 0}}, {"c": "Honolulu", "h": "Hawaiʻi Kai", "i": "Oahu", "lat": 21.292, "lon": -157.702, "n": {"all": 39, "families": 39, "pros": 0, "members": -1}}, {"c": "Honolulu", "h": "Ala Moana", "i": "Oahu", "lat": 21.293, "lon": -157.845, "n": {"all": 35, "families": 33, "pros": -1, "members": 0}}, {"c": "Honolulu", "h": "Downtown", "i": "Oahu", "lat": 21.309, "lon": -157.858, "n": {"all": 33, "families": 33, "pros": 0, "members": 0}}, {"c": "Waiʻanae", "h": null, "i": "Oahu", "lat": 21.44, "lon": -158.18, "n": {"all": 31, "families": 30, "pros": -1, "members": 0}}, {"c": "Honolulu", "h": "ʻĀina Haina & Kāhala", "i": "Oahu", "lat": 21.291, "lon": -157.752, "n": {"all": 24, "families": 24, "pros": 0, "members": 0}}, {"c": "Honolulu", "h": "Waikīkī", "i": "Oahu", "lat": 21.279, "lon": -157.826, "n": {"all": 20, "families": 20, "pros": 0, "members": 0}}, {"c": "Honolulu", "h": "Moanalua & Kalihi Valley", "i": "Oahu", "lat": 21.347, "lon": -157.885, "n": {"all": 19, "families": 19, "pros": 0, "members": 0}}, {"c": "Kailua", "h": null, "i": "Oahu", "lat": 21.397, "lon": -157.74, "n": {"all": 18, "families": 18, "pros": 0, "members": -1}}, {"c": "ʻEwa Beach", "h": null, "i": "Oahu", "lat": 21.32, "lon": -158.01, "n": {"all": 14, "families": 11, "pros": 3, "members": -1}}, {"c": "Waipahu", "h": null, "i": "Oahu", "lat": 21.387, "lon": -158.01, "n": {"all": 10, "families": 10, "pros": 0, "members": -1}}, {"c": "Kaunakakai", "h": null, "i": "Molokai", "lat": 21.09, "lon": -157.022, "n": {"all": 8, "families": 4, "pros": -1, "members": 0}}, {"c": "Wahiawā", "h": null, "i": "Oahu", "lat": 21.503, "lon": -158.024, "n": {"all": 6, "families": 6, "pros": 0, "members": 0}}, {"c": "Kapolei", "h": null, "i": "Oahu", "lat": 21.338, "lon": -158.08, "n": {"all": 6, "families": 5, "pros": -1, "members": 0}}, {"c": "Kailua-Kona", "h": null, "i": "Hawaii", "lat": 19.64, "lon": -155.996, "n": {"all": 5, "families": 4, "pros": -1, "members": -1}}, {"c": "Wailuku", "h": null, "i": "Maui", "lat": 20.891, "lon": -156.505, "n": {"all": 4, "families": -1, "pros": -1, "members": 0}}, {"c": "Pearl City", "h": null, "i": "Oahu", "lat": 21.397, "lon": -157.97, "n": {"all": 3, "families": 3, "pros": 0, "members": 0}}, {"c": "Mililani", "h": null, "i": "Oahu", "lat": 21.452, "lon": -158.012, "n": {"all": 3, "families": 3, "pros": 0, "members": 0}}, {"c": "ʻAiea", "h": null, "i": "Oahu", "lat": 21.384, "lon": -157.927, "n": {"all": 3, "families": 3, "pros": 0, "members": 0}}, {"c": "Hanalei", "h": null, "i": "Kauai", "lat": 22.204, "lon": -159.5, "n": {"all": -1, "families": -1, "pros": -1, "members": 0}}, {"c": "Haleʻiwa", "h": null, "i": "Oahu", "lat": 21.592, "lon": -158.103, "n": {"all": -1, "families": -1, "pros": 0, "members": 0}}, {"c": "Pepeʻekeo", "h": null, "i": "Hawaii", "lat": 19.833, "lon": -155.106, "n": {"all": -1, "families": -1, "pros": 0, "members": 0}}, {"c": "Kīlauea", "h": null, "i": "Kauai", "lat": 22.212, "lon": -159.406, "n": {"all": -1, "families": -1, "pros": -1, "members": 0}}, {"c": "Lahaina", "h": null, "i": "Maui", "lat": 20.878, "lon": -156.682, "n": {"all": -1, "families": -1, "pros": 0, "members": 0}}, {"c": "Waimānalo", "h": null, "i": "Oahu", "lat": 21.343, "lon": -157.712, "n": {"all": -1, "families": -1, "pros": 0, "members": 0}}, {"c": "Hauʻula", "h": null, "i": "Oahu", "lat": 21.61, "lon": -157.912, "n": {"all": -1, "families": -1, "pros": 0, "members": 0}}, {"c": "Lāʻie", "h": null, "i": "Oahu", "lat": 21.646, "lon": -157.926, "n": {"all": -1, "families": -1, "pros": 0, "members": 0}}, {"c": "Kaʻaʻawa", "h": null, "i": "Oahu", "lat": 21.553, "lon": -157.853, "n": {"all": -1, "families": -1, "pros": 0, "members": 0}}, {"c": "Hāna", "h": null, "i": "Maui", "lat": 20.758, "lon": -155.99, "n": {"all": -1, "families": -1, "pros": 0, "members": 0}}, {"c": "Waikoloa", "h": null, "i": "Hawaii", "lat": 19.94, "lon": -155.79, "n": {"all": -1, "families": 0, "pros": -1, "members": 0}}, {"c": "Honokaʻa", "h": null, "i": "Hawaii", "lat": 20.079, "lon": -155.467, "n": {"all": -1, "families": 0, "pros": -1, "members": 0}}, {"c": "Kōloa", "h": null, "i": "Kauai", "lat": 21.906, "lon": -159.47, "n": {"all": -1, "families": 0, "pros": -1, "members": 0}}, {"c": "Kurtistown", "h": null, "i": "Hawaii", "lat": 19.596, "lon": -155.06, "n": {"all": -1, "families": -1, "pros": 0, "members": 0}}, {"c": "Maunaloa", "h": null, "i": "Molokai", "lat": 21.137, "lon": -157.215, "n": {"all": -1, "families": -1, "pros": 0, "members": 0}}, {"c": "Honomū", "h": null, "i": "Hawaii", "lat": 19.87, "lon": -155.115, "n": {"all": -1, "families": -1, "pros": 0, "members": 0}}, {"c": "Mountain View", "h": null, "i": "Hawaii", "lat": 19.555, "lon": -155.11, "n": {"all": -1, "families": 0, "pros": 0, "members": 0}}, {"c": "Kekaha", "h": null, "i": "Kauai", "lat": 21.967, "lon": -159.711, "n": {"all": -1, "families": 0, "pros": -1, "members": 0}}, {"c": "Kahului", "h": null, "i": "Maui", "lat": 20.889, "lon": -156.472, "n": {"all": -1, "families": -1, "pros": 0, "members": 0}}, {"c": "Kaumakani", "h": null, "i": "Kauai", "lat": 21.92, "lon": -159.62, "n": {"all": -1, "families": -1, "pros": 0, "members": 0}}, {"c": "Lānaʻi City", "h": null, "i": "Lanai", "lat": 20.828, "lon": -156.92, "n": {"all": -1, "families": -1, "pros": 0, "members": 0}}, {"c": "Kīhei", "h": null, "i": "Maui", "lat": 20.764, "lon": -156.445, "n": {"all": -1, "families": -1, "pros": 0, "members": 0}}, {"c": "Volcano", "h": null, "i": "Hawaii", "lat": 19.43, "lon": -155.233, "n": {"all": -1, "families": -1, "pros": 0, "members": 0}}, {"c": "Waimea (Kamuela)", "h": null, "i": "Hawaii", "lat": 20.023, "lon": -155.668, "n": {"all": -1, "families": -1, "pros": 0, "members": 0}}, {"c": "Kualapuʻu", "h": null, "i": "Molokai", "lat": 21.157, "lon": -157.072, "n": {"all": -1, "families": -1, "pros": 0, "members": 0}}], "cities": [{"c": "Hilo", "i": "Hawaii", "lat": 19.707, "lon": -155.082, "n": {"all": 223, "families": 209, "pros": 13, "members": 0}, "split": false}, {"c": "Honolulu", "i": "Oahu", "lat": 21.315, "lon": -157.84, "n": {"all": 441, "families": 435, "pros": 6, "members": -1}, "split": true}, {"c": "Keaʻau", "i": "Hawaii", "lat": 19.622, "lon": -155.037, "n": {"all": 62, "families": 60, "pros": -1, "members": -1}, "split": false}, {"c": "Pāhoa", "i": "Hawaii", "lat": 19.494, "lon": -154.946, "n": {"all": 51, "families": 49, "pros": -1, "members": 0}, "split": false}, {"c": "Kāneʻohe", "i": "Oahu", "lat": 21.41, "lon": -157.8, "n": {"all": 44, "families": 43, "pros": -1, "members": 0}, "split": false}, {"c": "Waiʻanae", "i": "Oahu", "lat": 21.44, "lon": -158.18, "n": {"all": 31, "families": 30, "pros": -1, "members": 0}, "split": false}, {"c": "Kailua", "i": "Oahu", "lat": 21.397, "lon": -157.74, "n": {"all": 18, "families": 18, "pros": 0, "members": -1}, "split": false}, {"c": "ʻEwa Beach", "i": "Oahu", "lat": 21.32, "lon": -158.01, "n": {"all": 14, "families": 11, "pros": 3, "members": -1}, "split": false}, {"c": "Waipahu", "i": "Oahu", "lat": 21.387, "lon": -158.01, "n": {"all": 10, "families": 10, "pros": 0, "members": -1}, "split": false}, {"c": "Kaunakakai", "i": "Molokai", "lat": 21.09, "lon": -157.022, "n": {"all": 8, "families": 4, "pros": -1, "members": 0}, "split": false}, {"c": "Wahiawā", "i": "Oahu", "lat": 21.503, "lon": -158.024, "n": {"all": 6, "families": 6, "pros": 0, "members": 0}, "split": false}, {"c": "Kapolei", "i": "Oahu", "lat": 21.338, "lon": -158.08, "n": {"all": 6, "families": 5, "pros": -1, "members": 0}, "split": false}, {"c": "Kailua-Kona", "i": "Hawaii", "lat": 19.64, "lon": -155.996, "n": {"all": 5, "families": 4, "pros": -1, "members": -1}, "split": false}, {"c": "Wailuku", "i": "Maui", "lat": 20.891, "lon": -156.505, "n": {"all": 4, "families": -1, "pros": -1, "members": 0}, "split": false}, {"c": "Pearl City", "i": "Oahu", "lat": 21.397, "lon": -157.97, "n": {"all": 3, "families": 3, "pros": 0, "members": 0}, "split": false}, {"c": "Mililani", "i": "Oahu", "lat": 21.452, "lon": -158.012, "n": {"all": 3, "families": 3, "pros": 0, "members": 0}, "split": false}, {"c": "ʻAiea", "i": "Oahu", "lat": 21.384, "lon": -157.927, "n": {"all": 3, "families": 3, "pros": 0, "members": 0}, "split": false}, {"c": "Hanalei", "i": "Kauai", "lat": 22.204, "lon": -159.5, "n": {"all": -1, "families": -1, "pros": -1, "members": 0}, "split": false}, {"c": "Haleʻiwa", "i": "Oahu", "lat": 21.592, "lon": -158.103, "n": {"all": -1, "families": -1, "pros": 0, "members": 0}, "split": false}, {"c": "Pepeʻekeo", "i": "Hawaii", "lat": 19.833, "lon": -155.106, "n": {"all": -1, "families": -1, "pros": 0, "members": 0}, "split": false}, {"c": "Kīlauea", "i": "Kauai", "lat": 22.212, "lon": -159.406, "n": {"all": -1, "families": -1, "pros": -1, "members": 0}, "split": false}, {"c": "Lahaina", "i": "Maui", "lat": 20.878, "lon": -156.682, "n": {"all": -1, "families": -1, "pros": 0, "members": 0}, "split": false}, {"c": "Waimānalo", "i": "Oahu", "lat": 21.343, "lon": -157.712, "n": {"all": -1, "families": -1, "pros": 0, "members": 0}, "split": false}, {"c": "Hauʻula", "i": "Oahu", "lat": 21.61, "lon": -157.912, "n": {"all": -1, "families": -1, "pros": 0, "members": 0}, "split": false}, {"c": "Lāʻie", "i": "Oahu", "lat": 21.646, "lon": -157.926, "n": {"all": -1, "families": -1, "pros": 0, "members": 0}, "split": false}, {"c": "Kaʻaʻawa", "i": "Oahu", "lat": 21.553, "lon": -157.853, "n": {"all": -1, "families": -1, "pros": 0, "members": 0}, "split": false}, {"c": "Hāna", "i": "Maui", "lat": 20.758, "lon": -155.99, "n": {"all": -1, "families": -1, "pros": 0, "members": 0}, "split": false}, {"c": "Waikoloa", "i": "Hawaii", "lat": 19.94, "lon": -155.79, "n": {"all": -1, "families": 0, "pros": -1, "members": 0}, "split": false}, {"c": "Honokaʻa", "i": "Hawaii", "lat": 20.079, "lon": -155.467, "n": {"all": -1, "families": 0, "pros": -1, "members": 0}, "split": false}, {"c": "Kōloa", "i": "Kauai", "lat": 21.906, "lon": -159.47, "n": {"all": -1, "families": 0, "pros": -1, "members": 0}, "split": false}, {"c": "Kurtistown", "i": "Hawaii", "lat": 19.596, "lon": -155.06, "n": {"all": -1, "families": -1, "pros": 0, "members": 0}, "split": false}, {"c": "Maunaloa", "i": "Molokai", "lat": 21.137, "lon": -157.215, "n": {"all": -1, "families": -1, "pros": 0, "members": 0}, "split": false}, {"c": "Honomū", "i": "Hawaii", "lat": 19.87, "lon": -155.115, "n": {"all": -1, "families": -1, "pros": 0, "members": 0}, "split": false}, {"c": "Mountain View", "i": "Hawaii", "lat": 19.555, "lon": -155.11, "n": {"all": -1, "families": 0, "pros": 0, "members": 0}, "split": false}, {"c": "Kekaha", "i": "Kauai", "lat": 21.967, "lon": -159.711, "n": {"all": -1, "families": 0, "pros": -1, "members": 0}, "split": false}, {"c": "Kahului", "i": "Maui", "lat": 20.889, "lon": -156.472, "n": {"all": -1, "families": -1, "pros": 0, "members": 0}, "split": false}, {"c": "Kaumakani", "i": "Kauai", "lat": 21.92, "lon": -159.62, "n": {"all": -1, "families": -1, "pros": 0, "members": 0}, "split": false}, {"c": "Lānaʻi City", "i": "Lanai", "lat": 20.828, "lon": -156.92, "n": {"all": -1, "families": -1, "pros": 0, "members": 0}, "split": false}, {"c": "Kīhei", "i": "Maui", "lat": 20.764, "lon": -156.445, "n": {"all": -1, "families": -1, "pros": 0, "members": 0}, "split": false}, {"c": "Volcano", "i": "Hawaii", "lat": 19.43, "lon": -155.233, "n": {"all": -1, "families": -1, "pros": 0, "members": 0}, "split": false}, {"c": "Waimea (Kamuela)", "i": "Hawaii", "lat": 20.023, "lon": -155.668, "n": {"all": -1, "families": -1, "pros": 0, "members": 0}, "split": false}, {"c": "Kualapuʻu", "i": "Molokai", "lat": 21.157, "lon": -157.072, "n": {"all": -1, "families": -1, "pros": 0, "members": 0}, "split": false}], "islands": {"Oahu": {"zip": {"all": 587, "families": 575, "pros": 12, "members": 6}, "noZip": {"all": 30, "families": 16, "pros": 14, "members": -1}, "total": {"all": 617, "families": 591, "pros": 26, "members": 8}}, "Hawaii": {"zip": {"all": 350, "families": 327, "pros": 19, "members": -1}, "noZip": {"all": 9, "families": -1, "pros": 8, "members": 0}, "total": {"all": 359, "families": 328, "pros": 27, "members": -1}}, "Maui": {"zip": {"all": 9, "families": 6, "pros": -1, "members": 0}, "noZip": {"all": -1, "families": 0, "pros": -1, "members": 0}, "total": {"all": 10, "families": 6, "pros": 3, "members": 0}}, "Kauai": {"zip": {"all": 7, "families": 3, "pros": 4, "members": 0}, "noZip": {"all": -1, "families": 0, "pros": -1, "members": 0}, "total": {"all": 8, "families": 3, "pros": 5, "members": 0}}, "Molokai": {"zip": {"all": 10, "families": 6, "pros": -1, "members": 0}, "noZip": {"all": 30, "families": -1, "pros": -1, "members": 0}, "total": {"all": 40, "families": 8, "pros": 4, "members": 0}}, "Lanai": {"zip": {"all": -1, "families": -1, "pros": 0, "members": 0}, "noZip": {"all": 0, "families": 0, "pros": 0, "members": 0}, "total": {"all": -1, "families": -1, "pros": 0, "members": 0}}}, "partner": {"Guam": {"all": 24, "families": 21, "pros": 3, "members": 0}, "American Samoa": {"all": 33, "families": 12, "pros": 13, "members": 0}, "Palau": {"all": -1, "families": 0, "pros": -1, "members": 0}, "Micronesia": {"all": -1, "families": 0, "pros": -1, "members": 0}, "CNMI": {"all": -1, "families": 0, "pros": -1, "members": 0}, "Marshall Islands": {"all": -1, "families": 0, "pros": -1, "members": 0}}, "partnerStaff": {"Guam": -1, "American Samoa": -1, "Palau": -1, "Micronesia": -1, "CNMI": -1, "Marshall Islands": -1}, "offIsland": {"all": 3, "families": 3, "pros": 0, "members": 0}, "unknown": {"all": 99, "families": 33, "pros": 30, "members": 4}, "hiTotal": {"all": 1035, "families": 937, "pros": 65, "members": 10}, "allTotal": {"all": 1199, "families": 1006, "pros": 116, "members": 14}, "partnerTotal": {"all": 62, "families": 33, "pros": 21, "members": 0}, "offTotal": {"all": 102, "families": 36, "pros": 30, "members": 4}, "hiWithZip": 964, "archived": 21};
+(function(){
+'use strict';
+const NS='http://www.w3.org/2000/svg';
+const $=s=>document.querySelector(s);
+const svg=$('#map'), wrap=$('#wrap'), tip=$('#tip'), rail=$('#rail');
+
+/* ---------- projection (equirectangular, cos 20 deg) ---------- */
+const K=9.4, S=10;
+function P(lat,lon){const l=lon<0?lon+360:lon;return [(l-128)*K,(30-lat)*S];}
+
+/* ---------- names, populations, positions ---------- */
+const ISL={
+  Oahu:{name:'Oʻahu',pop:1016500,box:[21.76,21.22,-158.33,-157.6],lbl:[21.80,-158.02]},
+  Hawaii:{name:'Hawaiʻi Island',pop:200600,box:[20.32,18.86,-156.12,-154.76],lbl:[19.95,-155.55]},
+  Maui:{name:'Maui',pop:154800,box:[21.08,20.55,-156.72,-155.94],lbl:[21.07,-156.22]},
+  Kauai:{name:'Kauaʻi',pop:73200,box:[22.27,21.84,-159.83,-159.26],lbl:[22.31,-159.53]},
+  Molokai:{name:'Molokaʻi',pop:7300,box:[21.25,21.03,-157.35,-156.68],lbl:[21.29,-157.03]},
+  Lanai:{name:'Lānaʻi',pop:3400,box:[20.98,20.70,-157.10,-156.77],lbl:[20.70,-157.12]}
+};
+const ORDER=['Oahu','Hawaii','Molokai','Maui','Kauai','Lanai'];
+const NOZIP_POS={Oahu:[21.50,-157.94],Hawaii:[19.62,-155.45],Molokai:[21.13,-156.88],Maui:[20.72,-156.25],Kauai:[22.06,-159.53],Lanai:[20.80,-156.98]};
+const PARTNERS=[
+  {k:'American Samoa',name:'American Samoa',place:'Pago Pago',lat:-14.28,lon:-170.70,tz:-11,lp:'r'},
+  {k:'Guam',name:'Guam',place:'Hagåtña',lat:13.47,lon:144.75,tz:10,lp:'bl'},
+  {k:'CNMI',name:'CNMI',place:'Saipan',lat:15.19,lon:145.75,tz:10,lp:'tr'},
+  {k:'Micronesia',name:'FSM',place:'Palikir, Pohnpei',lat:6.92,lon:158.16,tz:11,lp:'b'},
+  {k:'Marshall Islands',name:'Marshall Islands',place:'Majuro',lat:7.09,lon:171.38,tz:12,lp:'b'},
+  {k:'Palau',name:'Palau',place:'Ngerulmud',lat:7.50,lon:134.62,tz:9,lp:'b'}
+];
+const HNL=[21.31,-157.86];
+const VIEWS={pacific:{box:[29.6,-19.5,128.5,213.5]},hawaii:{box:[22.45,18.75,-160.45,-154.65]}};
+for(const k in ISL) VIEWS[k]={box:ISL[k].box};
+
+/* ---------- island outlines (stylized, lat/lon) ---------- */
+const SHAPES={
+ Oahu:[[21.575,-158.282],[21.585,-158.24],[21.60,-158.17],[21.62,-158.09],[21.66,-158.05],[21.71,-157.99],[21.68,-157.94],[21.645,-157.92],[21.60,-157.90],[21.55,-157.85],[21.51,-157.84],[21.47,-157.80],[21.45,-157.765],[21.465,-157.72],[21.43,-157.73],[21.39,-157.71],[21.33,-157.69],[21.31,-157.65],[21.27,-157.68],[21.26,-157.71],[21.27,-157.76],[21.255,-157.81],[21.27,-157.84],[21.295,-157.87],[21.31,-157.92],[21.325,-157.95],[21.365,-157.965],[21.33,-157.985],[21.31,-158.00],[21.30,-158.06],[21.30,-158.11],[21.34,-158.13],[21.39,-158.16],[21.44,-158.19],[21.48,-158.225],[21.53,-158.245],[21.565,-158.27]],
+ Kauai:[[22.22,-159.585],[22.21,-159.50],[22.23,-159.40],[22.18,-159.33],[22.13,-159.295],[22.07,-159.31],[22.00,-159.33],[21.95,-159.35],[21.90,-159.42],[21.875,-159.47],[21.88,-159.55],[21.90,-159.61],[21.95,-159.67],[21.97,-159.72],[22.04,-159.785],[22.10,-159.77],[22.16,-159.71],[22.19,-159.65]],
+ Niihau:[[22.02,-160.11],[21.98,-160.06],[21.90,-160.06],[21.83,-160.12],[21.78,-160.20],[21.79,-160.245],[21.86,-160.245],[21.94,-160.21],[22.00,-160.17]],
+ Molokai:[[21.22,-157.26],[21.20,-157.15],[21.215,-157.05],[21.21,-156.985],[21.19,-156.96],[21.175,-156.90],[21.16,-156.80],[21.15,-156.735],[21.115,-156.71],[21.08,-156.76],[21.06,-156.87],[21.065,-156.96],[21.085,-157.03],[21.09,-157.12],[21.10,-157.25],[21.10,-157.31],[21.17,-157.30]],
+ Lanai:[[20.93,-156.97],[20.91,-156.87],[20.85,-156.81],[20.78,-156.80],[20.74,-156.87],[20.73,-156.95],[20.75,-157.02],[20.80,-157.06],[20.87,-157.06]],
+ Kahoolawe:[[20.60,-156.62],[20.58,-156.55],[20.53,-156.54],[20.50,-156.60],[20.51,-156.67],[20.55,-156.70],[20.58,-156.68]],
+ Maui:[[21.01,-156.64],[21.03,-156.59],[21.00,-156.54],[20.95,-156.50],[20.91,-156.47],[20.92,-156.38],[20.94,-156.30],[20.90,-156.22],[20.86,-156.14],[20.81,-156.07],[20.77,-155.99],[20.71,-155.98],[20.66,-156.04],[20.63,-156.13],[20.59,-156.26],[20.58,-156.36],[20.60,-156.42],[20.65,-156.445],[20.72,-156.45],[20.78,-156.47],[20.80,-156.51],[20.79,-156.57],[20.81,-156.62],[20.86,-156.67],[20.92,-156.695],[20.97,-156.69]],
+ Hawaii:[[20.27,-155.86],[20.24,-155.77],[20.20,-155.70],[20.13,-155.59],[20.09,-155.48],[20.03,-155.34],[19.98,-155.24],[19.88,-155.11],[19.76,-155.08],[19.725,-155.045],[19.68,-154.99],[19.62,-154.93],[19.53,-154.81],[19.42,-154.88],[19.34,-155.00],[19.30,-155.15],[19.24,-155.33],[19.13,-155.50],[19.03,-155.62],[18.91,-155.68],[19.00,-155.77],[19.12,-155.90],[19.30,-155.90],[19.45,-155.92],[19.56,-155.97],[19.64,-156.00],[19.73,-156.06],[19.83,-155.98],[19.93,-155.89],[20.03,-155.83],[20.15,-155.88]]
+};
+const ISL_SHAPE_TARGET={Niihau:'Kauai',Kahoolawe:'Maui'};
+const EXTRA_NAMES={Niihau:'Niʻihau',Kahoolawe:'Kahoʻolawe'};
+const EXTRA_LBL={Niihau:[21.90,-160.33],Kahoolawe:[20.47,-156.75]};
+const PSHAPES={
+ Guam:[[13.65,144.86],[13.60,144.94],[13.50,144.90],[13.40,144.80],[13.28,144.76],[13.24,144.69],[13.30,144.64],[13.44,144.65],[13.50,144.73],[13.58,144.80]],
+ 'American Samoa':[[-14.25,-170.85],[-14.26,-170.70],[-14.25,-170.56],[-14.30,-170.58],[-14.33,-170.70],[-14.37,-170.80],[-14.32,-170.85]],
+ CNMI:[[15.28,145.82],[15.20,145.78],[15.10,145.71],[15.12,145.68],[15.22,145.72],[15.28,145.78]],
+ Palau:[[7.75,134.62],[7.60,134.67],[7.40,134.62],[7.33,134.48],[7.45,134.52],[7.62,134.56]],
+ Micronesia:[[7.00,158.22],[6.95,158.32],[6.86,158.33],[6.78,158.24],[6.83,158.13],[6.93,158.12]]
+};
+const GHOST_LAND={
+ 'New Guinea':[[-0.9,131],[-0.5,134],[-1.5,137.5],[-2.6,141],[-3.3,144],[-4.0,145.8],[-5.5,147.6],[-6.3,147.8],[-7.7,147.5],[-8.1,146],[-7.8,144],[-9.0,143],[-8.5,141],[-8.0,139],[-6.5,138.5],[-4.6,136],[-4.0,134],[-3.0,132],[-2.0,131],[-1.3,130.5]],
+ 'Australia':[[-11.1,130],[-11.2,132.5],[-12.0,136.8],[-14.5,135.5],[-15.0,135.6],[-17.5,140.5],[-17.0,141.5],[-14.0,141.6],[-10.7,142.5],[-12.5,143.5],[-14.5,144.5],[-16,145.4],[-18,146.0],[-21,148],[-21,130]],
+ 'New Britain':[[-4.2,151.9],[-5.0,151.6],[-5.6,150.6],[-6.2,149.0],[-5.6,148.4],[-5.4,150.0],[-4.6,151.2]],
+ 'Solomon Is.':[[-6.6,155.6],[-7.2,157.0],[-8.6,159.6],[-9.8,160.9],[-10.6,161.6],[-10.2,160.6],[-9.4,159.4],[-8.1,157.6],[-7.0,156.0]]
+};
+const GHOST_DOTS=[['Wake',19.28,166.65],['Johnston',16.73,-169.53],['Kwajalein',8.72,167.73],['Chuuk',7.42,151.78],['Yap',9.51,138.13],['Kosrae',5.32,162.98],['Tarawa',1.42,173.0],['Samoa',-13.85,-171.75],['Tokelau',-9.2,-171.8],['Tuvalu',-8.52,179.2],['Kiritimati',1.87,-157.4],['Palmyra',5.88,-162.08],['Nauru',-0.53,166.93],['Wallis',-13.3,-176.2],['Fiji',-17.7,178.0],['Tinian',14.99,145.63],['Rota',14.15,145.2],['Ebeye',8.78,167.74]];
+const NWHI=[[23.06,-161.92],[23.58,-164.70],[23.75,-166.15],[24.99,-167.99],[25.77,-171.73],[26.07,-173.97],[27.83,-175.83],[28.21,-177.37],[28.42,-178.30]];
+
+/* ---------- helpers ---------- */
+function el(tag,attrs,parent){const e=document.createElementNS(NS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);if(parent)parent.appendChild(e);return e;}
+function smooth(pts){ // closed Catmull-Rom -> cubic bezier
+  const p=pts.map(([a,b])=>P(a,b)), n=p.length; let d=`M${p[0][0].toFixed(3)},${p[0][1].toFixed(3)}`;
+  for(let i=0;i<n;i++){const p0=p[(i-1+n)%n],p1=p[i],p2=p[(i+1)%n],p3=p[(i+2)%n];
+    const c1=[p1[0]+(p2[0]-p0[0])/6,p1[1]+(p2[1]-p0[1])/6],c2=[p2[0]-(p3[0]-p1[0])/6,p2[1]-(p3[1]-p1[1])/6];
+    d+=`C${c1[0].toFixed(3)},${c1[1].toFixed(3)} ${c2[0].toFixed(3)},${c2[1].toFixed(3)} ${p2[0].toFixed(3)},${p2[1].toFixed(3)}`;}
+  return d+'Z';
+}
+const fmt=n=>n===-1?'<3':Number(n).toLocaleString('en-US');
+const val=n=>n===-1?2:n; // size proxy for suppressed values
+function miles(a,b){const R=3958.8,t=Math.PI/180,dl=(b[0]-a[0])*t,dn=(b[1]-a[1])*t;const h=Math.sin(dl/2)**2+Math.cos(a[0]*t)*Math.cos(b[0]*t)*Math.sin(dn/2)**2;return 2*R*Math.asin(Math.sqrt(h));}
+
+/* ---------- state ---------- */
+let layer='all', style='bubbles', view='pacific', vb=null, scaleList=[], arcs=[];
+const LAYER_WORD={all:'people',families:'families',pros:'professionals',members:'paid members'};
+
+/* ---------- static layers ---------- */
+const gGrat=$('#gGrat'),gGhost=$('#gGhost'),gDate=$('#gDate'),gLand=$('#gLand'),gArcs=$('#gArcs'),gIlbl=$('#gIlbl'),gHeat=$('#gHeat'),gBub=$('#gBub'),gLbl=$('#gLbl'),gReef=$('#gReef');
+// scalable registration: fn(px) called every frame
+function reg(fn){scaleList.push(fn);}
+function scaledText(parent,lat,lon,txt,cls,fs,opts={}){
+  const [x,y]=P(lat,lon); const t=el('text',{class:cls,x,y,'text-anchor':opts.anchor||'middle'},parent); t.textContent=txt;
+  reg(px=>{t.setAttribute('font-size',fs*px);t.setAttribute('stroke-width',(opts.halo||3)*px);if(opts.dy)t.setAttribute('y',y+opts.dy*px);if(opts.dx)t.setAttribute('x',x+opts.dx*px);if(opts.ls)t.style.letterSpacing=(opts.ls*px)+'px';});
+  return t;
+}
+// graticule
+for(let lat=-10;lat<=20;lat+=10){const [x0,y]=P(lat,120),[x1]=P(lat,-140);const l=el('line',{x1:x0,y1:y,x2:x1,y2:y,stroke:'#9CCAD6','stroke-opacity':lat===0?.7:.35},gGrat);reg(px=>{l.setAttribute('stroke-width',(lat===0?1:.6)*px);l.setAttribute('stroke-dasharray',lat===0?'':`${2*px} ${4*px}`);});}
+for(let lon=130;lon<=210;lon+=10){const [x,y0]=P(35,lon),[,y1]=P(-25,lon);const l=el('line',{x1:x,y1:y0,x2:x,y2:y1,stroke:'#9CCAD6','stroke-opacity':.3},gGrat);reg(px=>{l.setAttribute('stroke-width',.6*px);l.setAttribute('stroke-dasharray',`${2*px} ${4*px}`);});}
+{const [x0,y]=P(23.44,120),[x1]=P(23.44,-140);const l=el('line',{x1:x0,y1:y,x2:x1,y2:y,stroke:'#D9A441','stroke-opacity':.55},gGrat);reg(px=>{l.setAttribute('stroke-width',.9*px);l.setAttribute('stroke-dasharray',`${6*px} ${4*px}`);});}
+const gratLbl=el('g',{},gGrat);
+scaledText(gratLbl,0.35,131,'EQUATOR','glbl',9,{anchor:'start',halo:0,ls:2});
+scaledText(gratLbl,23.75,131,'TROPIC OF CANCER','glbl',9,{anchor:'start',halo:0,ls:2});
+for(const lat of [-10,10,20]) scaledText(gratLbl,lat+.3,128.8,(lat<0?-lat+'°S':lat+'°N'),'glbl',8.5,{anchor:'start',halo:0});
+// ocean names
+const oLbl=el('g',{},gGrat);
+scaledText(oLbl,15.5,192,'NORTH PACIFIC OCEAN','olbl',13,{halo:0,ls:6});
+scaledText(oLbl,-6.5,196,'SOUTH PACIFIC','olbl',11,{halo:0,ls:5});
+scaledText(oLbl,12.5,152,'MICRONESIA','olbl',10,{halo:0,ls:5});
+scaledText(oLbl,-12.5,176,'POLYNESIA','olbl',10,{halo:0,ls:5});
+// ghost land
+for(const [nm,pts] of Object.entries(GHOST_LAND)){const p=el('path',{d:smooth(pts),fill:'#EEF1E6',stroke:'#C7CFB8'},gGhost);reg(px=>p.setAttribute('stroke-width',.7*px));}
+scaledText(gGhost,-4.6,140.5,'NEW GUINEA','glbl',9,{halo:0,ls:2});
+scaledText(gGhost,-15.5,134,'AUSTRALIA','glbl',9,{halo:0,ls:2});
+for(const [nm,lat,lon] of GHOST_DOTS){const [x,y]=P(lat,lon);const c=el('circle',{cx:x,cy:y,fill:'#B9CBC0'},gGhost);reg(px=>c.setAttribute('r',1.6*px));}
+for(const [lat,lon] of NWHI){const [x,y]=P(lat,lon);const c=el('circle',{cx:x,cy:y,fill:'#A9C6A6'},gGhost);reg(px=>c.setAttribute('r',1.8*px));}
+{const t=scaledText(gGhost,26.4,-172.0,'Papahānaumokuākea','ilbl',10,{halo:2.5});t.setAttribute('transform',`rotate(-17 ${P(26.4,-172)[0]} ${P(26.4,-172)[1]})`);}
+// date line (stylized)
+{const pts=[[32,180],[5,180],[5,210],[-11,210],[-11,188.7],[-22,188.7]].map(([a,b])=>P(a,b>180?b-360:b));
+ const pl=el('polyline',{points:pts.map(p=>p.join(',')).join(' '),fill:'none',stroke:'#E07A5F','stroke-opacity':.75},gDate);
+ reg(px=>{pl.setAttribute('stroke-width',1.1*px);pl.setAttribute('stroke-dasharray',`${7*px} ${4*px} ${1.5*px} ${4*px}`);});
+ const [x,y]=P(16,180);const t=el('text',{class:'glbl',x,y,'text-anchor':'middle',fill:'#C2573D',transform:`rotate(-90 ${x} ${y})`},gDate);t.textContent='INTERNATIONAL DATE LINE';t.style.fill='#C2573D';
+ reg(px=>{t.setAttribute('font-size',8.5*px);t.setAttribute('dy',-4*px);t.style.letterSpacing=2*px+'px';});
+ const a=scaledText(gDate,27,178.6,'tomorrow','glbl',9,{anchor:'end',halo:0});a.style.fill='#C2573D';a.style.fontStyle='italic';
+ const b=scaledText(gDate,27,-178.6,'today','glbl',9,{anchor:'start',halo:0});b.style.fill='#C2573D';b.style.fontStyle='italic';
+}
+// reefs/halo under Hawaiian islands
+for(const [k,pts] of Object.entries(SHAPES)){const r=el('path',{d:smooth(pts),fill:'none',stroke:'#BFE3EA','stroke-linejoin':'round'},gReef);reg(px=>r.setAttribute('stroke-width',7*px));}
+// Hawaiian islands
+const islandEls={};
+for(const [k,pts] of Object.entries(SHAPES)){
+  const target=ISL_SHAPE_TARGET[k]||k;
+  const p=el('path',{d:smooth(pts),class:'isl',fill:'#E7EFD9',stroke:'#93AE80','data-isl':target},gLand);
+  reg(px=>p.setAttribute('stroke-width',.9*px));
+  p.addEventListener('click',e=>{e.stopPropagation(); if(view==='pacific'){go('hawaii');} else go(target);});
+  p.addEventListener('mouseenter',()=>hlIsland(target,true));p.addEventListener('mouseleave',()=>hlIsland(target,false));
+  (islandEls[target]=islandEls[target]||[]).push(p);
+}
+function hlIsland(k,on){(islandEls[k]||[]).forEach(p=>p.classList.toggle('hl',on));}
+// partner shapes
+for(const [k,pts] of Object.entries(PSHAPES)){const p=el('path',{d:smooth(pts),fill:'#EDE6FB',stroke:'#9F7AEA'},gLand);reg(px=>p.setAttribute('stroke-width',.7*px));}
+{const [x,y]=P(7.10,171.25);const e=el('ellipse',{cx:x,cy:y,rx:.2*K,ry:.06*S,fill:'none',stroke:'#9F7AEA'},gLand);reg(px=>e.setAttribute('stroke-width',1.4*px));}
+// island labels
+const ilblHawaii=el('g',{},gIlbl);
+for(const k of ORDER){const [la,lo]=ISL[k].lbl;scaledText(ilblHawaii,la,lo,ISL[k].name,'ilbl',13,{halo:3});}
+for(const k in EXTRA_LBL){const [la,lo]=EXTRA_LBL[k];scaledText(ilblHawaii,la,lo,EXTRA_NAMES[k],'ilbl',11,{halo:3});}
+
+/* ---------- arcs Honolulu -> partners ---------- */
+const [hx,hy]=P(...HNL);
+for(const pt of PARTNERS){
+  const [x,y]=P(pt.lat,pt.lon); const mx=(hx+x)/2,my=(hy+y)/2, dx=x-hx, dy=y-hy, len=Math.hypot(dx,dy);
+  let nx=-dy/len, ny=dx/len; if(ny>0){nx=-nx;ny=-ny;} // bulge north
+  const bend=pt.k==='American Samoa'?.07:.17;
+  const cx=mx+nx*len*bend, cy=my+ny*len*bend;
+  const d=`M${hx},${hy} Q${cx},${cy} ${x},${y}`;
+  const base=el('path',{d,fill:'none',stroke:'#7C3AED','stroke-opacity':.22},gArcs);
+  const flow=el('path',{d,fill:'none',stroke:'#7C3AED','stroke-opacity':.75,'stroke-linecap':'round'},gArcs);
+  const dot=el('circle',{fill:'url(#glow)'},gArcs);
+  const mi=Math.round(miles(HNL,[pt.lat,pt.lon])/10)*10;
+  const t=pt.k==='CNMI'?0.68:pt.k==='Palau'?0.42:0.5, qx=(1-t)*(1-t)*hx+2*(1-t)*t*cx+t*t*x, qy=(1-t)*(1-t)*hy+2*(1-t)*t*cy+t*t*y;
+  const ml=el('text',{class:'glbl',x:qx,y:qy,'text-anchor':'middle'},gArcs); ml.textContent=mi.toLocaleString('en-US')+' mi'; ml.style.fill='#8B6BD9'; ml.style.fontWeight='600';
+  pt.miles=mi;
+  const a={base,flow,dot,len:0,phase:Math.random()};
+  reg(px=>{base.setAttribute('stroke-width',1.2*px);flow.setAttribute('stroke-width',1.6*px);flow.setAttribute('stroke-dasharray',`${1.5*px} ${6*px}`);dot.setAttribute('r',5*px);ml.setAttribute('font-size',9*px);ml.setAttribute('dy',-4*px);a.px=px;});
+  arcs.push(a);
+}
+{const c=el('circle',{cx:hx,cy:hy,fill:'#0B4F6C'},gArcs);reg(px=>c.setAttribute('r',2.2*px));}
+
+/* ---------- data items per view ---------- */
+const groups={pacific:[],state:[],detail:[]};
+const hiTotalPos=[20.9,-157.4];
+groups.pacific.push({kind:'hiagg',lat:hiTotalPos[0],lon:hiTotalPos[1],n:D.hiTotal,title:'Hawaiʻi',sub:'all islands · click to zoom in',label:'Hawaiʻi',lp:'r'});
+for(const pt of PARTNERS){groups.pacific.push({kind:'p',lat:pt.lat,lon:pt.lon,n:D.partner[pt.k]||{all:0,families:0,pros:0,members:0},title:pt.name,sub:pt.place+' · Pacific partner contacts',label:pt.name,lp:pt.lp,partner:pt});}
+for(const c of D.cities){groups.state.push({kind:'c',lat:c.lat,lon:c.lon,n:c.n,title:c.c,sub:ISL[c.i].name,island:c.i,city:c.c,label:c.c});}
+for(const p of D.places){groups.detail.push({kind:'c',lat:p.lat,lon:p.lon,n:p.n,title:p.h?p.h:p.c,sub:(p.h?'Honolulu · ':'')+ISL[p.i].name,island:p.i,city:p.c,label:p.h||p.c});}
+for(const k of ORDER){const nz=D.islands[k].noZip;const [la,lo]=NOZIP_POS[k];
+  const it={kind:'nz',lat:la,lon:lo,n:nz,title:ISL[k].name,sub:'ZIP not recorded · placed at island centre',island:k,label:''};
+  groups.state.push(it); groups.detail.push(Object.assign({},it,{label:'ZIP not recorded'}));}
+
+const RF={pacific:{b:3,f:1.05},state:{b:2.5,f:1.55},detail:{b:3,f:1.3}};
+const LABEL_MIN={pacific:0,state:20,detail:8};
+function sizeK(){return Math.max(.55,Math.min(1,(svg.clientWidth||1000)/950));}
+function rpx(item,g){const n=item.n[layer];if(!n)return 0;return (RF[g].b+Math.sqrt(val(n))*RF[g].f)*sizeK();}
+
+function buildItems(){
+  for(const g in groups){
+    groups[g].sort((a,b)=>val(b.n.all)-val(a.n.all));
+    groups[g].forEach((it,i)=>{
+      const [x,y]=P(it.lat,it.lon); it.x=x; it.y=y; it.g=g; it.i=i; it.grow=0;
+      const gEl=el('g',{class:'bub fade '+it.kind},gBub);
+      const c=el('circle',{class:'b',cx:x,cy:y},gEl);
+      const h=el('circle',{class:'heat fade',cx:x,cy:y,fill:it.kind==='p'?'url(#heatP)':'url(#heatT)'},gHeat);
+      const t=el('text',{class:'lbl fade'+(it.kind==='p'?' p':'')},gLbl);
+      const ts=el('tspan',{},t), tc=el('tspan',{class:'cnt'},t);
+      it.el=gEl;it.c=c;it.h=h;it.t=t;it.ts=ts;it.tc=tc;
+      gEl.addEventListener('mouseenter',e=>showTip(it,e));gEl.addEventListener('mousemove',e=>moveTip(e));gEl.addEventListener('mouseleave',hideTip);
+      gEl.addEventListener('click',e=>{e.stopPropagation();showTip(it,e);
+        if(it.kind==='hiagg')go('hawaii'); else if(it.island&&view!==it.island&&g!=='pacific')go(it.island);
+        else if(it.kind==='p')partnerFocus(it.partner);});
+    });
+  }
+}
+function itemFrame(it,px){
+  const r=rpx(it,it.g)*it.grow;
+  it.c.setAttribute('r',Math.max(0,r*px));
+  it.c.setAttribute('stroke-width',(it.kind==='nz'?1.4:1.3)*px);
+  if(it.kind==='nz')it.c.setAttribute('stroke-dasharray',`${3*px} ${2.2*px}`);
+  it.h.setAttribute('r',Math.max(0,r*2.7*px));
+  const fs=it.kind==='hiagg'?14:it.kind==='p'?12:11.5;
+  it.t.setAttribute('font-size',fs*px);it.t.setAttribute('stroke-width',3.2*px);
+  const R=rpx(it,it.g); let tx=it.x+(R+4)*px, ty=it.y+fs*.35*px, anc='start';
+  const lp=it.lp||'r';
+  if(lp==='b'){tx=it.x;ty=it.y+(R+fs+1)*px;anc='middle';}
+  else if(lp==='bl'){tx=it.x-(R+3)*px;ty=it.y+(R+fs*.6)*px;anc='end';}
+  else if(lp==='tr'){tx=it.x+(R+3)*px;ty=it.y-(R-2)*px;anc='start';}
+  it.t.setAttribute('x',tx);it.t.setAttribute('y',ty);it.t.setAttribute('text-anchor',anc);
+}
+function layoutLabels(px){
+  const g=groupForView(view); if(g==='pacific')return;
+  const boxes=[];
+  if(ilblHawaii.style.opacity!=='0')for(const t of ilblHawaii.children){try{const b=t.getBBox();if(b.width)boxes.push({x:b.x,y:b.y,w:b.width,h:b.height});}catch(e){}}
+  const list=groups[g].filter(it=>it.lblOn).sort((a,b)=>val(b.n[layer])-val(a.n[layer]));
+  const inside=b=>b.x>=vb.x&&b.y>=vb.y&&b.x+b.w<=vb.x+vb.w&&b.y+b.h<=vb.y+vb.h;
+  const hit=b=>!inside(b)||boxes.some(o=>b.x<o.x+o.w&&b.x+b.w>o.x&&b.y<o.y+o.h&&b.y+b.h>o.y);
+  for(const it of list){
+    const fs=11.5, R=rpx(it,g)*Math.min(1,it.grow||0), txt=(it.ts.textContent+it.tc.textContent);
+    const w=txt.length*fs*.6*px, h=fs*1.15*px, gap=3*px;
+    const cands=[
+      [it.x+R*px+gap, it.y+fs*.35*px, 'start', it.x+R*px+gap, it.y-h/2],
+      [it.x-R*px-gap, it.y+fs*.35*px, 'end', it.x-R*px-gap-w, it.y-h/2],
+      [it.x, it.y-R*px-gap-fs*.25*px, 'middle', it.x-w/2, it.y-R*px-gap-h],
+      [it.x, it.y+R*px+gap+fs*.85*px, 'middle', it.x-w/2, it.y+R*px+gap]];
+    let placed=false;
+    for(const [tx,ty,anc,bx,by] of cands){const b={x:bx,y:by,w,h};if(!hit(b)){boxes.push(b);it.t.setAttribute('x',tx);it.t.setAttribute('y',ty);it.t.setAttribute('text-anchor',anc);placed=true;break;}}
+    it.t.setAttribute('visibility',placed?'visible':'hidden');
+  }
+}
+function groupForView(v){return v==='pacific'?'pacific':v==='hawaii'?'state':'detail';}
+function refreshItems(regrow){
+  const g=groupForView(view);
+  for(const k in groups) for(const it of groups[k]){
+    const n=it.n[layer]; const on=k===g && !!n;
+    it.el.classList.toggle('fade',!on || style==='heat'&&false);
+    it.c.style.opacity=style==='heat'?(it.kind==='nz'?.9:.0):1;
+    it.c.style.pointerEvents='all';
+    it.h.classList.toggle('fade',!(on&&style==='heat'&&it.kind!=='nz'));
+    const showLbl=on && it.label && (k==='pacific' || val(n)>=LABEL_MIN[k] || (k==='detail'&&it.island===view));
+    it.t.classList.toggle('fade',!showLbl); it.lblOn=showLbl;
+    it.ts.textContent=it.label?it.label+'  ':'';
+    it.tc.textContent=n?fmt(n):'';
+    if(on&&regrow)it.grow=0;
+  }
+  if(regrow)growIn(g);
+}
+let growStart=0, growGroup=null;
+const STILL=/still/.test(location.search); if(STILL)document.documentElement.classList.add('still');
+function growIn(g){growGroup=g;growStart=STILL?-1e7:performance.now();}
+function easeOutBack(t){const c1=1.4,c3=c1+1;return 1+c3*Math.pow(t-1,3)+c1*Math.pow(t-1,2);}
+
+/* ---------- viewBox ---------- */
+function boxToVB(box){
+  const [n,s,w,e]=box; const [x0,y0]=P(n,w), [x1,y1]=P(s,e);
+  let bw=x1-x0,bh=y1-y0; const W=svg.clientWidth||1000,H=svg.clientHeight||700;
+  const pad=view==='pacific'?1.02:1.08; bw*=pad;bh*=pad;
+  const cx=(x0+x1)/2, cy=(y0+y1)/2; const ar=W/H;
+  if(bw/bh>ar)bh=bw/ar; else bw=bh*ar;
+  return {x:cx-bw/2,y:cy-bh/2,w:bw,h:bh};
+}
+function setVB(v){vb=v;svg.setAttribute('viewBox',`${v.x} ${v.y} ${v.w} ${v.h}`);}
+let anim=null;
+function animateTo(target,dur=1400){
+  const from=Object.assign({},vb), t0=performance.now();
+  const fcx=from.x+from.w/2,fcy=from.y+from.h/2,tcx=target.x+target.w/2,tcy=target.y+target.h/2;
+  const lw0=Math.log(from.w),lw1=Math.log(target.w);
+  anim={step(now){let t=Math.min(1,(now-t0)/dur);const e=t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
+    const w=Math.exp(lw0+(lw1-lw0)*e),h=w*(target.h/target.w);
+    // centre follows zoom so the motion feels like flying, not sliding
+    const zf=(Math.log(from.w)-Math.log(w))/((lw0-lw1)||1);const ce=isFinite(zf)?Math.min(1,Math.max(0,zf)):e;
+    const cx=fcx+(tcx-fcx)*ce,cy=fcy+(tcy-fcy)*ce;
+    setVB({x:cx-w/2,y:cy-h/2,w,h}); if(t>=1)anim=null;}};
+}
+
+/* ---------- frame loop ---------- */
+function pxPerUnit(){return vb.w/(svg.clientWidth||1000);}
+function frame(now){
+  if(anim)anim.step(now);
+  const px=pxPerUnit();
+  for(const f of scaleList)f(px);
+  // grow
+  const gt=(now-growStart);
+  for(const k in groups)for(const it of groups[k]){
+    if(k===growGroup){const t=Math.min(1,Math.max(0,(gt-it.i*28)/700));it.grow=t<=0?0:easeOutBack(t);} else if(it.grow<1&&k!==growGroup){it.grow=1;}
+    itemFrame(it,px);
+  }
+  layoutLabels(px);
+  // arcs flow
+  const showArcs=vb.w>150;
+  gArcs.style.opacity=showArcs?1:0;
+  if(showArcs){for(const a of arcs){if(!a.len)a.len=a.base.getTotalLength();
+    a.flow.setAttribute('stroke-dashoffset',-(now/40)*a.px);
+    const t=((now/4200)+a.phase)%1;const p=a.base.getPointAtLength(t*a.len);a.dot.setAttribute('cx',p.x);a.dot.setAttribute('cy',p.y);a.dot.style.opacity=Math.sin(t*Math.PI).toFixed(2);}}
+  gDate.style.opacity=vb.w>150?1:0; gGrat.style.opacity=vb.w>120?1:.0; gGhost.style.opacity=vb.w>120?1:0;
+  ilblHawaii.style.opacity=vb.w<200?1:0;
+  scalebar(px);
+  requestAnimationFrame(frame);
+}
+function scalebar(px){
+  const unitsPerMile=S/69.0; const target=110*px/unitsPerMile; // miles for ~110px
+  const nice=[1,2,5,10,20,25,50,100,200,250,500,1000,2000];let m=nice[0];for(const v of nice)if(v<=target)m=v;
+  $('#sbBar').style.width=(m*unitsPerMile/px)+'px';$('#sbLbl').textContent=m.toLocaleString('en-US')+' miles';
+}
+
+/* ---------- tooltip ---------- */
+function showTip(it,e){
+  const n=it.n[layer]; const word=it.kind==='p'?'Pacific partner contacts':LAYER_WORD[layer];
+  let extra='';
+  if(it.kind==='p'){const s=D.partnerStaff[it.partner.k];extra=`<div class="s">${it.partner.miles.toLocaleString('en-US')} mi from Honolulu · ${clock(it.partner.tz)}</div>`+(s?`<div class="s">includes ${fmt(s)} partner staff card${s===1?'':'s'}</div>`:'');}
+  if(it.kind==='c'&&it.island&&ISL[it.island]){}
+  tip.innerHTML=`<div class="t">${it.title}</div><div class="n ${it.kind==='p'?'p':''}">${fmt(n)} ${word}</div><div class="s">${it.sub}</div>${extra}`;
+  tip.style.opacity=1; moveTip(e);
+}
+function moveTip(e){const r=wrap.getBoundingClientRect();let x=e.clientX-r.left+14,y=e.clientY-r.top+14;const tw=tip.offsetWidth,th=tip.offsetHeight;if(x+tw>r.width-8)x=e.clientX-r.left-tw-14;if(y+th>r.height-8)y=e.clientY-r.top-th-14;tip.style.left=x+'px';tip.style.top=y+'px';}
+function hideTip(){tip.style.opacity=0;}
+svg.addEventListener('click',()=>hideTip());
+
+/* ---------- clocks ---------- */
+function clock(tz){const d=new Date(Date.now()+tz*3600e3);const day=d.toLocaleDateString('en-US',{weekday:'short',timeZone:'UTC'});const t=d.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit',timeZone:'UTC'});
+  const hi=new Date(Date.now()-10*3600e3);const diff=Math.round((Date.UTC(d.getUTCFullYear(),d.getUTCMonth(),d.getUTCDate())-Date.UTC(hi.getUTCFullYear(),hi.getUTCMonth(),hi.getUTCDate()))/864e5);
+  return `${day} ${t}`+(diff>0?' (tomorrow)':diff<0?' (yesterday)':'');}
+
+/* ---------- navigation ---------- */
+function go(v,opts={}){
+  view=v; hideTip();
+  animateTo(boxToVB(VIEWS[v].box),opts.dur||1400);
+  refreshItems(true); renderCrumbs(); renderRail(); renderLegend(); renderInsight();
+  for(const k in islandEls)islandEls[k].forEach(p=>p.classList.toggle('hl',k===v));
+}
+function partnerFocus(pt){caption(`${pt.name}: ${fmt((D.partner[pt.k]||{})[layer]||0)} Pacific partner contacts · ${pt.miles.toLocaleString('en-US')} mi from Honolulu · local time ${clock(pt.tz)}`,4200);}
+function renderCrumbs(){
+  const c=$('#crumbs');c.innerHTML='';
+  const items=[['pacific','Pacific']];if(view!=='pacific')items.push(['hawaii','Hawaiʻi']);if(ISL[view])items.push([view,ISL[view].name]);
+  items.forEach(([k,lbl],i)=>{if(i){const s=document.createElement('span');s.className='sep';s.textContent='›';c.appendChild(s);}
+    const b=document.createElement('button');b.textContent=lbl;if(k===view)b.className='cur';else b.onclick=()=>go(k);c.appendChild(b);});
+  if(view==='pacific'){const s=document.createElement('span');s.className='sep';s.textContent='·';c.appendChild(s);const b=document.createElement('button');b.textContent='Zoom into Hawaiʻi';b.onclick=()=>go('hawaii');c.appendChild(b);}
+}
+let capT=null;
+function caption(txt,ms=3200){const c=$('#caption');c.textContent=txt;c.classList.add('show');clearTimeout(capT);capT=setTimeout(()=>c.classList.remove('show'),ms);}
+
+/* ---------- legend ---------- */
+function renderLegend(){
+  const g=groupForView(view); const samples=g==='pacific'?[1000,50]:g==='state'?[200,25]:[75,10];
+  const f=RF[g], sk=sizeK(); const rs=samples.map(n=>(f.b+Math.sqrt(n)*f.f)*sk); const H=Math.ceil(rs[0]*2+4);
+  let circles='',x=rs[0]+2;
+  samples.forEach((n,i)=>{const r=rs[i];circles+=`<circle cx="${rs[0]+2}" cy="${H-2-r}" r="${r}" fill="none" stroke="#0E7C86" stroke-width="1"/><line x1="${rs[0]+2}" x2="${rs[0]*2+12}" y1="${H-2-2*r}" y2="${H-2-2*r}" stroke="#9FB6BF" stroke-dasharray="2 2"/><text x="${rs[0]*2+15}" y="${H-2-2*r+3.5}" font-size="10" fill="#3D5A6B">${n.toLocaleString('en-US')}</text>`;});
+  $('#legend').innerHTML=`<h4>Bubble = ${LAYER_WORD[layer]}</h4><svg width="${rs[0]*2+50}" height="${H}">${circles}</svg>
+  <div class="row"><span class="dot" style="background:rgba(14,124,134,.8)"></span>Hawaiʻi contacts by ZIP</div>
+  <div class="row"><span class="dot" style="background:rgba(124,58,237,.8)"></span>Pacific partner contacts</div>
+  ${g!=='pacific'?'<div class="row"><span class="dot" style="border:1.5px dashed #0E7C86;background:#fff"></span>ZIP not recorded (island known)</div>':''}
+  <div class="row" style="color:#6F8794">Places with 1 or 2 people show as “&lt;3”.</div>`;
+}
+
+/* ---------- insight card ---------- */
+function rate(k){const t=D.islands[k].total[layer];return t!==0?val(t)/ISL[k].pop*1000:0;}
+function rateTxt(k){if(D.islands[k].total[layer]===-1)return '<1';const r=rate(k);return r<0.1?'<0.1':r.toFixed(1);}
+function renderInsight(){
+  const box=$('#insight'); if(view!=='hawaii'||layer==='members'){box.classList.add('hide');return;}
+  const rates=ORDER.map(k=>[k,rate(k)]).filter(r=>D.islands[r[0]].total[layer]>=10).sort((a,b)=>b[1]-a[1]);
+  if(!rates.length){box.classList.add('hide');return;}
+  const [tk,tr]=rates[0]; const oahu=rate('Oahu');
+  const mult=oahu>0?tr/oahu:0;
+  box.innerHTML=`<div class="k">Per resident</div><div class="big">${tr.toFixed(1)} per 1,000</div><b>${ISL[tk].name}</b> has the deepest reach for its size: ${fmt(D.islands[tk].total[layer])} ${LAYER_WORD[layer]} among about ${ISL[tk].pop.toLocaleString('en-US')} residents${tk!=='Oahu'&&mult>1.5?`, roughly <b>${Math.round(mult)}×</b> Oʻahu’s rate`:''}.`;
+  box.classList.remove('hide');
+}
+
+/* ---------- rail ---------- */
+function bar(pct,purple){return `<div class="track"><div class="fill${purple?' p':''}" data-w="${Math.max(2,pct)}"></div></div>`;}
+function animateBars(){requestAnimationFrame(()=>rail.querySelectorAll('.fill').forEach(f=>f.style.width=f.dataset.w+'%'));}
+function renderRail(){
+  if(ISL[view]) return renderIslandRail(view);
+  const L=layer, T=D.allTotal[L], HI=D.hiTotal[L];
+  const PT=val(D.partnerTotal[L]), OFF=val(D.offTotal[L]);
+  const tv=val(T)||1;
+  let h=`<div class="hero"><div class="num">${fmt(T)}</div><div class="lbl">${LAYER_WORD[L]} in the contact list</div></div>
+  <div class="split"><span style="width:${val(HI)/tv*100}%;background:var(--teal)"></span><span style="width:${PT/tv*100}%;background:var(--purple)"></span><span style="width:${OFF/tv*100}%;background:#C9D6DC"></span></div>
+  <div class="splitkey"><span><i style="background:var(--teal)"></i>Hawaiʻi ${fmt(HI)}</span><span><i style="background:var(--purple)"></i>Pacific partners ${fmt(D.partnerTotal[L])}</span><span><i style="background:#C9D6DC"></i>Off-island or unknown ${fmt(D.offTotal[L])}</span></div>`;
+  // islands
+  const imax=Math.max(...ORDER.map(k=>val(D.islands[k].total[L])))||1;
+  h+=`<div class="sec"><h3>By island <small>per 1,000 residents</small></h3>`;
+  for(const k of [...ORDER].sort((a,b)=>val(D.islands[b].total[L])-val(D.islands[a].total[L]))){const t=D.islands[k].total[L];
+    h+=`<div class="rowb" data-go="${k}" data-hl="${k}"><div class="nm">${ISL[k].name}<small>${t!==0?rateTxt(k)+' per 1,000':'none recorded'}</small></div>${bar(val(t)/imax*100)}<div class="ct">${fmt(t)}</div></div>`;}
+  h+=`</div>`;
+  // top 10 cities
+  const cs=D.cities.filter(c=>c.n[L]).sort((a,b)=>val(b.n[L])-val(a.n[L])).slice(0,10);
+  h+=`<div class="sec"><h3>Top 10 cities &amp; towns <small>by ZIP</small></h3><ol class="top">`;
+  for(const c of cs)h+=`<li data-go="${c.i}" data-city="${c.c}"><span class="c">${c.c}<small>${ISL[c.i].name}</small></span><span class="v">${fmt(c.n[L])}</span></li>`;
+  h+=`</ol></div>`;
+  // partners
+  h+=`<div class="sec"><h3>Pacific partners <small>contacts · distance · local time</small></h3>`;
+  for(const pt of [...PARTNERS].sort((a,b)=>val((D.partner[b.k]||{})[L]||0)-val((D.partner[a.k]||{})[L]||0))){const n=(D.partner[pt.k]||{})[L]||0;const s=D.partnerStaff[pt.k];
+    h+=`<div class="partner" data-partner="${pt.k}"><div class="pn"><i></i>${pt.name}<span style="font-weight:500;color:var(--mute);font-size:11px">${pt.place}</span></div><div class="pv">${fmt(n)}</div><div class="meta"><span><b>${pt.miles.toLocaleString('en-US')}</b> mi</span><span class="clk" data-tz="${pt.tz}">${clock(pt.tz)}</span>${s&&L==='all'?`<span>${fmt(s)} staff card${s===1?'':'s'}</span>`:''}</div></div>`;}
+  h+=`</div>`;
+  // off map
+  const nzT=ORDER.reduce((s,k)=>s+val(D.islands[k].noZip[L]||0),0);
+  h+=`<div class="sec"><h3>Not pinned to a town</h3><div class="offmap">
+   <div>ZIP not recorded<small>island known · dashed rings on the Hawaiʻi map</small></div><div class="v">${nzT}</div>
+   <div>Off-island / mainland<small>outside Hawaiʻi and not a partner contact</small></div><div class="v">${fmt(D.offIsland[L])}</div>
+   <div>Location unknown<small>no ZIP and no island recorded</small></div><div class="v">${fmt(D.unknown[L])}</div></div></div>`;
+  h+=notes();
+  rail.innerHTML=h; wireRail(); animateBars();
+}
+function renderIslandRail(k){
+  const L=layer, I=D.islands[k];
+  const ps=D.places.filter(p=>p.i===k&&p.n[L]);
+  // group Honolulu hoods
+  const rows=[];const cityAgg=D.cities.filter(c=>c.i===k&&c.n[L]).sort((a,b)=>val(b.n[L])-val(a.n[L]));
+  const max=Math.max(1,...cityAgg.map(c=>val(c.n[L])));
+  let h=`<button class="back" data-go="hawaii">‹ All islands</button><h2 class="ititle">${ISL[k].name}</h2>
+  <div class="isub">${cityAgg.length} ${cityAgg.length===1?'town':'towns'} with ${LAYER_WORD[L]} · about ${ISL[k].pop.toLocaleString('en-US')} residents</div>
+  <div class="statgrid"><div class="stat"><div class="v">${fmt(I.total[L])}</div><div class="k">${LAYER_WORD[L]} on ${ISL[k].name}</div></div>
+  <div class="stat"><div class="v">${I.total[L]!==0?rateTxt(k):'0'}</div><div class="k">per 1,000 residents</div></div>
+  <div class="stat"><div class="v">${fmt(I.zip[L])}</div><div class="k">placed by ZIP</div></div>
+  <div class="stat"><div class="v">${fmt(I.noZip[L])}</div><div class="k">ZIP not recorded</div></div></div>
+  <div class="sec"><h3>Cities &amp; towns <small>tap to find on the map</small></h3>`;
+  for(const c of cityAgg){
+    h+=`<div class="rowb" data-city="${c.c}"><div class="nm">${c.c}</div>${bar(val(c.n[L])/max*100)}<div class="ct">${fmt(c.n[L])}</div></div>`;
+    if(c.split){for(const p of ps.filter(p=>p.c===c.c&&p.h).sort((a,b)=>val(b.n[L])-val(a.n[L])))
+      h+=`<div class="rowb hood" data-hood="${p.h}"><div class="nm">${p.h}</div>${bar(val(p.n[L])/max*100)}<div class="ct">${fmt(p.n[L])}</div></div>`;}
+  }
+  if(!cityAgg.length)h+=`<div style="color:var(--mute)">No ${LAYER_WORD[L]} with a ZIP here yet.</div>`;
+  h+=`</div>`+notes();
+  rail.innerHTML=h; wireRail(); animateBars();
+}
+function notes(){return `<div class="notes">
+  <p><b>Who is counted.</b> Every contact in LDAH Internal that is not archived (${D.archived} archived records left out). Contacts are the families, professionals and community members LDAH serves; cross-platform staff and partner cards are included.</p>
+  <p><b>How places are found.</b> Hawaiʻi contacts are placed by their ZIP code (Honolulu ZIPs are shown as neighbourhoods when you zoom into Oʻahu). Where the ZIP is blank but the island is recorded, they sit in a dashed ring at the island centre.</p>
+  <p><b>Pacific partner contacts</b> are counted from the partner stamp, which records <i>whose work</i> the contact belongs to (American Samoa, Guam, CNMI, FSM, Marshall Islands, Palau). It is ownership, not a home address.</p>
+  <p><b>Privacy.</b> Aggregate counts only, no names or addresses. Any place with 1 or 2 people shows as “&lt;3”. Paid members follow the same rule, so most member counts read “&lt;3”.</p>
+  <p><b>Per 1,000 residents</b> uses approximate 2020 Census island populations. Island shapes are stylised, not survey-accurate.</p></div>`;}
+function wireRail(){
+  rail.querySelectorAll('[data-go]').forEach(e=>e.addEventListener('click',()=>{const k=e.dataset.go;const city=e.dataset.city;go(k);if(city)setTimeout(()=>pulseCity(city),1300);}));
+  rail.querySelectorAll('[data-hl]').forEach(e=>{e.addEventListener('mouseenter',()=>hlIsland(e.dataset.hl,true));e.addEventListener('mouseleave',()=>hlIsland(e.dataset.hl,false));});
+  rail.querySelectorAll('.rowb[data-city]:not([data-go]),.rowb[data-hood]').forEach(e=>e.addEventListener('click',()=>{e.dataset.hood?pulseHood(e.dataset.hood):pulseCity(e.dataset.city);}));
+  rail.querySelectorAll('[data-partner]').forEach(e=>e.addEventListener('click',()=>{const pt=PARTNERS.find(p=>p.k===e.dataset.partner);if(view!=='pacific')go('pacific');partnerFocus(pt);
+    const it=groups.pacific.find(i=>i.partner===pt);if(it){it.el.classList.remove('pulse');void it.el.getBBox();it.el.classList.add('pulse');}}));
+}
+function pulse(list){list.forEach(it=>{it.el.classList.remove('pulse');void it.el.getBBox();it.el.classList.add('pulse');});}
+function pulseCity(c){pulse(groups[groupForView(view)].filter(it=>it.city===c&&it.kind==='c'));}
+function pulseHood(h){pulse(groups.detail.filter(it=>it.label===h));}
+setInterval(()=>rail.querySelectorAll('.clk').forEach(e=>e.textContent=clock(+e.dataset.tz)),30000);
+
+/* ---------- controls ---------- */
+document.querySelectorAll('#layerSeg button').forEach(b=>b.onclick=()=>{layer=b.dataset.l;document.querySelectorAll('#layerSeg button').forEach(x=>x.classList.toggle('on',x===b));refreshItems(true);renderRail();renderLegend();renderInsight();});
+document.querySelectorAll('#styleSeg button').forEach(b=>b.onclick=()=>{style=b.dataset.s;document.querySelectorAll('#styleSeg button').forEach(x=>x.classList.toggle('on',x===b));refreshItems(false);});
+
+/* ---------- tour ---------- */
+let touring=false;
+$('#tourBtn').onclick=async()=>{
+  if(touring)return;touring=true;
+  const wait=ms=>new Promise(r=>setTimeout(r,ms));
+  const L='all'; if(layer!==L)document.querySelector('#layerSeg button[data-l="all"]').click();
+  const steps=[
+    ['pacific',`${fmt(D.allTotal.all)} contacts across Hawaiʻi and six Pacific partner areas`],
+    ['hawaii',`${fmt(D.hiTotal.all)} in Hawaiʻi · ${D.hiWithZip.toLocaleString('en-US')} placed by ZIP code`],
+    ['Oahu',`Oʻahu: ${fmt(D.islands.Oahu.total.all)} · Honolulu split into its neighbourhoods`],
+    ['Hawaii',`Hawaiʻi Island: ${fmt(D.islands.Hawaii.total.all)} · Hilo, Keaʻau and Pāhoa lead the way`],
+    ['Molokai',`Molokaʻi: ${fmt(D.islands.Molokai.total.all)} people · the deepest reach per resident`],
+    ['Maui',`Maui: ${fmt(D.islands.Maui.total.all)} so far`],
+    ['Kauai',`Kauaʻi: ${fmt(D.islands.Kauai.total.all)} so far`],
+    ['pacific','Back out to the Pacific']];
+  for(const [v,txt] of steps){go(v,{dur:1700});caption(txt,3600);await wait(3900);}
+  touring=false;
+};
+
+/* ---------- boot ---------- */
+buildItems();
+{const q=new URLSearchParams(location.search);if(q.get('layer'))layer=q.get('layer');if(q.get('style'))style=q.get('style');if(/^heat/.test(window.__V||''))style='heat';
+ document.querySelectorAll('#layerSeg button').forEach(x=>x.classList.toggle('on',x.dataset.l===layer));document.querySelectorAll('#styleSeg button').forEach(x=>x.classList.toggle('on',x.dataset.s===style));}
+setVB(boxToVB(VIEWS.pacific.box));
+{const h=String(window.__V||decodeURIComponent(location.hash.slice(1))).replace(/^heat-?/,'');go(VIEWS[h]?h:'pacific',{dur:10});}
+window.addEventListener('resize',()=>{setVB(boxToVB(VIEWS[view].box));renderLegend();});
+requestAnimationFrame(frame);
+setTimeout(()=>caption('Tap Hawaiʻi to zoom in · tap any bubble for its count',4200),900);
+})();
+<\/script>
+</body>
+</html>
+</script>
+<div id="wrap"><div id="stage"></div></div>
+<div id="cap"><span id="capText"></span></div>
+<div id="bar">
+  <button id="prev" aria-label="Back">&#9664;</button>
+  <button id="play" aria-label="Play">&#9654;</button>
+  <button id="next" aria-label="Next">&#9654;&#9654;</button>
+  <div id="prog"><div id="progI"></div></div>
+  <span id="count">1 / 1</span>
+  <button id="voice" aria-pressed="true">Voice on</button>
+  <button id="cc" aria-pressed="true">Captions</button>
+  <button id="fs">Full screen</button>
+</div>
+
+<script>
+/* ================= artwork (inline SVG, no screenshots) ================= */
+const SKIN='#C98A5B', SKIN2='#A86D44';
+function caveFolk(x,y,s,tunic,pose){
+  // pose: 'chisel' arms forward, 'sit' seated, 'stand'
+  const arms = pose==='chisel'
+    ? `<g class="chiselArm"><path d="M10 -58 L44 -66" stroke="${SKIN}" stroke-width="9" stroke-linecap="round"/><path d="M8 -46 L42 -50" stroke="${SKIN}" stroke-width="9" stroke-linecap="round"/>
+       <rect x="40" y="-74" width="7" height="22" rx="2" fill="#6B7280" transform="rotate(-20 43 -63)"/><rect x="38" y="-56" width="16" height="10" rx="2" fill="#78350F"/></g>`
+    : `<path d="M-14 -56 L-24 -26" stroke="${SKIN}" stroke-width="9" stroke-linecap="round"/><path d="M14 -56 L24 -26" stroke="${SKIN}" stroke-width="9" stroke-linecap="round"/>`;
+  const legs = pose==='sit'
+    ? `<path d="M-8 -6 L20 -4 L22 14" stroke="${SKIN}" stroke-width="9" stroke-linecap="round" fill="none"/><path d="M6 -6 L32 -2 L34 14" stroke="${SKIN}" stroke-width="9" stroke-linecap="round" fill="none"/>`
+    : `<path d="M-7 -6 L-9 26" stroke="${SKIN}" stroke-width="10" stroke-linecap="round"/><path d="M7 -6 L9 26" stroke="${SKIN}" stroke-width="10" stroke-linecap="round"/>`;
+  return `<g transform="translate(${x} ${y}) scale(${s})">${legs}
+    <path d="M-20 -64 Q0 -74 20 -64 L24 -4 Q0 6 -24 -4 Z" fill="${tunic}"/>
+    <circle cx="-8" cy="-40" r="4" fill="#7C2D12" opacity=".55"/><circle cx="9" cy="-24" r="4" fill="#7C2D12" opacity=".55"/><circle cx="6" cy="-52" r="3.5" fill="#7C2D12" opacity=".55"/>
+    ${arms}
+    <circle cx="0" cy="-86" r="20" fill="${SKIN}"/>
+    <path d="M-21 -88 Q-20 -112 0 -110 Q22 -112 21 -88 Q14 -100 0 -98 Q-12 -100 -21 -88Z" fill="#3B2314"/>
+    <circle cx="7" cy="-87" r="2.6" fill="#1E293B"/><path d="M2 -77 Q8 -74 13 -78" stroke="#1E293B" stroke-width="2" fill="none" stroke-linecap="round"/>
+  </g>`;
+}
+const ART={
+cave:`<svg viewBox="0 0 640 520"><defs><linearGradient id="cvSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FDE7B8"/><stop offset="1" stop-color="#F7C779"/></linearGradient>
+ <radialGradient id="glow" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#FDBA74" stop-opacity=".8"/><stop offset="1" stop-color="#FDBA74" stop-opacity="0"/></radialGradient></defs>
+ <rect width="640" height="520" fill="url(#cvSky)"/>
+ <path d="M0 0 H640 V520 H560 Q560 160 330 130 Q90 150 80 520 H0Z" fill="#57534E"/>
+ <path d="M0 0 H640 V60 Q420 20 300 60 Q150 100 0 40Z" fill="#44403C"/>
+ <rect y="440" width="640" height="80" fill="#A8A29E"/><rect x="80" y="440" width="480" height="80" fill="#C2B49A"/>
+ <circle cx="320" cy="400" r="120" fill="url(#glow)"/>
+ <g transform="translate(320 432)"><path d="M-34 6 L34 6" stroke="#78350F" stroke-width="10" stroke-linecap="round"/><path d="M-26 -2 L26 10" stroke="#92400E" stroke-width="9" stroke-linecap="round"/>
+ <g class="flame"><path d="M-24 0 Q-30 -40 -4 -70 Q-8 -38 6 -44 Q2 -60 18 -80 Q34 -40 22 0Z" fill="#F97316"/><path d="M-12 0 Q-14 -26 2 -42 Q4 -24 14 -28 Q20 -12 12 0Z" fill="#FDE047"/></g></g>
+ <g transform="translate(150 300) rotate(-3)"><rect x="0" y="0" width="150" height="190" rx="18" fill="#A8A29E" stroke="#78716C" stroke-width="5"/>
+  <text x="75" y="88" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="44" fill="#57534E" letter-spacing="3">IDEA</text>
+  <path d="M28 116 H122 M28 136 H108 M28 156 H116" stroke="#78716C" stroke-width="5" stroke-linecap="round"/></g>
+ ${caveFolk(122,470,1,'#EA9A3E','chisel')}
+ ${caveFolk(420,470,1.05,'#D97706','stand')}
+ <g class="hop">${caveFolk(492,470,.7,'#F59E0B','stand')}</g>
+ <g class="sparks" fill="#FDE047"><circle cx="170" cy="398" r="4"/><circle cx="160" cy="388" r="3"/><circle cx="176" cy="386" r="2.5"/></g>
+ <g opacity=".55" fill="#E7E5E4"><circle cx="560" cy="300" r="3"/><circle cx="574" cy="286" r="2"/></g>
+</svg>`,
+press:`<svg viewBox="0 0 640 520"><rect width="640" height="520" fill="#F3E8D2"/><rect y="430" width="640" height="90" fill="#B08A5B"/>
+ <path d="M0 430 H640" stroke="#8B6A42" stroke-width="4"/>
+ <g fill="#7C4A21"><rect x="150" y="70" width="34" height="370"/><rect x="420" y="70" width="34" height="370"/><rect x="130" y="60" width="344" height="44" rx="6"/><rect x="130" y="250" width="344" height="30" rx="4"/></g>
+ <g class="platen"><rect x="292" y="104" width="22" height="110" fill="#6B7280"/><path d="M292 120 L314 130 M292 140 L314 150 M292 160 L314 170 M292 180 L314 190" stroke="#374151" stroke-width="3"/>
+ <rect x="230" y="210" width="146" height="26" rx="4" fill="#57534E"/></g>
+ <g class="lever"><path d="M303 140 L470 110" stroke="#78350F" stroke-width="12" stroke-linecap="round"/><circle cx="472" cy="110" r="12" fill="#78350F"/></g>
+ <rect x="190" y="282" width="226" height="18" fill="#F5F5F4" stroke="#D6D3D1"/>
+ <g class="sheetOut"><rect x="250" y="276" width="104" height="28" rx="3" fill="#fff" stroke="#E7E5E4" stroke-width="2"/><text x="302" y="296" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="16" fill="#1E293B">IDEA</text></g>
+ <g class="floaty f1"><g transform="translate(470 230) rotate(12)"><rect width="120" height="156" rx="6" fill="#fff" stroke="#E7E5E4" stroke-width="3"/><text x="60" y="48" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="28" fill="#1E293B">IDEA</text><path d="M18 74 H102 M18 92 H92 M18 110 H98 M18 128 H80" stroke="#94A3B8" stroke-width="5" stroke-linecap="round"/></g></g>
+ <g class="floaty f2"><g transform="translate(40 250) rotate(-10)"><rect width="104" height="138" rx="6" fill="#fff" stroke="#E7E5E4" stroke-width="3"/><text x="52" y="42" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="24" fill="#1E293B">IDEA</text><path d="M16 64 H88 M16 80 H80 M16 96 H86" stroke="#94A3B8" stroke-width="5" stroke-linecap="round"/></g></g>
+ <g class="floaty f3"><g transform="translate(500 30) rotate(20)"><rect width="84" height="110" rx="6" fill="#fff" stroke="#E7E5E4" stroke-width="3"/><text x="42" y="36" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="20" fill="#1E293B">IDEA</text></g></g>
+</svg>`,
+phoneCloud:`<svg viewBox="0 0 640 520"><rect width="640" height="520" fill="#EDE9FE"/>
+ <g class="drift"><g transform="translate(380 60)"><path d="M40 110 Q0 110 0 76 Q0 40 40 40 Q50 0 100 0 Q150 0 160 40 Q200 36 206 74 Q210 110 170 110Z" fill="#fff" stroke="#C4B5FD" stroke-width="4"/>
+  <path class="downA" d="M90 130 V180 M78 166 L90 180 L102 166" stroke="#7C3AED" stroke-width="5" fill="none" stroke-linecap="round"/><path class="upA" d="M130 180 V130 M118 144 L130 130 L142 144" stroke="#0891B2" stroke-width="5" fill="none" stroke-linecap="round"/></g></g>
+ <g transform="translate(170 110)"><rect width="200" height="380" rx="34" fill="#111827"/><rect x="12" y="14" width="176" height="352" rx="26" fill="#F8FAFC"/><rect x="74" y="24" width="52" height="10" rx="5" fill="#111827"/>
+  <text x="100" y="74" text-anchor="middle" font-family="Outfit,sans-serif" font-weight="800" font-size="22" fill="#1a3c6e">LDAH</text>
+  ${Array.from({length:12},(_,i)=>`<rect class="app" style="animation-delay:${(.25+i*.18).toFixed(2)}s" x="${30+(i%3)*50}" y="${98+Math.floor(i/3)*58}" width="40" height="40" rx="11" fill="${['#0891B2','#7C3AED','#16A34A','#D97706','#DC2626','#004E7C'][i%6]}"/>`).join('')}</g>
+ <g transform="translate(470 330)"><path d="M0 60 Q20 0 60 10 Q100 20 120 70 Q80 90 40 84Z" fill="#86EFAC"/><path d="M90 120 Q110 100 130 116 Q120 136 96 132Z" fill="#86EFAC"/>
+  <circle class="ping" cx="60" cy="48" r="7" fill="none" stroke="#7C3AED" stroke-width="3"/><circle class="ping p2" cx="112" cy="118" r="6" fill="none" stroke="#7C3AED" stroke-width="3"/>
+  <circle cx="60" cy="48" r="7" fill="#7C3AED"/><circle cx="112" cy="118" r="6" fill="#7C3AED"/></g>
+</svg>`,
+robots:`<svg viewBox="0 0 640 520"><defs><linearGradient id="rbSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#BAE6FD"/><stop offset="1" stop-color="#FEF3C7"/></linearGradient></defs>
+ <rect width="640" height="520" fill="url(#rbSky)"/>
+ <circle cx="560" cy="90" r="38" fill="#FDE68A"/>
+ <g class="cloudA" fill="#fff" opacity=".9"><ellipse cx="120" cy="90" rx="54" ry="20"/><ellipse cx="150" cy="76" rx="34" ry="22"/></g>
+ <g class="cloudB" fill="#fff" opacity=".8"><ellipse cx="420" cy="150" rx="44" ry="16"/><ellipse cx="442" cy="138" rx="26" ry="18"/></g>
+ <rect y="430" width="640" height="90" fill="#86EFAC"/><rect y="430" width="640" height="10" fill="#4ADE80"/>
+ <g class="convoy">
+ <!-- wheelchair + seated robot -->
+ <g transform="translate(330 430)">
+  <g class="wheelBig"><circle cx="0" cy="-62" r="62" fill="none" stroke="#334155" stroke-width="9"/><circle cx="0" cy="-62" r="8" fill="#334155"/>
+  ${Array.from({length:6},(_,i)=>{const a=i*Math.PI/3;return `<path d="M0 -62 L${(Math.cos(a)*56).toFixed(1)} ${(-62+Math.sin(a)*56).toFixed(1)}" stroke="#64748B" stroke-width="3"/>`}).join('')}</g>
+  <g class="wheelSmall"><circle cx="112" cy="-16" r="16" fill="#fff" fill-opacity=".01" stroke="#334155" stroke-width="7"/><path d="M112 -30 V-2" stroke="#64748B" stroke-width="3"/></g>
+  <path d="M-46 -150 L-20 -96 L104 -96 L112 -30" fill="none" stroke="#334155" stroke-width="8" stroke-linejoin="round"/>
+  <path d="M-46 -150 L-74 -160" stroke="#334155" stroke-width="9" stroke-linecap="round"/>
+  <g class="bobA">
+  <rect x="-24" y="-200" width="90" height="100" rx="18" fill="#7DD3FC" stroke="#0369A1" stroke-width="4"/>
+  <circle cx="20" cy="-150" r="15" fill="#fff"/><path d="M12 -150 l6 6 l10 -12" stroke="#16A34A" stroke-width="4" fill="none"/>
+  <path d="M40 -104 L104 -100 L106 -40" stroke="#0369A1" stroke-width="16" stroke-linecap="round" fill="none"/>
+  <g class="waveArm"><path d="M60 -180 L118 -236" stroke="#0369A1" stroke-width="14" stroke-linecap="round"/><circle cx="122" cy="-240" r="13" fill="#7DD3FC" stroke="#0369A1" stroke-width="4"/></g>
+  <rect x="-14" y="-272" width="74" height="64" rx="18" fill="#BAE6FD" stroke="#0369A1" stroke-width="4"/><path d="M23 -272 V-292" stroke="#0369A1" stroke-width="4"/><circle class="blink" cx="23" cy="-296" r="7" fill="#F472B6"/>
+  <circle cx="10" cy="-244" r="8" fill="#0F172A"/><circle cx="38" cy="-244" r="8" fill="#0F172A"/><path d="M8 -226 Q23 -214 40 -226" stroke="#0F172A" stroke-width="4" fill="none" stroke-linecap="round"/>
+  </g>
+ </g>
+ <!-- pushing robot -->
+ <g transform="translate(176 430)">
+  <rect class="legL" x="-30" y="-70" width="20" height="70" rx="8" fill="#94A3B8"/><rect class="legR" x="10" y="-70" width="20" height="70" rx="8" fill="#94A3B8"/>
+  <g class="bobB">
+  <rect x="-44" y="-200" width="92" height="136" rx="20" fill="#E9D5FF" stroke="#7C3AED" stroke-width="4"/>
+  <text x="2" y="-140" text-anchor="middle" font-family="Outfit,sans-serif" font-weight="800" font-size="20" fill="#5B21B6">LDAH</text>
+  <text x="-3" y="-116" text-anchor="middle" font-family="Outfit,sans-serif" font-weight="700" font-size="12" fill="#5B21B6">Rosie Rowe</text>
+  <path d="M40 -160 L106 -162" stroke="#7C3AED" stroke-width="14" stroke-linecap="round"/><path d="M36 -128 L102 -152" stroke="#7C3AED" stroke-width="14" stroke-linecap="round"/>
+  <rect x="-36" y="-284" width="80" height="72" rx="20" fill="#F3E8FF" stroke="#7C3AED" stroke-width="4"/><path d="M4 -284 V-306" stroke="#7C3AED" stroke-width="4"/><circle class="blink b2" cx="4" cy="-310" r="8" fill="#FBBF24"/>
+  <circle cx="-10" cy="-252" r="8" fill="#0F172A"/><circle cx="20" cy="-252" r="8" fill="#0F172A"/><path d="M-12 -232 Q4 -220 22 -232" stroke="#0F172A" stroke-width="4" fill="none" stroke-linecap="round"/>
+  </g>
+ </g>
+ </g>
+ <g class="heart"><path d="M548 220 c-10 -14 -30 -4 -20 12 l20 18 l20 -18 c10 -16 -10 -26 -20 -12z" fill="#F472B6"/></g>
+</svg>`
+};
+const WAVES=`<svg class="waves" viewBox="0 0 1280 120" preserveAspectRatio="none"><path d="M0 60 Q160 20 320 60 T640 60 T960 60 T1280 60 V120 H0Z" fill="rgba(255,255,255,.08)"/><path d="M0 84 Q160 50 320 84 T640 84 T960 84 T1280 84 V120 H0Z" fill="rgba(255,255,255,.12)"/></svg>`;
+
+/* ================= scenes ================= */
+const REACH=['One cave','The village','Everywhere we serve'];
+function ERA(o){
+  const segs=REACH.map((_,i)=>`<div class="seg ${i<o.reach?'f':i===o.reach?'now':''}"></div>`).join('');
+  return `<div class="stripe"></div><div class="artCard">${o.art}</div>
+  <div class="eraTxt"><div class="k">${o.kick}</div><div class="yr">${o.yr}</div><h2>${o.h}</h2><p data-s="2">${o.p}</p></div>
+  <div class="reach"><div class="lbl">How far one idea could reach</div><div class="track">${segs}</div><div class="where">${REACH[o.reach]}</div></div>`;
+}
+function HEAD(kick,h,n){return `<div class="stripe"></div><div class="head"><div class="k">${kick}</div><h2>${h}</h2>${n?`<div class="n">${n}</div>`:''}</div>`;}
+function CARD(s,who,whoCls,mock,h,p){return `<div class="card" data-s="${s}"><div class="mock">${mock}</div><div class="tx"><span class="who ${whoCls}">${who}</span><h3>${h}</h3><p>${p}</p></div></div>`;}
+
+const M={
+whatsnew:`<div class="ui" style="width:340px;padding:16px 18px"><div style="font:700 16px Outfit;color:#1a3c6e;margin-bottom:10px">What&rsquo;s new</div>
+  <div style="height:120px;border-radius:10px;background:linear-gradient(135deg,#0B3A53,#0E7490);color:#fff;display:flex;align-items:center;justify-content:center;font:700 18px Outfit">2-minute deck</div>
+  <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:12px"><span class="pb">Remind me later</span><span class="pb t">See more</span></div></div>`,
+current:`<div style="width:380px"><div class="ui" style="padding:12px 16px;display:flex;align-items:center;gap:10px"><b style="font:800 16px Outfit;color:#1a3c6e">LDAH</b><span style="color:#DC2626;font-weight:700;text-decoration:underline">A newer version is available. Click to update.</span></div>
+  <div style="display:flex;gap:16px;align-items:center;margin-top:22px"><div style="width:86px;text-align:center"><div style="width:70px;height:70px;margin:0 auto;border-radius:18px;background:linear-gradient(135deg,#0891B2,#004E7C);color:#fff;display:flex;align-items:center;justify-content:center;font:800 17px Outfit">LDAH</div><div style="font:600 13px Outfit;margin-top:6px">LDAH Dashboard</div></div>
+  <div class="ui" style="padding:12px 14px;font-size:15px;flex:1"><b>Please use Google Chrome</b><br><span style="color:#64748B">The dashboard works best there.</span></div></div></div>`,
+readiness:`<div class="ui" style="width:360px;padding:16px 18px"><div style="font:700 16px Outfit">Sample family</div><div style="color:#64748B;font-size:14px;margin-bottom:10px">Case advocacy</div>
+  <div style="display:flex;justify-content:space-between;font:700 13px Outfit;color:#64748B"><span>Readiness</span><span style="color:#65A30D">6.5 / 10</span></div>
+  <div style="height:12px;border-radius:6px;background:#E2E8F0;margin:6px 0 14px;overflow:hidden"><div style="width:65%;height:100%;background:linear-gradient(90deg,#F97316,#EAB308,#16A34A)"></div></div>
+  <div style="font:600 13px Outfit;color:#64748B;margin-bottom:6px">School meeting: how did it go?</div>
+  <div style="display:flex;gap:6px;align-items:center"><span class="pb g">Worked</span><span class="pb">Partly</span><span class="pb">Didn&rsquo;t</span><span style="margin-left:6px;font-size:14px">&#9745; Parent led</span></div></div>`,
+feedback:`<div class="ui" style="width:360px;padding:16px 18px"><div style="background:#FDF2F8;border:2px solid #F9A8D4;border-radius:10px;padding:10px 12px;font-weight:700;color:#9D174D">&#9745; Send feedback emails</div>
+  <div style="font:700 13px Outfit;color:#64748B;margin:14px 0 6px;letter-spacing:.06em;text-transform:uppercase">Other materials</div>
+  ${['Resource sheet','Coloring book'].map(t=>`<div style="display:flex;gap:6px;margin-bottom:6px"><span class="pb" style="flex:1.6">${t}</span><span class="pb" style="flex:1">Packed 40</span><span class="pb" style="flex:1">Gave 32</span></div>`).join('')}</div>`,
+screen:`<div style="width:200px;height:262px;border-radius:26px;background:#111827;padding:10px"><div style="background:#fff;border-radius:18px;height:100%;padding:12px 10px;font-size:12px">
+  <div style="font:800 14px Outfit;color:#1a3c6e;margin-bottom:6px">Screenings</div>
+  ${['Location','Classroom','Screening date'].map(t=>`<div style="border:1.5px solid #E2E8F0;border-radius:7px;padding:4px 7px;margin-bottom:4px;color:#64748B">${t} &#9662;</div>`).join('')}
+  <div style="font-weight:700;margin:6px 0 3px">Left ear</div><div style="display:flex;gap:4px"><span class="pb g" style="padding:3px 9px;font-size:12px">P</span><span class="pb" style="padding:3px 9px;font-size:12px">F</span><span class="pb" style="padding:3px 9px;font-size:12px">CNT</span></div>
+  <div style="display:flex;gap:4px;margin-top:8px"><span class="pb" style="padding:4px 7px;font-size:11px">Photo of printout</span><span class="pb o" style="padding:4px 7px;font-size:11px">Add results</span></div></div></div>`,
+lions:`<div style="width:370px"><div style="border:2.5px dashed #94A3B8;border-radius:14px;padding:14px;text-align:center;color:#475569;font-weight:600;background:#fff">Drop scanned Lions forms here</div>
+  <div class="ui" style="margin-top:12px;padding:10px 12px">${['Child A','Child B','Child C'].map((t,i)=>`<div style="display:flex;align-items:center;gap:8px;padding:5px 0;${i?'border-top:1px solid #E2E8F0':''}"><b style="flex:1">${t}</b><span class="chip" style="background:${i===2?'#FEE2E2':'#E0F2FE'};color:${i===2?'#B91C1C':'#075985'}">${i===2?'Day 19 of 21':'Day '+(3+i*4)+' of 21'}</span><span class="pb t" style="padding:4px 10px">Confirm</span></div>`).join('')}</div></div>`,
+pip:`<div style="width:380px"><div class="ui" style="padding:10px 14px;font-size:14px"><span class="dot" style="background:#16A34A"></span>Alex &nbsp; <span class="dot" style="background:#EAB308"></span>Sam &nbsp; <span class="dot" style="background:#7C3AED"></span><span style="color:#7C3AED;font-weight:700">Partner</span></div>
+  <div style="margin-top:14px"><span class="chip" style="background:#7C3AED;color:#fff">PIP only</span></div>
+  <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:12px">${['All partners','Guam','Palau','American Samoa','Micronesia','CNMI','Marshall Islands'].map((t,i)=>`<span class="pb" style="padding:4px 10px;font-size:13px;${i===0?'background:#EDE9FE;border-color:#7C3AED;color:#5B21B6':''}">${t}</span>`).join('')}</div></div>`,
+submit:`<div class="ui" style="width:340px;padding:16px 18px"><div style="font:700 16px Outfit;color:#1a3c6e;margin-bottom:10px">Family Night signup</div>
+  <div style="border:1.5px solid #E2E8F0;border-radius:8px;padding:7px 10px;margin-bottom:6px;color:#64748B">Parent name</div><div style="border:1.5px solid #E2E8F0;border-radius:8px;padding:7px 10px;margin-bottom:12px;color:#64748B">Email</div>
+  <div style="display:flex;align-items:center;gap:12px"><span class="pb t" style="padding:9px 22px">Submit</span><span style="text-decoration:line-through;color:#94A3B8;font:700 15px Outfit">4 to 8 s</span><span class="chip zap" style="background:#DCFCE7;color:#166534;font-size:15px">0.2 s</span></div></div>`,
+urgent:`<div class="ui" style="width:350px;padding:14px 16px"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px"><b style="font:700 16px Outfit;color:#1a3c6e">My Day</b><span class="chip pulseB" style="background:#DC2626;color:#fff">Overdue 3</span></div>
+  <div style="border-left:5px solid #DC2626;background:#FEF2F2;border-radius:8px;padding:8px 10px;margin-bottom:6px"><b style="color:#B91C1C">Urgent</b> &middot; Call back about IEP meeting</div>
+  <div style="border-left:5px solid #E2E8F0;border-radius:8px;padding:8px 10px;margin-bottom:6px;color:#475569">Send flyer to school</div>
+  <div style="border-left:5px solid #E2E8F0;border-radius:8px;padding:8px 10px;color:#475569">Log Family Night attendance</div></div>`,
+pti:`<div class="ui" style="width:360px;padding:16px 18px"><div style="display:flex;justify-content:space-between;align-items:center"><b style="font:800 18px Outfit;color:#1a3c6e">PTI Report</b>
+  <div style="display:flex;border:1.5px solid #CBD5E1;border-radius:9px;overflow:hidden;font:700 13px Outfit"><span style="padding:6px 10px">LDAH</span><span style="padding:6px 10px;border-left:1.5px solid #CBD5E1">PIP</span><span style="padding:6px 10px;background:#0891B2;color:#fff">Both</span></div></div>
+  <div style="display:flex;gap:8px;margin-top:14px">${[['Families','312'],['Events','48'],['Advocacy','21']].map(([a,b])=>`<div style="flex:1;background:#F1F5F9;border-radius:10px;padding:10px;text-align:center"><div style="font:800 22px Outfit;color:#004E7C">${b}</div><div style="font-size:12.5px;color:#64748B">${a}</div></div>`).join('')}</div>
+  <div style="font-size:12px;color:#94A3B8;margin-top:8px">Sample numbers</div></div>`,
+kom:`<div class="ui" style="width:360px;padding:16px 18px"><b style="font:800 18px Outfit;color:#1a3c6e">Ke Ola Mamo Monthly</b>
+  <div style="display:flex;gap:6px;margin:12px 0 14px">${['Jul','Aug','Sep','Oct'].map((m,i)=>`<span class="pb" style="padding:5px 12px;${i===3?'background:#0891B2;border-color:#0891B2;color:#fff':''}">${m}</span>`).join('')}</div>
+  <div style="display:flex;align-items:center;gap:8px;border:1.5px solid #E2E8F0;border-radius:10px;padding:8px 10px"><span style="flex:1;font-weight:600">Family Night, Waiʻanae</span><span class="chip" style="background:#FEF3C7;color:#92400E">Ke Ola Mamo</span></div></div>`,
+vol:`<div style="display:flex;gap:18px;align-items:center"><div class="ui" style="padding:12px;text-align:center"><canvas class="qr" width="126" height="126" style="display:block"></canvas><div style="font:700 13px Outfit;margin-top:6px">Volunteer check-in</div></div>
+  <div style="width:190px"><div style="font:700 13px Outfit;color:#16A34A;letter-spacing:.06em;text-transform:uppercase">On site now</div>
+  <div style="margin:6px 0 14px"><span class="chip" style="background:#DCFCE7;color:#166534">Volunteer 1</span> <span class="chip" style="background:#DCFCE7;color:#166534">Volunteer 2</span></div><span class="pb t">Log today&rsquo;s hours</span></div></div>`
+};
+
+const S=[];
+S.push({cls:'cover',html:`<div class="brand">Leadership in Disabilities and Achievement of Hawai&#699;i &middot; Staff meeting &middot; October 6, 2026</div>
+ <h1>From Stone Tablets to Robots</h1><p class="sub">How our reach has grown, what&rsquo;s new this month, and what comes next. About 10 minutes.</p>
+ <div class="gate"><button class="btn" id="beginPlay">Play with narration</button><button class="btn ghost" id="beginManual">Step through myself</button></div>
+ <svg class="tabletArt" viewBox="0 0 360 420"><g transform="rotate(4 180 210)"><rect x="40" y="20" width="280" height="370" rx="30" fill="#D6D3D1" stroke="#A8A29E" stroke-width="8"/><text x="180" y="170" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="84" fill="#57534E" letter-spacing="6">IDEA</text><path d="M90 230 H270 M90 270 H240 M90 310 H256" stroke="#A8A29E" stroke-width="10" stroke-linecap="round"/></g></svg>${WAVES}`,
+ steps:[{say:"From stone tablets to robots."}]});
+
+S.push({html:ERA({kick:'In the beginning',yr:'Long, long ago',h:'A small staff, a stone tablet, and one big IDEA',p:'Every message was chipped out by hand. One tablet reached one family, and only if they could walk to the cave.',art:ART.cave,reach:0}),
+ steps:[{say:"In the beginning, LDAH was a small staff in a very small office. A cave, actually."},
+        {say:"Every message was chipped into stone, by hand. And the biggest idea of all was IDEA, the law that gives every child with a disability the right to a free and appropriate public education.",s:2},
+        {say:"It worked. But one tablet reached one family at a time, and only if they could walk to the cave.",s:2}]});
+S.push({html:ERA({kick:'Then came',yr:'1440s',h:'The printing press',p:'One idea becomes a hundred flyers. The word spreads across the village.',art:ART.press,reach:1}),
+ steps:[{say:"Then came the printing press. Now one idea could become a hundred flyers.",s:1},{say:"And the word spread across the village.",s:2}]});
+S.push({html:ERA({kick:'Fast forward',yr:'2007 and on',h:'The smartphone and the cloud',p:'The whole office fits in a pocket. Everyone works from the same live record, on every island.',art:ART.phoneCloud,reach:2}),
+ steps:[{say:"Then we skipped ahead a few hundred years, past the telephone, the radio and even the fax machine, to the smartphone and the cloud. The whole office now fits in a pocket.",s:1},{say:"And everyone works from the same live record, whether you are in Honolulu, on a neighbor island, or with our partners across the Pacific.",s:2}]});
+
+/* the real sign-in map: same file, same baked 10-03 snapshot (aggregate counts only) */
+const MAP_HTML=document.getElementById('mapSrc').textContent.replace(/<\\\/script>/g,'</'+'script>');
+const MAP_SRC=['pacific','heat-hawaii','heat'];
+S.push({html:`<div class="mapBox"><iframe id="mapFrame" title="LDAH reach map" tabindex="-1"></iframe></div>
+ <div class="mapCard" data-s="1"><div class="k">Today</div><h2>Where we reach</h2>
+  <div class="stat" data-s="2"><b>1,199</b><span>people in our contacts</span></div>
+  <div class="stat" data-s="2"><b>1,006</b><span>of them are families</span></div>
+  <div class="stat" data-s="3"><b>1,035</b><span>here in Hawai&#699;i</span></div>
+  <div class="stat p" data-s="4"><b>62</b><span>with our Pacific Island Partners</span></div>
+  <small data-s="2">As of October 3. The same map you see when you sign in.</small></div>`,
+ steps:[{say:"And this is today. You see this map every time you sign in. Each bubble is people we serve.",s:1},
+        {say:"Nearly twelve hundred people are in our contacts, and more than a thousand of them are families.",s:2},
+        {say:"Here it is as a heat map of the islands. The darker the color, the more families we reach. More than a thousand people, right here in Hawaiʻi.",s:3},
+        {say:"And it no longer stops at the shoreline. Our Pacific Island Partners reach families from Guam to American Samoa. That is a long way from one cave.",s:4}],
+ onStep(st){const f=document.getElementById('mapFrame'); const w=st<3?MAP_SRC[0]:st===3?MAP_SRC[1]:MAP_SRC[2]; if(f.dataset.src!==w){f.dataset.src=w;f.srcdoc=MAP_HTML.replace('<script>','<script>window.__V='+JSON.stringify(w)+';');}}});
+
+S.push({html:HEAD('What&rsquo;s new this month','Learning as you go','1 of 6')+`<div class="cards">
+ ${CARD(1,'All staff','',M.whatsnew,'What&rsquo;s new, at sign-in','When something changes, a 2-minute deck shows up when you sign in. Busy? <b>Remind me later</b> puts it in My Day with a <b>Launch training</b> button.')}
+ ${CARD(2,'All staff','',M.current,'Always the newest version','See a red <b>newer version</b> link? Click it. Install the <b>LDAH Dashboard</b> icon, and please use Google Chrome.')}</div>`,
+ steps:[{say:"So what is new this month? First, learning as you go. When something in the dashboard changes, you now see a short What’s new deck when you sign in. Two minutes, at most.",s:1},
+        {say:"Busy? Tap Remind me later. It becomes a task in My Day with a Launch training button, and the task closes itself once you finish.",s:1},
+        {say:"Second, staying current. If you see a red link at the top saying a newer version is available, click it. It means you are looking at an old copy. You can also install LDAH Dashboard as an icon on your desktop. And please use Google Chrome.",s:2}]});
+S.push({html:HEAD('What&rsquo;s new this month','Working with families','2 of 6')+`<div class="cards">
+ ${CARD(1,'Advocates','fam',M.readiness,'The readiness bar','How close a family is to speaking up on their own, from 0 to 10. After a school meeting, tap <b>Worked</b>, <b>Partly</b> or <b>Didn&rsquo;t</b>.')}
+ ${CARD(2,'All staff','',M.feedback,'Feedback emails for one-off events','Leave <b>Send feedback emails</b> ticked and everyone who came gets the feedback email. Add up to 3 <b>Other materials</b>.')}</div>`,
+ steps:[{say:"Working with families. Case cards now show a readiness bar, from zero to ten. It shows how close a family is to speaking up for their child on their own. Orange means early days. Green means nearly there.",s:1},
+        {say:"After a school meeting, tap Worked, Partly, or Didn’t, and tick Parent led if the parent led it. This number is for staff only. Families never see it.",s:1},
+        {say:"On one-off events, there is now a pink Send feedback emails box, ticked for you. Leave it on, and everyone who came gets the feedback email automatically. You can also record up to three other materials you handed out.",s:2}]});
+S.push({html:HEAD('What&rsquo;s new this month','Screenings','3 of 6')+`<div class="cards">
+ ${CARD(1,'Screening team','scr',M.screen,'The Screenings app','Installs on your phone. Pick location, classroom and date, tap results, snap the printout. Stations can work on their own.')}
+ ${CARD(2,'Screening team','scr',M.lions,'Lions referrals, read for you','Drop in scanned Lions forms. Check the grid, then <b>Confirm</b> once per child. The family and case are created for you.')}</div>`,
+ steps:[{say:"Screenings. The results page now installs on your phone as the Screenings app. Pick the location, the classroom and the date, then tap the result for each ear, and snap a photo of the printout.",s:1},
+        {say:"Vision and hearing stations can work on their own. If only one is done, Add results turns orange, so nobody gets missed.",s:1},
+        {say:"And yes, schools still send faxes. Drop in scanned Lions forms, and they are read for you. Check the grid, then confirm once per child. The family and the case are created for you, with a twenty-one day deadline that turns red as it gets close.",s:2}]});
+S.push({html:HEAD('What&rsquo;s new this month','Partners and community','4 of 6')+`<div class="cards">
+ ${CARD(1,'Pacific Island Partners','pip',M.pip,'Pacific Island Partners, in purple','Partners show in purple on the signed-in strip. Reports have a <b>PIP only</b> pill and a partner row: all partners, or one island.')}
+ ${CARD(2,'All staff','',M.vol,'Volunteer check-in','Volunteers check in and out with a QR poster at the office or an event. The roster shows who is <b>On site now</b>.')}</div>`,
+ steps:[{say:"Partners and community. Our Pacific Island Partners now show in purple on the signed-in strip. Reports have a PIP only pill, and a partner row, so you can look at all partners or one island at a time.",s:1},
+        {say:"And volunteers now check themselves in and out with a QR poster at the office or at an event. The roster shows who is on site now, and volunteers can log their own hours.",s:2}]});
+
+S.push({html:HEAD('What&rsquo;s new this month','Faster and clearer','5 of 6')+`<div class="cards">
+ ${CARD(1,'Families','fam',M.submit,'Signups are instant','Submit used to take 4 to 8 seconds. Now families see the thank-you in about a fifth of a second.')}
+ ${CARD(2,'All staff','',M.urgent,'Urgent stays on top','Urgent tasks stay pinned in red at the top of My Day, and the <b>Overdue</b> count pulses so it&rsquo;s hard to miss.')}</div>`,
+ steps:[{say:"Faster and clearer. When a family signs up for an event, Submit used to take four to eight seconds, long enough for people to give up or click twice. Now the thank-you appears in about a fifth of a second.",s:1},
+        {say:"In My Day, urgent tasks now stay pinned in red at the top, and the overdue count pulses so it is hard to miss.",s:2}]});
+S.push({html:HEAD('What&rsquo;s new this month','Reports that answer the question','6 of 6')+`<div class="cards">
+ ${CARD(1,'Leadership','',M.pti,'The PTI Report','The Board Report is now the PTI Report, with an <b>LDAH / PIP / Both</b> switch at the top.')}
+ ${CARD(2,'All staff','',M.kom,'Ke Ola Mamo Monthly','Pick the month and the grant report builds itself. Tap the <b>Ke Ola Mamo</b> chip on qualifying events so they count.')}</div>`,
+ steps:[{say:"And reports that answer the question. The Board Report is now the PTI Report, with an LDAH, PIP, or Both switch right at the top.",s:1},
+        {say:"The Ke Ola Mamo monthly report builds itself. Pick the month, and it is ready for the grant invoice. The one thing it needs from you: tap the Ke Ola Mamo chip on events that qualify, so they get counted.",s:2}]});
+
+S.push({html:HEAD('What&rsquo;s next','Where we are headed')+`<div class="nextList">
+ <div class="ni" data-s="1"><div class="ic">15</div><div><h3>Pali View Preschool screenings, Oct 15 and 16</h3><p>Every child is already in the system. Results go to families in one step.</p></div></div>
+ <div class="ni" data-s="2"><div class="ic">VOL</div><div><h3>Volunteer packet forms</h3><p>Application, confidentiality, emergency contacts and service log, all inside Volunteers.</p></div></div>
+ <div class="ni" data-s="3"><div class="ic">PC</div><div><h3>Parent Center data collection report</h3><p>One report for the yearly federal data, built from what you already enter.</p></div></div>
+ <div class="ni" data-s="4"><div class="ic">NEW</div><div><h3>New-hire training decks</h3><p>Signing in, the contact card, and adding a flyer, each with a short quiz.</p></div></div>
+ <div class="ni" data-s="5"><div class="ic">AI</div><div><h3>AI case summaries</h3><p>Reads a family&rsquo;s documents and drafts the case review. In testing with leadership now.</p></div></div>
+ <div class="ni" data-s="6"><div class="ic">AI</div><div><h3>Flyers in &#699;&#332;lelo Hawai&#699;i</h3><p>AI turns our flyers and family handouts into &#699;&#332;lelo Hawai&#699;i, reviewed by fluent speakers before anything goes out.</p></div></div></div>
+ <div class="vis" data-only="1"><div class="vcard" style="width:400px">
+  <div style="display:flex;align-items:center;gap:14px;margin-bottom:14px"><div style="width:64px;height:70px;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(15,23,42,.15);text-align:center"><div style="background:#DC2626;color:#fff;font:800 13px Outfit;padding:3px 0">OCT</div><div style="font:800 30px Outfit;color:#1a3c6e">15</div></div>
+  <div><h4 style="margin:0">Pali View Preschool</h4><div style="color:#64748B">Vision and hearing screenings</div></div></div>
+  ${['Vision','Hearing'].map((t,i)=>`<div style="display:flex;align-items:center;gap:10px;border:1.5px solid #E2E8F0;border-radius:10px;padding:9px 12px;margin-bottom:8px"><b style="flex:1">${t} station</b><span class="chip" style="background:#DCFCE7;color:#166534">Ready</span></div>`).join('')}
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px"><span style="font:800 26px Outfit;color:#004E7C">53 <span style="font:600 15px 'Source Sans 3';color:#64748B">children ready</span></span><span class="pb t">Send results</span></div></div></div>
+ <div class="vis" data-only="2"><div style="position:relative;width:400px;height:370px">
+  ${['Service log','Emergency contacts','Confidentiality','Volunteer application'].map((t,i)=>`<div class="vcard" style="position:absolute;left:${i*24}px;top:${i*56}px;width:320px;height:190px;transform:rotate(${(i-1.5)*1.5}deg)"><h4 style="font-size:17px">${t}</h4><div class="ln" style="height:8px;border-radius:4px;background:#E2E8F0;margin-top:10px"></div><div style="height:8px;border-radius:4px;background:#E2E8F0;margin-top:10px;width:80%"></div><div style="height:8px;border-radius:4px;background:#E2E8F0;margin-top:10px;width:90%"></div>${i===3?'<div style="position:absolute;right:18px;bottom:16px;width:44px;height:44px;border-radius:50%;background:#16A34A;color:#fff;display:flex;align-items:center;justify-content:center;font:800 24px Outfit">&#10003;</div>':''}</div>`).join('')}</div></div>
+ <div class="vis" data-only="3"><div class="vcard" style="width:420px"><h4>Parent Center Data Collection</h4>
+  <div style="display:flex;align-items:flex-end;gap:16px;height:190px;border-bottom:2px solid #E2E8F0;padding:0 10px">${[62,88,45,74,96].map((v,i)=>`<div style="flex:1;height:${v}%;border-radius:8px 8px 0 0;background:${['#0891B2','#004E7C','#7C3AED','#16A34A','#D97706'][i]}"></div>`).join('')}</div>
+  <div style="display:flex;gap:16px;padding:6px 10px 0;font:600 12px Outfit;color:#64748B">${['Families','Training','TA','Outreach','Events'].map(t=>`<span style="flex:1;text-align:center">${t}</span>`).join('')}</div>
+  <div style="margin-top:12px;color:#64748B;font-size:14px">Built from what you already enter</div></div></div>
+ <div class="vis" data-only="4"><div style="display:flex;flex-direction:column;gap:14px;width:400px">
+  ${['Signing in','The contact card','Adding a flyer'].map((t,i)=>`<div class="vcard" style="display:flex;align-items:center;gap:16px;padding:14px 18px;margin-left:${i*22}px"><div style="width:84px;height:52px;border-radius:10px;background:linear-gradient(135deg,#0B3A53,#0E7490);display:flex;align-items:center;justify-content:center"><svg width="22" height="22" viewBox="0 0 22 22"><path d="M6 3 L19 11 L6 19Z" fill="#fff"/></svg></div><div style="flex:1"><b style="font:700 17px Outfit">${t}</b><div style="color:#64748B;font-size:13.5px">Short deck + quiz</div></div><span class="chip" style="background:#DCFCE7;color:#166534">Quiz</span></div>`).join('')}</div></div>
+ <div class="vis" data-only="5"><div style="display:flex;align-items:center;gap:14px">
+  <div style="position:relative;width:136px;height:176px">${['IEP','Eval'].map((t,i)=>`<div class="vcard" style="position:absolute;left:${i*30}px;top:${i*40}px;width:100px;height:130px;padding:12px"><b style="font:800 15px Outfit;color:#1a3c6e">${t}</b><div style="height:6px;border-radius:3px;background:#E2E8F0;margin-top:10px"></div><div style="height:6px;border-radius:3px;background:#E2E8F0;margin-top:8px;width:80%"></div><div style="height:6px;border-radius:3px;background:#E2E8F0;margin-top:8px;width:90%"></div></div>`).join('')}</div>
+  <div style="text-align:center;font:800 16px Outfit;color:#7C3AED">AI<br><svg width="56" height="26" viewBox="0 0 56 26"><path d="M4 13 H46 M36 4 L48 13 L36 22" stroke="#7C3AED" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+  <div class="vcard" style="width:250px;padding:16px;box-shadow:0 0 0 3px #C4B5FD,0 12px 30px rgba(15,23,42,.16)"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><b style="font:800 16px Outfit;color:#1a3c6e">Case review</b><span class="chip" style="background:#EDE9FE;color:#5B21B6;font-size:11px">Draft</span></div>
+   <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;font:700 11.5px Outfit;color:#64748B"><span>CONCERNS</span><span>FINDINGS</span>${[0,1,2].map(()=>`<div style="height:30px;border-radius:6px;background:#F1F5F9"></div><div style="height:30px;border-radius:6px;background:#F1F5F9"></div>`).join('')}</div>
+   <div style="margin-top:8px;border:1.5px dashed #F59E0B;background:#FFFBEB;border-radius:8px;padding:6px 8px;font:700 12px Outfit;color:#92400E">Follow up: not covered by the plan</div>
+   <div style="margin-top:10px;font:700 12px Outfit;color:#7C3AED">In testing with leadership</div></div></div></div>
+ <div class="flyers" data-only="6">
+  <div class="flyer" style="left:0;top:40px;transform:rotate(-4deg)"><div class="fh">Welcome!<br>Family Night</div><div class="img"></div><div class="ln"></div><div class="ln" style="width:80%"></div><div class="ln" style="width:90%"></div><div class="ln" style="width:60%"></div></div>
+  <div class="aiArrow" style="top:150px">AI<br><svg width="70" height="30" viewBox="0 0 70 30"><path d="M4 15 H60 M48 4 L62 15 L48 26" stroke="#7C3AED" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+  <div class="flyer" style="left:280px;top:80px;transform:rotate(3deg);box-shadow:0 0 0 3px #C4B5FD,0 10px 26px rgba(15,23,42,.16)"><div class="fh">E komo mai!</div><div class="img"></div><div class="ln"></div><div class="ln" style="width:80%"></div><div class="ln" style="width:90%"></div><div class="ln" style="width:60%"></div>
+   <div style="position:absolute;left:14px;bottom:14px" class="chip" ><span style="background:#EDE9FE;color:#5B21B6;border-radius:999px;padding:4px 10px">&#699;&#332;lelo Hawai&#699;i</span></div></div></div>`,
+ steps:[{say:"So, what is next? First, the Pali View Preschool screenings on October fifteenth and sixteenth. Every child is already in the system, and results will go to families in one step.",s:1},
+        {say:"The volunteer packet forms, application, confidentiality, emergency contacts and the service log, all built into Volunteers.",s:2},
+        {say:"A Parent Center data collection report, built from what you already enter.",s:3},
+        {say:"New-hire training decks, for signing in, the contact card, and adding a flyer.",s:4},
+        {say:"AI case summaries. The AI reads a family’s documents and drafts the case review for you, with concerns and findings side by side, and anything the plan does not cover flagged for follow up. It is in testing with leadership now.",s:5},
+        {say:"And this one is exciting. AI that turns our flyers and family handouts into ʻŌlelo Hawaiʻi, with fluent speakers reviewing every one before it goes out.",s:6}]});
+
+S.push({cls:'endS',html:`<div class="stripe"></div><div class="artCard" style="left:56px;top:84px;width:664px;height:540px">${ART.robots}</div>
+ <div class="eraTxt" style="left:800px;width:430px"><div class="k">And someday</div><div class="yr" style="font-size:60px">The future</div><h2>The LDAH staff of tomorrow</h2>
+ <p data-s="2">New tools, same job: making sure nobody gets left behind.</p>
+ <div data-s="3" style="margin-top:56px;font:800 64px Outfit;color:#1a3c6e;letter-spacing:.04em">THE END</div><div data-s="3" style="font-size:24px;color:#475569;margin-top:6px">Mahalo!</div></div>`,
+ steps:[{say:"And the LDAH staff of the future? It might look a little different.",s:1},
+        {say:"But the job stays the same. New tools, same aloha. Making sure nobody gets left behind.",s:2},
+        {say:"The end. Mahalo, everyone.",s:3}]});
+
+/* ================= player ================= */
+const stage=document.getElementById('stage'), wrap=document.getElementById('wrap');
+S.forEach(s=>{const d=document.createElement('section');d.className='slide '+(s.cls||'');d.innerHTML=s.html;stage.appendChild(d);s.el=d;});
+function fit(){const r=wrap.getBoundingClientRect();const k=Math.min(r.width/1280,r.height/720);stage.style.transform=`scale(${k})`;stage.style.margin=`${(720*k-720)/2}px ${(1280*k-1280)/2}px`;}
+addEventListener('resize',fit);fit();
+
+/* decorative QR pattern for the volunteer mock (not a real code) */
+document.querySelectorAll('canvas.qr').forEach(c=>{const x=c.getContext('2d'),n=21,u=6;x.fillStyle='#fff';x.fillRect(0,0,126,126);x.fillStyle='#0F172A';let seed=7;const r=()=>(seed=(seed*9301+49297)%233280)/233280;
+ const fin=(a,b)=>{x.fillRect(a*u,b*u,7*u,7*u);x.fillStyle='#fff';x.fillRect((a+1)*u,(b+1)*u,5*u,5*u);x.fillStyle='#0F172A';x.fillRect((a+2)*u,(b+2)*u,3*u,3*u);};
+ for(let i=0;i<n;i++)for(let j=0;j<n;j++){const inF=(i<8&&j<8)||(i>12&&j<8)||(i<8&&j>12);if(!inF&&r()>.52)x.fillRect(i*u,j*u,u,u);} fin(0,0);fin(14,0);fin(0,14);});
+
+let si=0, st=0, playing=false, voiceOn=true, timer=null, token=0;
+const SAY_FIX=[[/ʻŌlelo/g,'Oh-lelo'],[/Hawaiʻi/g,'Hawaii'],[/ʻ/g,''],[/\bLDAH\b/g,'L D A H'],[/\bIDEA\b/g,'I D E A'],[/\bPIP\b/g,'pip'],[/\bQR\b/g,'Q R'],[/\bAI\b/g,'A I']];
+function speakText(t){SAY_FIX.forEach(([a,b])=>t=t.replace(a,b));return t;}
+function render(){
+  S.forEach((s,i)=>s.el.classList.toggle('cur',i===si));
+  const s=S[si], step=s.steps[st];
+  const lvl=step.s||(st+1);
+  s.el.querySelectorAll('[data-s]').forEach(e=>e.classList.toggle('on',+e.dataset.s<=lvl));
+  s.el.querySelectorAll('[data-only]').forEach(e=>e.classList.toggle('on',+e.dataset.only===lvl));
+  document.getElementById('capText').textContent=step.say;
+  if(s.onStep) s.onStep(lvl, s.el);
+  const total=S.reduce((a,x)=>a+x.steps.length,0), done=S.slice(0,si).reduce((a,x)=>a+x.steps.length,0)+st+1;
+  document.getElementById('progI').style.width=(done/total*100)+'%';
+  document.getElementById('count').textContent=`${si+1} / ${S.length}`;
+  if(playing) narrate();
+}
+function stopVoice(){ token++; clearTimeout(timer); try{speechSynthesis.cancel();}catch(e){} }
+let VOICE=null;
+function pickVoice(){ try{const vs=speechSynthesis.getVoices(); if(!vs.length) return null;
+  const pref=[v=>v.name==='Google US English',v=>/Ava/.test(v.name)&&/(Premium|Enhanced)/.test(v.name),v=>/Microsoft (Aria|Jenny|Ava).*Natural/.test(v.name),v=>/Samantha/.test(v.name)&&/(Premium|Enhanced)/.test(v.name),v=>/^Ava/.test(v.name),v=>/Karen/.test(v.name),v=>/Samantha/.test(v.name),v=>v.lang==='en-US',v=>/^en/.test(v.lang)];
+  for(const p of pref){const m=vs.find(p); if(m) return m;} return null;}catch(e){return null;} }
+try{VOICE=pickVoice(); speechSynthesis.onvoiceschanged=()=>{VOICE=pickVoice();};}catch(e){}
+function narrate(){
+  stopVoice(); const my=token; const text=S[si].steps[st].say;
+  const words=text.split(/\s+/).length, t0=Date.now(); let finished=false;
+  const finish=()=>{ if(finished||my!==token) return; finished=true; clearTimeout(guard);
+    const min=words*280, e=Date.now()-t0; timer=setTimeout(()=>{ if(my===token&&playing) advance(); }, Math.max(0,min-e)+700); };
+  const guard=setTimeout(finish, words*520+4000); // always move on, even if the voice never reports it finished
+  if(!voiceOn || !('speechSynthesis' in window)){ clearTimeout(guard); timer=setTimeout(()=>{ if(my===token&&playing) advance(); }, words*330+900); return; }
+  if(!VOICE) VOICE=pickVoice();
+  const parts=speakText(text).match(/[^.!?]+[.!?]*/g)||[text]; let i=0;
+  const next=()=>{ if(my!==token||finished) return; if(i>=parts.length){ finish(); return; }
+    const u=new SpeechSynthesisUtterance(parts[i++].trim());
+    if(VOICE){u.voice=VOICE;u.lang=VOICE.lang;} else u.lang='en-US';
+    u.rate=(VOICE&&/Google/.test(VOICE.name))?0.98:1.0; u.onend=next; u.onerror=next; speechSynthesis.speak(u); };
+  setTimeout(()=>{ if(my===token) next(); }, 60);
+}
+function advance(){ if(st<S[si].steps.length-1){st++;render();} else if(si<S.length-1){si++;st=0;render();} else setPlaying(false); }
+function back(){ if(st>0) st--; else if(si>0){si--;st=S[si].steps.length-1;} render(); }
+function go(i,j){ stopVoice(); si=Math.max(0,Math.min(S.length-1,i)); st=j||0; render(); }
+function setPlaying(p){ playing=p; const b=document.getElementById('play'); b.innerHTML=p?'&#10074;&#10074;':'&#9654;'; b.setAttribute('aria-label',p?'Pause':'Play'); if(p) narrate(); else stopVoice(); }
+/* iPad/iPhone only allow speech that starts inside a tap, so speak a silent word right in the tap handler */
+function unlockVoice(){ try{ const u=new SpeechSynthesisUtterance(' '); u.volume=0; speechSynthesis.speak(u); }catch(e){} }
+const Deck={play(){ unlockVoice(); if(si===0){ si=1; st=0; render(); } setPlaying(true); }, manual(){ setPlaying(false); go(1,0); }};
+window.Deck=Deck;
+document.getElementById('beginPlay').onclick=()=>Deck.play();
+document.getElementById('beginManual').onclick=()=>Deck.manual();
+document.getElementById('play').onclick=()=>playing?setPlaying(false):Deck.play();
+document.getElementById('next').onclick=()=>{ stopVoice(); advance(); };
+document.getElementById('prev').onclick=()=>{ stopVoice(); back(); };
+document.getElementById('voice').onclick=e=>{ voiceOn=!voiceOn; e.currentTarget.setAttribute('aria-pressed',voiceOn); e.currentTarget.textContent=voiceOn?'Voice on':'Voice off'; if(playing) narrate(); };
+document.getElementById('cc').onclick=e=>{ const c=document.getElementById('cap'); c.classList.toggle('off'); e.currentTarget.setAttribute('aria-pressed',!c.classList.contains('off')); };
+document.getElementById('fs').onclick=()=>{ try{ document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen(); }catch(e){} };
+addEventListener('keydown',e=>{ if(e.key===' '){e.preventDefault();playing?setPlaying(false):Deck.play();} else if(e.key==='ArrowRight'){stopVoice();advance();} else if(e.key==='ArrowLeft'){stopVoice();back();}
+  else if(e.key==='v'||e.key==='V') document.getElementById('voice').click(); else if(e.key==='c'||e.key==='C') document.getElementById('cc').click(); else if(e.key==='f'||e.key==='F') document.getElementById('fs').click(); });
+if(/still/.test(location.search)){const z=document.createElement('style');z.textContent='*{transition:none!important;animation:none!important}';document.head.appendChild(z);}
+/* #9 or #9.3 opens scene 9 (1-based) at step 3, for rehearsing one slide */
+{const m=location.hash.match(/^#(\d+)(?:\.(\d+))?$/); if(m){ si=Math.max(0,Math.min(S.length-1,m[1]-1)); st=Math.max(0,Math.min(S[si].steps.length-1,(m[2]||1)-1)); }}
+render();
+</script>
+</body>
+</html>
