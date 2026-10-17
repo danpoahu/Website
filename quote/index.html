@@ -377,9 +377,9 @@ document.getElementById('next').onclick=()=>{
   if(i===real){submitQuote();return}
   i++;show();
 };
-// Set to the Cloudflare quote route once it exists (step 2). Until then submits fall back to email,
-// because the current worker treats every path as the contact form.
-const QUOTE_URL='';
+// Cloudflare worker dp-cloudkit-proxy: saves to CloudKit QuoteRequest; Claude drafts the proposal within ~10 min.
+const QUOTE_URL='https://dp-cloudkit-proxy.oahuappdesign.workers.dev/quote';
+const STARTED_AT=Date.now();
 function collect(){
   const g=id=>document.getElementById(id).value.trim();
   const v=n=>val('[name='+n+']');
@@ -388,7 +388,7 @@ function collect(){
     platforms:v('platforms'),offline:v('offline'),features:v('feat'),paymentTypes:v('payType'),integrations:[v('integ'),g('integOther')].filter(Boolean).join(', '),
     mustHave:g('mustHave'),existingData:v('migrate'),dataSize:g('migrateSize'),brand:v('brand'),content:v('content'),sensitive:v('sensitive'),
     appleAccount:v('apple'),googleAccount:v('google'),domain:v('domain'),support:v('support'),goLive:g('when'),deadlineReason:g('whyDate'),
-    budget:v('budget'),grant:v('grant'),heardFrom:v('heard'),extra:g('extra'),hp:g('hp'),submittedAt:new Date().toISOString(),page:location.href};
+    budget:v('budget'),grant:v('grant'),heardFrom:v('heard'),extra:g('extra'),hp:g('hp'),startedAt:STARTED_AT,page:location.href};
 }
 async function submitQuote(){
   const n=document.getElementById('next'),st=document.getElementById('status');
