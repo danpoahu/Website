@@ -1,0 +1,416 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Get a Quote | DP Consulting · Oahu App Design</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="description" content="Answer a few questions about your app or website project and get a written proposal from Oahu App Design within 1 business day.">
+<link rel="icon" type="image/jpeg" href="/Icon.jpg">
+<style>
+:root{--ocean-blue:#0891b2;--deep-blue:#0e7490;--sky-blue:#22d3ee;--sunset-orange:#fb923c;--sunset-pink:#f472b6;--dark-bg:#0f172a;--darker-bg:#020617;--text-light:#f8fafc;--text-gray:#cbd5e1;--line:rgba(8,145,178,.3)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--darker-bg);color:var(--text-light);line-height:1.6}
+.mockbar{background:var(--sunset-orange);color:#1a0f00;text-align:center;font-size:14px;font-weight:600;padding:8px 16px}
+nav{background:rgba(2,6,23,.95);border-bottom:1px solid var(--line)}
+nav .container{max-width:1100px;margin:0 auto;padding:14px 16px;display:flex;justify-content:space-between;align-items:center;gap:16px}
+.logo{display:flex;align-items:center;gap:12px;font-size:1.3rem;font-weight:bold;color:var(--sky-blue);text-decoration:none}
+.logo img{width:42px;height:42px;border-radius:10px}
+nav ul{display:flex;list-style:none;gap:1.5rem;flex-wrap:wrap}
+nav a{color:var(--text-gray);text-decoration:none}
+nav a.on{color:var(--sky-blue)}
+@media(max-width:720px){nav ul{display:none}}
+.hero{text-align:center;padding:48px 16px 8px}
+.hero h1{font-size:clamp(1.9rem,5vw,2.8rem);background:linear-gradient(135deg,var(--sky-blue),var(--sunset-orange));-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p{color:var(--text-gray);max-width:640px;margin:10px auto 0}
+.wrap{max-width:760px;margin:0 auto;padding:24px 16px 64px}
+.progress{display:flex;gap:6px;margin-bottom:8px}
+.progress span{flex:1;height:6px;border-radius:3px;background:rgba(203,213,225,.15)}
+.progress span.done{background:linear-gradient(90deg,var(--ocean-blue),var(--sky-blue))}
+.stepname{color:var(--text-gray);font-size:14px;margin-bottom:18px}
+.card{background:rgba(15,23,42,.7);border:1px solid var(--line);border-radius:16px;padding:28px}
+@media(max-width:560px){.card{padding:18px}}
+.card h2{font-size:1.4rem;margin-bottom:4px}
+.card .lead{color:var(--text-gray);margin-bottom:22px}
+.step{display:none}.step.on{display:block}
+.fg{margin-bottom:20px}
+.fg>label,.fg>.q{display:block;margin-bottom:8px;color:var(--sky-blue);font-weight:600}
+.fg .hint{display:block;color:var(--text-gray);font-weight:400;font-size:14px;margin-top:-4px;margin-bottom:8px}
+input[type=text],input[type=email],input[type=tel],input[type=url],input[type=date],select,textarea{width:100%;padding:.8rem;background:rgba(15,23,42,.6);border:1px solid var(--line);border-radius:8px;color:var(--text-light);font:inherit}
+textarea{min-height:120px;resize:vertical}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--sky-blue);box-shadow:0 0 0 3px rgba(34,211,238,.12)}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:560px){.row{grid-template-columns:1fr}}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chips label{display:flex;align-items:center;gap:8px;padding:9px 14px;border:1px solid var(--line);border-radius:999px;cursor:pointer;color:var(--text-light);background:rgba(2,6,23,.5);font-size:15px;user-select:none}
+.chips input{accent-color:var(--sky-blue)}
+.chips label:has(input:checked){border-color:var(--sky-blue);background:rgba(8,145,178,.22)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+@media(max-width:560px){.grid{grid-template-columns:1fr}}
+.grid label{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border:1px solid var(--line);border-radius:10px;cursor:pointer;background:rgba(2,6,23,.5)}
+.grid label:has(input:checked){border-color:var(--sky-blue);background:rgba(8,145,178,.22)}
+.grid input{margin-top:5px;accent-color:var(--sky-blue)}
+.grid small{display:block;color:var(--text-gray);font-size:13px}
+.more{display:none;margin-top:10px}.more.on{display:block}
+.nav-btns{display:flex;justify-content:space-between;gap:12px;margin-top:24px}
+.btn{padding:.85rem 1.8rem;border-radius:50px;font-weight:bold;font-size:1rem;cursor:pointer;border:0}
+.btn-primary{background:linear-gradient(135deg,var(--ocean-blue),var(--deep-blue));color:#fff}
+.btn-secondary{background:transparent;border:2px solid var(--ocean-blue);color:var(--sky-blue)}
+.btn[disabled]{opacity:.35;cursor:default}
+.review dl{display:grid;grid-template-columns:180px 1fr;gap:6px 14px;font-size:15px}
+@media(max-width:560px){.review dl{grid-template-columns:1fr}}
+.review dt{color:var(--text-gray)}
+.review dd{margin-bottom:6px}
+.thanks{text-align:center;padding:24px 0}
+.thanks .big{font-size:3rem}
+.note{color:var(--text-gray);font-size:14px;margin-top:10px}
+.dan{margin-top:48px;border:2px dashed var(--sunset-orange);border-radius:16px;padding:24px;background:rgba(251,146,60,.06)}
+.dan h2{color:var(--sunset-orange);font-size:1.3rem;margin-bottom:4px}
+.dan .lead{color:var(--text-gray);margin-bottom:16px}
+.paper{background:#fff;color:#1d2430;border-radius:10px;padding:24px;font-size:15px}
+.paper h3{font-size:1.2rem;margin:0 0 2px;color:#0e7490}
+.paper h4{margin:18px 0 6px;font-size:1rem;color:#0e7490}
+.paper p,.paper li{color:#1d2430}
+.paper ul{padding-left:20px}
+.paper table{border-collapse:collapse;width:100%;font-size:14px;margin-top:4px}
+.paper th,.paper td{border:1px solid #d6dce4;padding:6px 8px;text-align:left}
+.paper th{background:#eef6f9}
+.paper td.n{text-align:right;white-space:nowrap}
+.tiers{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:6px}
+@media(max-width:640px){.tiers{grid-template-columns:1fr}}
+.tier{border:1px solid #d6dce4;border-radius:10px;padding:12px}
+.tier.mid{border:2px solid #0891b2;background:#f0fafd}
+.tier b{display:block;font-size:1.25rem}
+.tier small{color:#5d6675}
+.appbtns{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+.appbtns span{background:#1e293b;border:1px solid var(--line);border-radius:8px;padding:8px 12px;font-size:14px;color:var(--text-light)}
+.status{display:none;margin-top:16px;padding:12px 14px;border-radius:8px;background:rgba(244,114,182,.12);border:1px solid var(--sunset-pink)}
+.status.on{display:block}
+.status a{color:var(--sky-blue)}
+footer{text-align:center;color:var(--text-gray);font-size:14px;padding:24px 16px;border-top:1px solid var(--line)}
+</style>
+</head>
+<body>
+<nav><div class="container">
+<a class="logo" href="/"><img src="/Icon.jpg" alt="DP Consulting"><span>DP Consulting</span></a>
+<ul><li><a href="/#ios">Apps</a></li><li><a href="/#web">Web</a></li><li><a href="/case-studies/">Case Studies</a></li><li><a href="/#services">Services</a></li><li><a href="/#about">About</a></li><li><a href="/quote/" class="on">Get a Quote</a></li></ul>
+</div></nav>
+
+<section class="hero">
+<h1>Get a quote for your app or website</h1>
+<p>Answer a few questions about your project. It takes about 5 minutes. Dan reviews every request personally and sends you a written proposal with clear options and prices within 1 business day.</p>
+</section>
+
+<div class="wrap">
+<div class="progress" id="prog"></div>
+<div class="stepname" id="stepname"></div>
+
+<form class="card" id="qf" onsubmit="return false" novalidate>
+<div style="position:absolute;left:-9999px" aria-hidden="true"><label>Leave this empty<input type="text" id="hp" tabindex="-1" autocomplete="off"></label></div>
+
+<!-- 1 -->
+<div class="step" data-name="About you">
+<h2>About you</h2><p class="lead">So we know who we're talking with.</p>
+<div class="row">
+<div class="fg"><label for="name">Your name *</label><input type="text" id="name" required></div>
+<div class="fg"><label for="email">Email *</label><input type="email" id="email" required></div>
+</div>
+<div class="row">
+<div class="fg"><label for="phone">Phone</label><input type="tel" id="phone"></div>
+<div class="fg"><label for="org">Business or organization</label><input type="text" id="org"></div>
+</div>
+<div class="fg"><span class="q">What kind of organization?</span>
+<div class="chips" data-name="orgType">
+<label><input type="radio" name="orgType" value="Small business">Small business</label>
+<label><input type="radio" name="orgType" value="Nonprofit">Nonprofit</label>
+<label><input type="radio" name="orgType" value="Startup">Startup</label>
+<label><input type="radio" name="orgType" value="School or government">School or government</label>
+<label><input type="radio" name="orgType" value="Church or community group">Church or community group</label>
+<label><input type="radio" name="orgType" value="Just me">Just me</label>
+</div></div>
+<div class="fg"><label for="site">Current website, if any</label><input type="url" id="site" placeholder="https://"></div>
+</div>
+
+<!-- 2 -->
+<div class="step" data-name="Your project">
+<h2>Your project</h2><p class="lead">In your own words is best. No tech terms needed.</p>
+<div class="fg"><span class="q">What do you need?</span>
+<div class="chips">
+<label><input type="radio" name="kind" value="A new app">A new app</label>
+<label><input type="radio" name="kind" value="A new website">A new website</label>
+<label><input type="radio" name="kind" value="An app and a website">An app and a website</label>
+<label><input type="radio" name="kind" value="Fix or add to an existing app or site">Fix or add to an existing app or site</label>
+<label><input type="radio" name="kind" value="A custom system for staff">A custom system for staff</label>
+<label><input type="radio" name="kind" value="Not sure yet">Not sure yet</label>
+</div></div>
+<div class="fg more" id="existingWrap"><label for="existing">Link to the existing app or site, and who built it</label><input type="text" id="existing"></div>
+<div class="fg"><label for="problem">What problem should it solve? *</label><span class="hint">For example: "Customers call us all day to book. We want them to book and pay on their phones."</span><textarea id="problem" required></textarea></div>
+<div class="fg"><span class="q">Who will use it?</span>
+<div class="chips">
+<label><input type="checkbox" name="users" value="Customers or the public">Customers or the public</label>
+<label><input type="checkbox" name="users" value="Members">Members</label>
+<label><input type="checkbox" name="users" value="Staff">Staff</label>
+<label><input type="checkbox" name="users" value="Volunteers">Volunteers</label>
+<label><input type="checkbox" name="users" value="Students or families">Students or families</label>
+</div></div>
+<div class="fg"><span class="q">About how many people, in the first year?</span>
+<div class="chips">
+<label><input type="radio" name="scale" value="Under 50">Under 50</label>
+<label><input type="radio" name="scale" value="50-500">50-500</label>
+<label><input type="radio" name="scale" value="500-5,000">500-5,000</label>
+<label><input type="radio" name="scale" value="Over 5,000">Over 5,000</label>
+<label><input type="radio" name="scale" value="Not sure">Not sure</label>
+</div></div>
+<div class="fg"><label for="likeApps">Any apps or sites you like that are similar?</label><input type="text" id="likeApps" placeholder="Names or links"></div>
+</div>
+
+<!-- 3 -->
+<div class="step" data-name="Where it runs">
+<h2>Where should it run?</h2><p class="lead">Pick all that apply.</p>
+<div class="fg"><div class="chips">
+<label><input type="checkbox" name="platforms" value="iPhone">iPhone</label>
+<label><input type="checkbox" name="platforms" value="iPad">iPad</label>
+<label><input type="checkbox" name="platforms" value="Android">Android</label>
+<label><input type="checkbox" name="platforms" value="Mac">Mac</label>
+<label><input type="checkbox" name="platforms" value="Website (any browser)">Website (any browser)</label>
+<label><input type="checkbox" name="platforms" value="Not sure, recommend one">Not sure, recommend one</label>
+</div></div>
+<div class="fg"><span class="q">Does it need to work without internet?</span>
+<div class="chips">
+<label><input type="radio" name="offline" value="Yes">Yes, out in the field</label>
+<label><input type="radio" name="offline" value="No">No</label>
+<label><input type="radio" name="offline" value="Not sure">Not sure</label>
+</div></div>
+</div>
+
+<!-- 4 -->
+<div class="step" data-name="Features">
+<h2>What should it do?</h2><p class="lead">Check everything you'll need. This is the biggest factor in the price.</p>
+<div class="grid">
+<label><input type="checkbox" name="feat" value="Logins">Logins / user accounts<small>Email, Sign in with Apple or Google</small></label>
+<label><input type="checkbox" name="feat" value="Roles">Different access levels<small>e.g. admin, staff, member</small></label>
+<label><input type="checkbox" name="feat" value="Admin dashboard">Admin dashboard<small>You update content without a developer</small></label>
+<label><input type="checkbox" name="feat" value="Payments" id="featPay">Payments<small>Sales, subscriptions or donations</small></label>
+<label><input type="checkbox" name="feat" value="Booking">Booking or scheduling<small>Appointments, calendars</small></label>
+<label><input type="checkbox" name="feat" value="Events">Events and sign-ups</label>
+<label><input type="checkbox" name="feat" value="Forms">Forms or surveys</label>
+<label><input type="checkbox" name="feat" value="Push notifications">Push notifications</label>
+<label><input type="checkbox" name="feat" value="Email/text alerts">Email or text alerts</label>
+<label><input type="checkbox" name="feat" value="Messaging">Chat or messaging</label>
+<label><input type="checkbox" name="feat" value="Maps">Maps or location</label>
+<label><input type="checkbox" name="feat" value="Uploads">Photo, video or document upload</label>
+<label><input type="checkbox" name="feat" value="Scanning">Barcode or QR scanning</label>
+<label><input type="checkbox" name="feat" value="Reports">Reports and exports<small>PDF, spreadsheet</small></label>
+<label><input type="checkbox" name="feat" value="AI">AI features<small>Chat help, summaries, search</small></label>
+<label><input type="checkbox" name="feat" value="Languages">More than one language</label>
+</div>
+<div class="fg more" id="payWrap"><span class="q" style="margin-top:6px">What kind of payments?</span>
+<div class="chips">
+<label><input type="checkbox" name="payType" value="One-time purchases">One-time purchases</label>
+<label><input type="checkbox" name="payType" value="Subscriptions or memberships">Subscriptions or memberships</label>
+<label><input type="checkbox" name="payType" value="Donations">Donations</label>
+<label><input type="checkbox" name="payType" value="In person (card reader)">In person (card reader)</label>
+</div></div>
+<div class="fg" style="margin-top:18px"><span class="q">Does it need to connect to anything you already use?</span>
+<div class="chips">
+<label><input type="checkbox" name="integ" value="QuickBooks">QuickBooks</label>
+<label><input type="checkbox" name="integ" value="Stripe / PayPal / Square">Stripe / PayPal / Square</label>
+<label><input type="checkbox" name="integ" value="Google Workspace">Google Workspace</label>
+<label><input type="checkbox" name="integ" value="Microsoft 365">Microsoft 365</label>
+<label><input type="checkbox" name="integ" value="Zoom">Zoom</label>
+<label><input type="checkbox" name="integ" value="Mailchimp / Constant Contact">Mailchimp / Constant Contact</label>
+<label><input type="checkbox" name="integ" value="A CRM">A CRM</label>
+</div>
+<input type="text" id="integOther" placeholder="Anything else? (name the system)" style="margin-top:10px"></div>
+<div class="fg"><label for="mustHave">The one thing it absolutely must do</label><input type="text" id="mustHave"></div>
+</div>
+
+<!-- 5 -->
+<div class="step" data-name="Content and data">
+<h2>Content and data</h2><p class="lead">This tells us how much setup work there is.</p>
+<div class="fg"><span class="q">Is there existing information to move in?</span>
+<div class="chips">
+<label><input type="radio" name="migrate" value="Spreadsheets">Yes, spreadsheets</label>
+<label><input type="radio" name="migrate" value="Another system">Yes, from another system</label>
+<label><input type="radio" name="migrate" value="Paper records">Yes, paper records</label>
+<label><input type="radio" name="migrate" value="Nothing">No, starting fresh</label>
+</div>
+<input type="text" id="migrateSize" placeholder="Roughly how many records? (e.g. 300 customers)" style="margin-top:10px"></div>
+<div class="fg"><span class="q">Do you have a logo and brand colors?</span>
+<div class="chips">
+<label><input type="radio" name="brand" value="Yes">Yes</label>
+<label><input type="radio" name="brand" value="Logo only">Logo only</label>
+<label><input type="radio" name="brand" value="Need help with design">Need help with design</label>
+</div></div>
+<div class="fg"><span class="q">Who will provide the text and photos?</span>
+<div class="chips">
+<label><input type="radio" name="content" value="We will">We will</label>
+<label><input type="radio" name="content" value="Need help writing">We need help writing it</label>
+<label><input type="radio" name="content" value="Mix">A mix</label>
+</div></div>
+<div class="fg"><span class="q">Will it store sensitive information?</span>
+<div class="chips">
+<label><input type="checkbox" name="sensitive" value="Student records">Student records</label>
+<label><input type="checkbox" name="sensitive" value="Health information">Health information</label>
+<label><input type="checkbox" name="sensitive" value="Children's information">Children's information</label>
+<label><input type="checkbox" name="sensitive" value="Financial information">Financial information</label>
+<label><input type="checkbox" name="sensitive" value="None">None of these</label>
+</div></div>
+</div>
+
+<!-- 6 -->
+<div class="step" data-name="Launch and accounts">
+<h2>Launch and accounts</h2><p class="lead">Apps need store accounts in your organization's name. We'll help you set them up.</p>
+<div class="fg"><span class="q">Apple Developer account ($99/year)</span>
+<div class="chips">
+<label><input type="radio" name="apple" value="Have one">We have one</label>
+<label><input type="radio" name="apple" value="Need one">We need one</label>
+<label><input type="radio" name="apple" value="Not sure">Not sure</label>
+<label><input type="radio" name="apple" value="Not needed">Not needed (website only)</label>
+</div></div>
+<div class="fg"><span class="q">Google Play account ($25 one time)</span>
+<div class="chips">
+<label><input type="radio" name="google" value="Have one">We have one</label>
+<label><input type="radio" name="google" value="Need one">We need one</label>
+<label><input type="radio" name="google" value="Not sure">Not sure</label>
+<label><input type="radio" name="google" value="Not needed">Not needed</label>
+</div></div>
+<div class="fg"><span class="q">Website address (domain)</span>
+<div class="chips">
+<label><input type="radio" name="domain" value="Have one">We have one</label>
+<label><input type="radio" name="domain" value="Need one">We need one</label>
+<label><input type="radio" name="domain" value="Not needed">Not needed</label>
+</div></div>
+<div class="fg"><span class="q">After launch, what support do you want?</span>
+<div class="chips">
+<label><input type="radio" name="support" value="None">None needed</label>
+<label><input type="radio" name="support" value="As needed, hourly">As needed, hourly</label>
+<label><input type="radio" name="support" value="Monthly care plan">Monthly care plan (updates, fixes, new iOS versions)</label>
+<label><input type="radio" name="support" value="Not sure">Not sure</label>
+</div></div>
+</div>
+
+<!-- 7 -->
+<div class="step" data-name="Timing and budget">
+<h2>Timing and budget</h2><p class="lead">A budget range helps us suggest the right size of project. It's never shared.</p>
+<div class="row">
+<div class="fg"><label for="when">When would you like it live?</label><input type="date" id="when"></div>
+<div class="fg"><label for="whyDate">Is that a hard deadline? Why?</label><input type="text" id="whyDate" placeholder="e.g. grant ends, event date"></div>
+</div>
+<div class="fg"><span class="q">Budget range</span>
+<div class="chips">
+<label><input type="radio" name="budget" value="Under $2,500">Under $2,500</label>
+<label><input type="radio" name="budget" value="$2,500-$5,000">$2,500-$5,000</label>
+<label><input type="radio" name="budget" value="$5,000-$10,000">$5,000-$10,000</label>
+<label><input type="radio" name="budget" value="$10,000-$25,000">$10,000-$25,000</label>
+<label><input type="radio" name="budget" value="Over $25,000">Over $25,000</label>
+<label><input type="radio" name="budget" value="Not sure">Not sure yet</label>
+</div></div>
+<div class="fg"><span class="q">Is this funded by a grant?</span>
+<div class="chips">
+<label><input type="radio" name="grant" value="Yes">Yes</label>
+<label><input type="radio" name="grant" value="Applying">Applying for one</label>
+<label><input type="radio" name="grant" value="No">No</label>
+</div></div>
+<div class="fg"><span class="q">How did you hear about us?</span>
+<div class="chips">
+<label><input type="radio" name="heard" value="Referral">A referral</label>
+<label><input type="radio" name="heard" value="Search">Google search</label>
+<label><input type="radio" name="heard" value="Saw your work">Saw an app or site you built</label>
+<label><input type="radio" name="heard" value="Social media">Social media</label>
+<label><input type="radio" name="heard" value="Other">Other</label>
+</div></div>
+<div class="fg"><label for="extra">Anything else we should know?</label><textarea id="extra" style="min-height:90px"></textarea></div>
+</div>
+
+<!-- 8 review -->
+<div class="step review" data-name="Review">
+<h2>Check your answers</h2><p class="lead">Use Back to change anything.</p>
+<dl id="reviewList"></dl>
+</div>
+
+<!-- 9 thanks -->
+<div class="step thanks" data-name="Sent">
+<div class="big">🤙</div>
+<h2>Mahalo, your request is in</h2>
+<p class="lead" style="margin-top:8px">Dan will send your written proposal to <b id="thanksEmail">your email</b> within 1 business day. If something's unclear, he may call or email first.</p>
+
+</div>
+
+<div class="status" id="status"></div>
+<div class="nav-btns" id="btns">
+<button type="button" class="btn btn-secondary" id="back">Back</button>
+<button type="button" class="btn btn-primary" id="next">Next</button>
+</div>
+</form>
+
+
+</div>
+<footer>© 2026 DP Consulting | Serving Hawaii's Local Businesses · dan@oahuappdesign.com</footer>
+
+<script>
+const steps=[...document.querySelectorAll('.step')];
+const prog=document.getElementById('prog');
+const real=steps.length-2;
+let i=0;
+for(let k=0;k<=real;k++)prog.appendChild(document.createElement('span'));
+function show(){
+  steps.forEach((s,k)=>s.classList.toggle('on',k===i));
+  [...prog.children].forEach((b,k)=>b.classList.toggle('done',k<=i));
+  document.getElementById('stepname').textContent=i<=real?`Step ${i+1} of ${real+1}: ${steps[i].dataset.name}`:'';
+  document.getElementById('back').style.visibility=(i===0||i>real)?'hidden':'visible';
+  const n=document.getElementById('next');
+  n.textContent=i===real?'Send my request':'Next';
+  document.getElementById('btns').style.display=i>real?'none':'flex';
+  if(i===real)buildReview();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function val(sel){return [...document.querySelectorAll(sel)].filter(e=>e.checked).map(e=>e.value).join(', ')}
+function buildReview(){
+  const g=id=>document.getElementById(id).value.trim();
+  const rows=[['Name',g('name')],['Email',g('email')],['Organization',[g('org'),val('[name=orgType]')].filter(Boolean).join(' · ')],['Need',val('[name=kind]')],['Problem',g('problem')],['Users',[val('[name=users]'),val('[name=scale]')].filter(Boolean).join(' · ')],['Platforms',val('[name=platforms]')],['Features',[val('[name=feat]'),val('[name=payType]')].filter(Boolean).join(' · ')],['Connects to',[val('[name=integ]'),g('integOther')].filter(Boolean).join(', ')],['Existing data',[val('[name=migrate]'),g('migrateSize')].filter(Boolean).join(' · ')],['Sensitive info',val('[name=sensitive]')],['Store accounts',['Apple: '+(val('[name=apple]')||'—'),'Google: '+(val('[name=google]')||'—')].join(' · ')],['Support',val('[name=support]')],['Go-live',[g('when'),g('whyDate')].filter(Boolean).join(' · ')],['Budget',val('[name=budget]')]];
+  document.getElementById('reviewList').innerHTML=rows.map(([k,v])=>`<dt>${k}</dt><dd>${(v||'—').replace(/</g,'&lt;')}</dd>`).join('');
+}
+document.getElementById('next').onclick=()=>{
+  if(i===0){const e=document.getElementById('email'),n=document.getElementById('name');if(!n.value.trim()||!e.checkValidity()||!e.value){(n.value.trim()?e:n).reportValidity();return}}
+  if(i===1){const p=document.getElementById('problem');if(!p.value.trim()){p.reportValidity();return}}
+  if(i===real){submitQuote();return}
+  i++;show();
+};
+// Set to the Cloudflare quote route once it exists (step 2). Until then submits fall back to email,
+// because the current worker treats every path as the contact form.
+const QUOTE_URL='';
+function collect(){
+  const g=id=>document.getElementById(id).value.trim();
+  const v=n=>val('[name='+n+']');
+  return {name:g('name'),email:g('email'),phone:g('phone'),organization:g('org'),orgType:v('orgType'),website:g('site'),
+    need:v('kind'),existing:g('existing'),problem:g('problem'),users:v('users'),scale:v('scale'),similarApps:g('likeApps'),
+    platforms:v('platforms'),offline:v('offline'),features:v('feat'),paymentTypes:v('payType'),integrations:[v('integ'),g('integOther')].filter(Boolean).join(', '),
+    mustHave:g('mustHave'),existingData:v('migrate'),dataSize:g('migrateSize'),brand:v('brand'),content:v('content'),sensitive:v('sensitive'),
+    appleAccount:v('apple'),googleAccount:v('google'),domain:v('domain'),support:v('support'),goLive:g('when'),deadlineReason:g('whyDate'),
+    budget:v('budget'),grant:v('grant'),heardFrom:v('heard'),extra:g('extra'),hp:g('hp'),submittedAt:new Date().toISOString(),page:location.href};
+}
+async function submitQuote(){
+  const n=document.getElementById('next'),st=document.getElementById('status');
+  n.disabled=true;n.textContent='Sending…';st.classList.remove('on');
+  const data=collect();
+  try{
+    if(!QUOTE_URL)throw new Error('quote route not live yet');
+    const r=await fetch(QUOTE_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});
+    if(!r.ok)throw new Error('HTTP '+r.status);
+    document.getElementById('thanksEmail').textContent=data.email;
+    i++;show();
+  }catch(e){
+    const body=Object.entries(data).filter(([k,v])=>v&&!['hp','page'].includes(k)).map(([k,v])=>k+': '+v).join('\n');
+    const href='mailto:dan@oahuappdesign.com?subject='+encodeURIComponent('Quote request from '+data.name)+'&body='+encodeURIComponent(body.slice(0,1800));
+    st.innerHTML='Sorry, your request didn\'t go through. <a href="'+href+'">Email it to Dan instead</a> (your answers are filled in), or try again in a minute.';
+    st.classList.add('on');n.disabled=false;n.textContent='Send my request';
+  }
+}
+document.getElementById('back').onclick=()=>{i--;show()};
+document.querySelectorAll('[name=kind]').forEach(r=>r.onchange=()=>document.getElementById('existingWrap').classList.toggle('on',r.value.startsWith('Fix')&&r.checked));
+document.getElementById('featPay').onchange=e=>document.getElementById('payWrap').classList.toggle('on',e.target.checked);
+show();
+</script>
+</body>
+</html>
