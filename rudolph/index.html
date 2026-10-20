@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Help Rudolph, a 15-Year-Old Dog, Have a Peaceful Goodbye | Denver GoFundMe</title>
-<meta name="description" content="Rudolph is 15 and nearing the end of his life. His person, Christopher, can't cover euthanasia and cremation alone. Help give Rudolph a peaceful goodbye: $350 goal on GoFundMe.">
+<meta name="description" content="Rudolph is 15 and nearing the end of his life. His person, Christopher, can't cover euthanasia and cremation alone. Help give Rudolph a peaceful goodbye: $500 goal on GoFundMe.">
 <link rel="canonical" href="https://oahuappdesign.com/rudolph/">
 <meta name="robots" content="index, follow, max-image-preview:large">
 <meta property="og:type" content="website">
@@ -18,7 +18,7 @@
 <meta property="og:image:alt" content="Rudolph, a tan senior dog, resting in green grass with blue wildflowers">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Help Rudolph have a peaceful goodbye">
-<meta name="twitter:description" content="Rudolph is 15. Help Christopher cover euthanasia and cremation so he can bring Rudolph home. $350 goal.">
+<meta name="twitter:description" content="Rudolph is 15. Help Christopher cover euthanasia and cremation so he can bring Rudolph home. $500 goal.">
 <meta name="twitter:image" content="https://oahuappdesign.com/rudolph/rudolph.jpg">
 <script type="application/ld+json">
 {
@@ -92,9 +92,6 @@ h1{font-family:Fraunces,Georgia,serif;font-weight:700;font-size:clamp(32px,6.5vw
 .last{margin-top:34px;text-align:center}
 footer{text-align:center;color:var(--soft);font-size:14px;margin-top:44px}
 footer a{color:var(--soft)}
-.music{position:fixed;right:16px;bottom:16px;z-index:5;display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:9px 16px;border-radius:999px;border:1.5px solid var(--line);background:var(--card);color:var(--ink);font:600 15px "Source Sans 3",system-ui,sans-serif;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.15)}
-.music svg{width:18px;height:18px}
-.wrap{padding-bottom:110px}
 </style>
 </head>
 <body>
@@ -117,7 +114,7 @@ footer a{color:var(--soft)}
       <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 21s-7.5-4.6-9.6-9.2C.9 8.5 3 5 6.4 5c2 0 3.4 1.1 4.1 2.3h3C14.2 6.1 15.6 5 17.6 5 21 5 23.1 8.5 21.6 11.8 19.5 16.4 12 21 12 21z"/></svg>
       Donate to Rudolph on GoFundMe
     </a>
-    <p class="goal">Goal: $350 for euthanasia and cremation &middot; even $5 helps</p>
+    <p class="goal">Goal: $500 for euthanasia and cremation &middot; even $5 helps</p>
   </div>
 
   <section class="story" aria-labelledby="story">
@@ -130,7 +127,7 @@ footer a{color:var(--soft)}
   <section class="help" aria-labelledby="help">
     <h2 id="help">How you can help</h2>
     <div class="ways">
-      <div class="way"><b>Give a few dollars</b><span>The goal is only $350. A handful of small gifts covers it.</span></div>
+      <div class="way"><b>Give a few dollars</b><span>The goal is $500. A handful of small gifts covers it.</span></div>
       <div class="way"><b>Share this page</b><span>Send it to one dog lover you know. Shares are how small fundraisers get found.</span></div>
       <div class="way"><b>Leave a kind word</b><span>GoFundMe lets you add a note to Christopher with your gift.</span></div>
     </div>
@@ -158,92 +155,6 @@ footer a{color:var(--soft)}
 
   <footer>Shared with love by a friend at <a href="https://oahuappdesign.com/">Oahu App Design</a>.</footer>
 </main>
-<button type="button" class="music" id="music" aria-pressed="false">
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
-  <span id="musicLabel">Play soft piano</span>
-</button>
-<script>
-// Soft piano, composed live in the browser (no recording, so nothing to license).
-// Browsers only allow sound after a tap or key press, so it starts on the first one,
-// unless the visitor has muted it before. The button mutes and unmutes.
-(function(){
-  var btn = document.getElementById("music"), label = document.getElementById("musicLabel");
-  var AC = window.AudioContext || window.webkitAudioContext;
-  if (!AC) { btn.hidden = true; return; }
-  var muted = false;
-  try { muted = localStorage.getItem("rudolphMusic") === "off"; } catch (e) {}
-  var ctx = null, master = null, wet = null, playing = false, nextTime = 0, step = 0, timer = null;
-  var BEAT = 0.62;
-  // C - G - Am - F, the progression of a hundred lullabies.
-  var chords = [[48,55,60,64,67],[43,50,55,59,62],[45,52,57,60,64],[41,48,53,57,60]];
-  var melody = [72,74,76,79,81,84];
-  var last = 2;
-  function hz(m){ return 440 * Math.pow(2, (m - 69) / 12); }
-  function setup(){
-    ctx = new AC();
-    master = ctx.createGain(); master.gain.value = 0;
-    var tone = ctx.createBiquadFilter(); tone.type = "lowpass"; tone.frequency.value = 2400;
-    var verb = ctx.createConvolver(), len = ctx.sampleRate * 3, buf = ctx.createBuffer(2, len, ctx.sampleRate);
-    for (var c = 0; c < 2; c++) { var d = buf.getChannelData(c); for (var i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, 3); }
-    verb.buffer = buf;
-    wet = ctx.createGain(); wet.gain.value = 0.35;
-    master.connect(tone); tone.connect(ctx.destination); tone.connect(verb); verb.connect(wet); wet.connect(ctx.destination);
-  }
-  function note(m, t, vel, len){
-    var g = ctx.createGain(), f = hz(m);
-    g.gain.setValueAtTime(0.0001, t);
-    g.gain.exponentialRampToValueAtTime(vel, t + 0.008);
-    g.gain.exponentialRampToValueAtTime(0.0001, t + len);
-    g.connect(master);
-    [[1,1],[2,0.35],[3,0.12],[4,0.05]].forEach(function(h){
-      var o = ctx.createOscillator(); o.type = "sine"; o.frequency.value = f * h[0];
-      var hg = ctx.createGain(); hg.gain.value = h[1];
-      o.connect(hg); hg.connect(g); o.start(t); o.stop(t + len + 0.05);
-    });
-  }
-  function schedule(){
-    while (nextTime < ctx.currentTime + 0.5) {
-      var bar = Math.floor(step / 8) % 4, beat = step % 8, ch = chords[bar];
-      if (beat === 0) note(ch[0] - 12, nextTime, 0.22, 4.5);
-      note(ch[[1,2,3,4,3,2,3,1][beat]], nextTime, 0.10 + Math.random() * 0.03, 2.6);
-      if (beat === 0 || beat === 3 || (beat === 6 && Math.random() < 0.6)) {
-        last = Math.max(0, Math.min(melody.length - 1, last + [-1,0,1,1,-1,2,-2][Math.floor(Math.random() * 7)]));
-        note(melody[last] - 12, nextTime + 0.02, 0.09, 3.2);
-      }
-      nextTime += BEAT; step++;
-    }
-  }
-  function start(){
-    if (!ctx) setup();
-    ctx.resume();
-    if (!playing) { playing = true; nextTime = ctx.currentTime + 0.1; timer = setInterval(schedule, 120); schedule(); }
-    master.gain.cancelScheduledValues(ctx.currentTime);
-    master.gain.setTargetAtTime(0.55, ctx.currentTime, 0.8);
-    show(true);
-  }
-  function stop(){
-    if (ctx) { master.gain.cancelScheduledValues(ctx.currentTime); master.gain.setTargetAtTime(0, ctx.currentTime, 0.25); }
-    setTimeout(function(){ if (muted && ctx) { clearInterval(timer); playing = false; ctx.suspend(); } }, 1200);
-    show(false);
-  }
-  function show(on){
-    btn.setAttribute("aria-pressed", on ? "true" : "false");
-    label.textContent = on ? "Mute music" : "Play soft piano";
-  }
-  btn.addEventListener("click", function(ev){
-    ev.stopPropagation();
-    muted = playing && btn.getAttribute("aria-pressed") === "true";
-    try { localStorage.setItem("rudolphMusic", muted ? "off" : "on"); } catch (e) {}
-    muted ? stop() : start();
-  });
-  function firstTouch(ev){
-    if (ev.target.closest && ev.target.closest("#music")) return;
-    ["pointerdown","keydown","touchend"].forEach(function(t){ document.removeEventListener(t, firstTouch, true); });
-    if (!muted) start();
-  }
-  ["pointerdown","keydown","touchend"].forEach(function(t){ document.addEventListener(t, firstTouch, true); });
-})();
-</script>
 <script>
 // Slideshow: the GoFundMe photo first, then any photos Christopher adds at /rudolph/admin/.
 (function(){
