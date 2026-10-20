@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Rudolph's Photos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f6f3ec;--card:#fffdf8;--ink:#2a2924;--soft:#69655b;--line:#e3ddcf;--green:#2f5d3a;--red:#a3392c}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#171815;--card:#20221d;--ink:#ecebe5;--soft:#a9a597;--line:#34362f;--green:#5f9f6c;--red:#e07a6c}}
+:root[data-theme="dark"]{--bg:#171815;--card:#20221d;--ink:#ecebe5;--soft:#a9a597;--line:#34362f;--green:#5f9f6c;--red:#e07a6c}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:18px/1.6 "Source Sans 3",-apple-system,system-ui,sans-serif}
+.wrap{max-width:720px;margin:0 auto;padding:36px 16px 64px}
+h1{font-family:Fraunces,Georgia,serif;font-weight:600;font-size:32px;margin:0 0 4px}
+.sub{color:var(--soft);margin:0 0 24px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px;margin-bottom:18px}
+label{display:block;font-weight:600;font-size:16px;margin:0 0 6px}
+input[type=password],input[type=text]{width:100%;font:17px "Source Sans 3",system-ui,sans-serif;color:var(--ink);background:var(--bg);border:1.5px solid var(--line);border-radius:10px;padding:11px 13px}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:11px 22px;border:0;border-radius:999px;background:var(--green);color:#fff;font:700 17px "Source Sans 3",system-ui,sans-serif;cursor:pointer;margin-top:12px}
+.btn:disabled{opacity:.55;cursor:default}
+.pick{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;border:2px dashed var(--line);border-radius:14px;padding:28px 16px;text-align:center;cursor:pointer;color:var(--soft)}
+.pick b{color:var(--ink);font-size:18px}
+.pick input{display:none}
+.msg{min-height:24px;margin-top:10px;font-size:16px;color:var(--soft)}
+.msg.err{color:var(--red)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
+.tile{background:var(--bg);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.tile img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block}
+.tile .cap{padding:6px 10px 0;font-size:14px;color:var(--soft);min-height:20px}
+.tile button{width:100%;border:0;border-top:1px solid var(--line);background:none;color:var(--red);font:600 15px "Source Sans 3",system-ui,sans-serif;padding:9px;cursor:pointer;margin-top:6px}
+.empty{color:var(--soft);font-style:italic}
+a{color:var(--green)}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <h1>Rudolph's photos</h1>
+  <p class="sub">Add photos to <a href="../">Rudolph's page</a>. With more than one photo, the page shows them as a slideshow.</p>
+
+  <section class="card" id="loginCard">
+    <form id="login">
+      <label for="pw">Password</label>
+      <input type="password" id="pw" autocomplete="current-password" required>
+      <button class="btn" type="submit">Sign in</button>
+      <div class="msg" id="loginMsg" role="status"></div>
+    </form>
+  </section>
+
+  <div id="cms" hidden>
+    <section class="card">
+      <label class="pick" for="files">
+        <b>Choose photos</b>
+        <span>Tap to pick one or more from your phone or computer</span>
+        <input type="file" id="files" accept="image/*" multiple>
+      </label>
+      <label for="caption" style="margin-top:14px">Caption</label>
+      <input type="text" id="caption" maxlength="140" placeholder="Rudolph at the park, 2018">
+      <button class="btn" id="upload" type="button" disabled>Add to Rudolph's page</button>
+      <div class="msg" id="upMsg" role="status"></div>
+    </section>
+
+    <section class="card">
+      <label>On the page now</label>
+      <div class="grid" id="grid"></div>
+      <p class="empty" id="none" hidden>No photos added yet. The page shows the GoFundMe photo.</p>
+    </section>
+  </div>
+</main>
+<script>
+(function(){
+  var API = "https://rudolph-photos.oahuappdesign.workers.dev";
+  var password = "";
+  try { password = sessionStorage.getItem("rudolphPw") || ""; } catch (e) {}
+  var $ = function(id){ return document.getElementById(id); };
+
+  function api(path, opts){
+    opts = opts || {};
+    opts.headers = Object.assign({"X-CMS-Password": password}, opts.headers || {});
+    return fetch(API + path, opts).then(function(r){
+      return r.json().catch(function(){ return {}; }).then(function(body){
+        if (!r.ok) throw new Error(body.error || "Something went wrong.");
+        return body;
+      });
+    });
+  }
+
+  function showCms(){
+    $("loginCard").hidden = true; $("cms").hidden = false; load();
+  }
+
+  $("login").addEventListener("submit", function(ev){
+    ev.preventDefault();
+    password = $("pw").value;
+    $("loginMsg").className = "msg"; $("loginMsg").textContent = "Checking…";
+    api("/login", {method: "POST"}).then(function(){
+      try { sessionStorage.setItem("rudolphPw", password); } catch (e) {}
+      showCms();
+    }).catch(function(err){
+      $("loginMsg").className = "msg err"; $("loginMsg").textContent = err.message;
+    });
+  });
+
+  function load(){
+    fetch(API + "/photos", {cache: "no-store"}).then(function(r){ return r.json(); }).then(function(list){
+      var grid = $("grid"); grid.textContent = "";
+      $("none").hidden = list.length > 0;
+      list.forEach(function(p){
+        var t = document.createElement("div"); t.className = "tile";
+        var img = document.createElement("img"); img.src = API + "/photo/" + p.id; img.alt = p.caption || "Rudolph"; img.loading = "lazy";
+        var cap = document.createElement("div"); cap.className = "cap"; cap.textContent = p.caption;
+        var del = document.createElement("button"); del.type = "button"; del.textContent = "Remove";
+        del.addEventListener("click", function(){
+          if (del.dataset.confirm !== "1") { del.dataset.confirm = "1"; del.textContent = "Tap again to remove"; return; }
+          del.disabled = true; del.textContent = "Removing…";
+          api("/photo/" + p.id, {method: "DELETE"}).then(load).catch(function(err){ del.textContent = err.message; });
+        });
+        t.append(img, cap, del); grid.append(t);
+      });
+    });
+  }
+
+  $("files").addEventListener("change", function(){
+    var n = $("files").files.length;
+    $("upload").disabled = n === 0;
+    $("upMsg").className = "msg";
+    $("upMsg").textContent = n ? n + (n === 1 ? " photo" : " photos") + " ready." : "";
+  });
+
+  // Shrink to at most 1600px on the long side as a JPEG before upload.
+  function shrink(file){
+    return new Promise(function(resolve, reject){
+      var url = URL.createObjectURL(file);
+      var img = new Image();
+      img.onload = function(){
+        var scale = Math.min(1, 1600 / Math.max(img.naturalWidth, img.naturalHeight));
+        var w = Math.round(img.naturalWidth * scale), h = Math.round(img.naturalHeight * scale);
+        var c = document.createElement("canvas"); c.width = w; c.height = h;
+        c.getContext("2d").drawImage(img, 0, 0, w, h);
+        URL.revokeObjectURL(url);
+        c.toBlob(function(blob){ blob ? resolve({blob: blob, w: w, h: h}) : reject(new Error("Couldn't read that photo.")); }, "image/jpeg", 0.85);
+      };
+      img.onerror = function(){ URL.revokeObjectURL(url); reject(new Error("Couldn't read " + file.name + ". Try a JPEG or PNG.")); };
+      img.src = url;
+    });
+  }
+
+  $("upload").addEventListener("click", function(){
+    var files = Array.prototype.slice.call($("files").files);
+    var caption = $("caption").value.trim();
+    var btn = $("upload"), msg = $("upMsg");
+    btn.disabled = true; msg.className = "msg";
+    var done = 0;
+    files.reduce(function(chain, file){
+      return chain.then(function(){
+        msg.textContent = "Uploading " + (done + 1) + " of " + files.length + "…";
+        return shrink(file).then(function(s){
+          var fd = new FormData();
+          fd.append("photo", s.blob, "photo.jpg");
+          fd.append("caption", caption); fd.append("w", s.w); fd.append("h", s.h);
+          return api("/upload", {method: "POST", body: fd});
+        }).then(function(){ done++; });
+      });
+    }, Promise.resolve()).then(function(){
+      msg.textContent = done + (done === 1 ? " photo added." : " photos added.") + " The page shows them within about a minute.";
+      $("files").value = ""; $("caption").value = "";
+      load();
+    }).catch(function(err){
+      msg.className = "msg err"; msg.textContent = err.message + (done ? " (" + done + " added before this.)" : "");
+      btn.disabled = false; load();
+    });
+  });
+
+  if (password) {
+    api("/login", {method: "POST"}).then(showCms).catch(function(){
+      password = ""; try { sessionStorage.removeItem("rudolphPw"); } catch (e) {}
+    });
+  }
+})();
+</script>
+</body>
+</html>
