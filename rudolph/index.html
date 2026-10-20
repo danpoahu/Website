@@ -92,6 +92,13 @@ h1{font-family:Fraunces,Georgia,serif;font-weight:700;font-size:clamp(32px,6.5vw
 .last{margin-top:34px;text-align:center}
 footer{text-align:center;color:var(--soft);font-size:14px;margin-top:44px}
 footer a{color:var(--soft)}
+.song{margin-top:30px;text-align:center}
+.song h2{font-family:Fraunces,Georgia,serif;font-weight:600;font-size:24px;margin:0 0 4px}
+.song p{color:var(--soft);font-size:15px;margin:0 0 12px}
+.player{position:relative;aspect-ratio:16/9;border-radius:16px;overflow:hidden;background:#000;box-shadow:0 10px 30px rgba(0,0,0,.18)}
+.player iframe,.player>div{position:absolute;inset:0;width:100%;height:100%;border:0}
+.soundon{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:5;display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:10px 18px;border-radius:999px;border:0;background:var(--green);color:#fff;font:700 15px "Source Sans 3",system-ui,sans-serif;box-shadow:0 6px 18px rgba(0,0,0,.25);cursor:pointer}
+.soundon[hidden]{display:none}
 </style>
 </head>
 <body>
@@ -122,6 +129,12 @@ footer a{color:var(--soft)}
     <p>For fifteen years, Rudolph has been Christopher's constant companion. He's a sweet, sun-loving senior dog, and now he is nearing the end of his life.</p>
     <p>Christopher wants to give Rudolph a calm, painless goodbye with a veterinarian, and to bring his ashes home so he can stay close. Money is tight right now, though, and he can't cover euthanasia and cremation by himself.</p>
     <p>That's why he started a small fundraiser. Anyone who has said goodbye to a dog knows how much it matters to do it with dignity, without worrying about the bill.</p>
+  </section>
+
+  <section class="song" aria-labelledby="song">
+    <h2 id="song">A song for Rudolph</h2>
+    <p>&ldquo;You&rsquo;ve Got a Friend in Me&rdquo; &middot; Randy Newman</p>
+    <div class="player"><div id="ytPlayer"></div></div>
   </section>
 
   <section class="help" aria-labelledby="help">
@@ -155,6 +168,34 @@ footer a{color:var(--soft)}
 
   <footer>Shared with love by a friend at <a href="https://oahuappdesign.com/">Oahu App Design</a>.</footer>
 </main>
+<button type="button" class="soundon" id="soundOn" hidden>&#128266; Tap for sound</button>
+<script>
+// "You've Got a Friend in Me", embedded from the official DisneyMusicVEVO upload (YouTube
+// carries the license). Browsers only autoplay video muted, so it starts muted and the
+// sound comes on with the visitor's first tap or key press anywhere on the page.
+(function(){
+  var player = null, ready = false, unmuted = false;
+  var btn = document.getElementById("soundOn");
+  window.onYouTubeIframeAPIReady = function(){
+    player = new YT.Player("ytPlayer", {
+      videoId: "1MPZRcyTrcU",
+      playerVars: { autoplay: 1, mute: 1, playsinline: 1, rel: 0, modestbranding: 1, loop: 1, playlist: "1MPZRcyTrcU" },
+      events: {
+        onReady: function(e){ ready = true; e.target.mute(); e.target.playVideo(); if (!unmuted) btn.hidden = false; }
+      }
+    });
+  };
+  var tag = document.createElement("script"); tag.src = "https://www.youtube.com/iframe_api"; document.head.appendChild(tag);
+  function soundOn(){
+    if (unmuted || !ready) return;
+    unmuted = true; btn.hidden = true;
+    player.unMute(); player.setVolume(60); player.playVideo();
+    ["pointerdown","keydown","touchend"].forEach(function(t){ document.removeEventListener(t, soundOn, true); });
+  }
+  btn.addEventListener("click", soundOn);
+  ["pointerdown","keydown","touchend"].forEach(function(t){ document.addEventListener(t, soundOn, true); });
+})();
+</script>
 <script>
 // Slideshow: the GoFundMe photo first, then any photos Christopher adds at /rudolph/admin/.
 (function(){
