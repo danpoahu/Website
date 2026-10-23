@@ -26,19 +26,16 @@ header{position:fixed;inset:0 0 auto 0;height:84px;display:flex;align-items:cent
 /* Rack */
 main{min-height:100%;display:flex;flex-direction:column;justify-content:center;padding:96px 0 70px;transition:filter .5s,opacity .5s,transform .5s}
 body.open main{filter:blur(18px);opacity:.35;transform:scale(.97)}
-.rackwrap{position:relative;overflow-x:auto;overflow-y:visible;scrollbar-width:none;padding:0 0 30px}
-.rackwrap::-webkit-scrollbar{display:none}
-.rack{position:relative;display:flex;justify-content:center;min-width:max-content;padding:0 90px;margin:0 auto;perspective:1700px}
-.rail{position:absolute;left:30px;right:30px;top:6px;height:7px;border-radius:4px;background:linear-gradient(#f4f4f4,#a9a9a9 55%,#d8d8d8);box-shadow:0 3px 6px rgba(0,0,0,.18)}
+.rackwrap{position:relative;overflow:hidden;padding:0 0 24px;touch-action:pan-y;cursor:grab;user-select:none;-webkit-user-select:none}
+.rackwrap.dragging{cursor:grabbing}
+.rack{position:relative;height:520px}
+.rail{position:absolute;left:24px;right:24px;top:6px;height:7px;border-radius:4px;background:linear-gradient(#f4f4f4,#a9a9a9 55%,#d8d8d8);box-shadow:0 3px 6px rgba(0,0,0,.18)}
 .rail::before,.rail::after{content:"";position:absolute;top:-6px;width:10px;height:19px;border-radius:3px;background:linear-gradient(90deg,#cfcfcf,#8d8d8d)}
 .rail::before{left:-6px}.rail::after{right:-6px}
-.slot{position:relative;flex:0 0 clamp(96px,9vw,150px);height:clamp(380px,40vw,560px);outline:none}
-.slot .g{position:absolute;left:50%;top:0;width:clamp(190px,17vw,280px);transform:translateX(-50%) rotateY(66deg);transform-origin:50% 22px;transition:transform .65s cubic-bezier(.2,.85,.25,1),filter .4s;filter:drop-shadow(0 14px 14px rgba(0,0,0,.16));transform-style:preserve-3d}
-.slot:hover .g,.slot:focus-visible .g,.slot.hot .g{transform:translateX(-50%) rotateY(0deg) translateZ(70px) scale(1.14);filter:drop-shadow(0 22px 22px rgba(0,0,0,.24));z-index:2}
-.slot:hover,.slot:focus-visible,.slot.hot{z-index:5}
-.slot .g svg{display:block;width:100%;height:auto;overflow:visible}
-.slot .g.swing{animation:swing 1.1s ease-out}
-@keyframes swing{0%{rotate:z 0deg}25%{rotate:z 3deg}55%{rotate:z -2deg}80%{rotate:z 1deg}100%{rotate:z 0deg}}
+.slot{position:absolute;left:0;top:0;width:220px;outline:none;perspective:1100px;perspective-origin:50% 30%;will-change:transform;-webkit-tap-highlight-color:transparent}
+.slot .g{transform-origin:50% 0;will-change:transform;backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.slot .g svg{display:block;width:100%;height:auto;overflow:visible;pointer-events:none;filter:drop-shadow(0 16px 16px rgba(0,0,0,.18))}
+.slot:focus-visible .g{outline:2px solid var(--neon-dark);outline-offset:8px;border-radius:10px}
 
 .under{display:flex;flex-direction:column;align-items:center;gap:16px;margin-top:4px;padding:0 16px;text-align:center}
 .label{min-height:20px;font-size:13px;color:var(--soft);letter-spacing:.02em}
@@ -47,20 +44,28 @@ body.open main{filter:blur(18px);opacity:.35;transform:scale(.97)}
 .hint{font-size:12px;color:var(--soft)}
 
 /* Product view */
-.pdp{position:fixed;inset:0;z-index:20;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:80px 16px 60px;opacity:0;visibility:hidden;transition:opacity .45s,visibility 0s .45s}
-body.open .pdp{opacity:1;visibility:visible;transition:opacity .45s}
+.pdp{position:fixed;inset:0;z-index:20;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:80px 16px 60px;visibility:hidden;pointer-events:none}
+body.open .pdp,body.closing .pdp{visibility:visible}
+body.open .pdp{pointer-events:auto}
+.pdp .close,.pdp .info{opacity:0;transform:translateY(14px);transition:opacity .3s,transform .4s cubic-bezier(.2,.85,.25,1)}
+body.open .pdp .close,body.open .pdp .info{opacity:1;transform:none;transition-delay:.28s}
+.pdp .tags{transition:opacity .25s}
+body.closing .pdp .tags{opacity:0}
 .close{position:absolute;left:20px;top:76px;font:800 12px Inter,sans-serif;letter-spacing:.14em;text-transform:uppercase}
 .close:hover{text-decoration:underline}
-.stagebox{position:relative;width:min(64vw,44vh,440px);perspective:1400px}
-.spin{position:relative;transform-style:preserve-3d;transition:transform .9s cubic-bezier(.3,.8,.25,1)}
+.stagebox{position:relative;width:min(64vw,44vh,440px);transform-origin:50% 0;will-change:transform}
+.sway{perspective:1400px;transform-origin:50% 0}
+body.open .sway{animation:idle 5.5s ease-in-out infinite}
+@keyframes idle{0%,100%{rotate:-.9deg}50%{rotate:.9deg}}
+.spin{position:relative;transform-style:preserve-3d;transition:transform 1.05s cubic-bezier(.34,1.22,.42,1)}
 .spin .face{backface-visibility:hidden;-webkit-backface-visibility:hidden}
 .spin .face.back{position:absolute;inset:0;transform:rotateY(180deg)}
 .spin svg{display:block;width:100%;height:auto;overflow:visible;filter:drop-shadow(0 24px 26px rgba(0,0,0,.22))}
-body.open .spin.enter{animation:enter .9s cubic-bezier(.2,.85,.25,1)}
-@keyframes enter{from{transform:rotateY(-80deg) scale(.86)}}
 .tags{position:absolute;left:100%;top:14%;display:flex;gap:6px;margin-left:-6px}
 .tag{position:relative;width:34px;height:76px;border-radius:4px 4px 3px 3px;clip-path:polygon(25% 0,75% 0,100% 16%,100% 100%,0 100%,0 16%);display:flex;align-items:center;justify-content:center;font:800 7.5px Inter,sans-serif;letter-spacing:.2em;text-transform:uppercase;writing-mode:vertical-rl;transition:transform .35s cubic-bezier(.2,.85,.25,1)}
-.tagwrap{display:flex;flex-direction:column;align-items:center}
+.tagwrap{display:flex;flex-direction:column;align-items:center;transform-origin:50% 0}
+.tagwrap.drop{animation:drop .9s cubic-bezier(.3,1.45,.5,1) both;animation-delay:calc(.38s + var(--k) * .09s)}
+@keyframes drop{from{transform:translateY(-46px) rotate(-8deg);opacity:0}60%{opacity:1}}
 .tagwrap::before{content:"";width:1.5px;height:38px;background:#9a9890}
 .tag::after{content:"";position:absolute;top:6px;left:50%;width:6px;height:6px;margin-left:-3px;border-radius:50%;background:var(--wall)}
 .tag.on{transform:translateY(10px)}
@@ -89,9 +94,6 @@ body.open .spin.enter{animation:enter .9s cubic-bezier(.2,.85,.25,1)}
 @media (max-width:640px){
   header{height:72px}.logo{font-size:32px}
   .menu{display:none}.bag{top:24px;right:16px}
-  .slot{flex-basis:78px;height:320px}
-  .slot .g{width:160px}
-  .rack{justify-content:flex-start;padding:0 60px}
   .close{left:16px;top:66px}
   .tags{left:auto;right:-8px;top:-46px;margin:0}
   .stagebox{width:min(70vw,300px)}
@@ -143,18 +145,19 @@ body.open .spin.enter{animation:enter .9s cubic-bezier(.2,.85,.25,1)}
     <div class="rack" id="rack"><div class="rail"></div></div>
   </div>
   <div class="under">
-    <div class="label" id="label">Hover the rack</div>
+    <div class="label" id="label"></div>
     <button class="pill" id="see" type="button">See availability</button>
+    <div class="hint">Drag or swipe the rack</div>
   </div>
 </main>
 
 <section class="pdp" id="pdp" aria-hidden="true">
   <button class="close" id="close" type="button">← Rack</button>
-  <div class="stagebox">
-    <div class="spin" id="spin">
+  <div class="stagebox" id="stagebox">
+    <div class="sway"><div class="spin" id="spin">
       <div class="face front" id="faceFront"></div>
       <div class="face back" id="faceBack"></div>
-    </div>
+    </div></div>
     <div class="tags" id="tags"></div>
   </div>
   <div class="info">
@@ -270,38 +273,130 @@ body.open .spin.enter{animation:enter .9s cubic-bezier(.2,.85,.25,1)}
     return t.join("");
   }
 
-  // Rack.
-  var rack = $("rack"), current = 1, chosen = {}, bag = 0;
+  // Rack: a spring-driven carousel. p is the (fractional) index at the centre.
+  var wrap = $("rackwrap"), rack = $("rack"), N = ITEMS.length, current = 1, chosen = {}, bag = 0;
+  var p = -3.2, v = 0, target = 1, dragging = false, moved = false, open = false;
+  var sw = [], om = [], hv = [], hoverIdx = -1, accS = 0, prevV = 0, lastT = 0;
+  var gw = 220, spacing = 110, extra = 90, centerX = 0;
   ITEMS.forEach(function(item, i){
-    chosen[item.id] = 0;
+    chosen[item.id] = 0; sw.push(0); om.push(0); hv.push(0);
     var b = document.createElement("button");
-    b.type = "button"; b.className = "slot"; b.dataset.i = i;
+    b.type = "button"; b.className = "slot";
     b.setAttribute("aria-label", item.name + ", " + item.colors[0][0]);
     b.innerHTML = '<div class="g">' + garment(item, 0, "front") + '</div>';
-    b.addEventListener("mouseenter", function(){ focusItem(i, true); });
-    b.addEventListener("focus", function(){ focusItem(i, false); });
-    b.addEventListener("click", function(){ openItem(i); });
+    b.addEventListener("pointerenter", function(e){ if (e.pointerType === "mouse" && !dragging) { hoverIdx = i; om[i] += 55; } });
+    b.addEventListener("pointerleave", function(){ if (hoverIdx === i) hoverIdx = -1; });
+    b.addEventListener("focus", function(){ if (!dragging) target = i; });
+    b.addEventListener("click", function(e){
+      if (moved) { e.preventDefault(); return; }
+      if (i === Math.round(p) && Math.abs(p - i) < 0.3) openItem(i);
+      else { target = i; om[i] += 40; }
+    });
     rack.appendChild(b);
   });
-  var slots = rack.querySelectorAll(".slot");
+  var slots = rack.querySelectorAll(".slot"), gs = rack.querySelectorAll(".g");
 
-  function focusItem(i, swing){
-    current = i;
-    slots.forEach(function(s, k){ s.classList.toggle("hot", k === i); });
-    var item = ITEMS[i];
-    $("label").textContent = item.name + " — " + item.colors[chosen[item.id]][0];
-    if (swing) {
-      var g = slots[i].querySelector(".g");
-      g.classList.remove("swing"); void g.offsetWidth; g.classList.add("swing");
-    }
+  function clamp(x, a, b){ return x < a ? a : x > b ? b : x; }
+  function layout(){
+    var W = wrap.clientWidth, small = W < 640;
+    gw = small ? 150 : clamp(window.innerWidth * 0.17, 190, 280);
+    spacing = gw * (small ? 0.42 : 0.5);
+    extra = gw * 0.44;
+    centerX = W / 2;
+    rack.style.height = Math.round(gw * 392 / 300 * 1.3 + 16) + "px";
+    slots.forEach(function(s){ s.style.width = gw + "px"; });
   }
-  rack.addEventListener("mouseleave", function(){ slots.forEach(function(s){ s.classList.remove("hot"); }); slots[current].classList.add("hot"); });
-  focusItem(1, false);
+  window.addEventListener("resize", layout);
+  layout();
+
+  function setLabel(){
+    var item = ITEMS[current];
+    $("label").textContent = item.name + " — " + item.colors[chosen[item.id]][0];
+  }
+
+  function frame(t){
+    var dt = Math.min(0.034, lastT ? (t - lastT) / 1000 : 0.016); lastT = t;
+    if (!dragging) {
+      // Slightly under-damped spring: glides in and settles with a soft overshoot.
+      var k = 150, c = 2 * Math.sqrt(k) * 0.82;
+      v += (-k * (p - target) - c * v) * dt;
+      p += v * dt;
+    }
+    var vpx = v * spacing;
+    accS += (((vpx - prevV) / dt) - accS) * 0.25; prevV = vpx;
+    for (var i = 0; i < N; i++) {
+      var d = i - p, ad = Math.abs(d), sg = d < 0 ? -1 : 1;
+      var e = ad >= 1 ? 1 : ad * ad * (3 - 2 * ad);
+      var x = centerX + d * spacing + sg * extra * Math.min(ad, 1);
+      // Each hanger is a damped pendulum, pushed by the rack's acceleration.
+      om[i] += (-70 * sw[i] - 5 * om[i] - accS * 0.011) * dt;
+      sw[i] = clamp(sw[i] + om[i] * dt, -18, 18);
+      hv[i] += ((i === hoverIdx && !dragging ? 1 : 0) - hv[i]) * Math.min(1, dt * 9);
+      var ang = 66 * e * (1 - 0.4 * hv[i]) + clamp(vpx * 0.005, -16, 16) * e;
+      var sc = 1 + 0.16 * (1 - e) + 0.05 * hv[i], z = 90 * (1 - e) + 24 * hv[i];
+      slots[i].style.transform = "translate3d(" + (x - gw / 2).toFixed(1) + "px,0,0)";
+      slots[i].style.zIndex = 1000 - Math.round(ad * 100);
+      gs[i].style.transform = "rotateZ(" + sw[i].toFixed(2) + "deg) rotateY(" + ang.toFixed(2) + "deg) translateZ(" + z.toFixed(1) + "px) scale(" + sc.toFixed(3) + ")";
+    }
+    var ci = clamp(Math.round(p), 0, N - 1);
+    if (ci !== current && !open) { current = ci; setLabel(); }
+    requestAnimationFrame(frame);
+  }
+  setLabel();
+  requestAnimationFrame(frame);
+
+  // Drag / swipe with momentum.
+  var startX = 0, startP = 0, lastX = 0, lastMove = 0;
+  function rubber(raw){ return raw < 0 ? raw * 0.32 : raw > N - 1 ? N - 1 + (raw - N + 1) * 0.32 : raw; }
+  wrap.addEventListener("pointerdown", function(e){
+    if (e.button !== 0 || open) return;
+    dragging = true; moved = false; hoverIdx = -1;
+    startX = lastX = e.clientX; startP = p; lastMove = performance.now();
+  });
+  window.addEventListener("pointermove", function(e){
+    if (!dragging) return;
+    var dx = e.clientX - startX;
+    if (!moved && Math.abs(dx) > 6) { moved = true; wrap.classList.add("dragging"); }
+    if (!moved) return;
+    var now = performance.now(), ms = Math.max(1, now - lastMove);
+    var inst = -(e.clientX - lastX) / spacing / (ms / 1000);
+    v = v * 0.55 + inst * 0.45;
+    p = rubber(startP - dx / spacing);
+    lastX = e.clientX; lastMove = now;
+  });
+  function release(){
+    if (!dragging) return;
+    dragging = false; wrap.classList.remove("dragging");
+    if (performance.now() - lastMove > 90) v = 0;
+    v = clamp(v, -14, 14);
+    target = clamp(Math.round(p + v * 0.2), 0, N - 1);
+    setTimeout(function(){ moved = false; }, 0);
+  }
+  window.addEventListener("pointerup", release);
+  window.addEventListener("pointercancel", release);
+
+  // Trackpad / mouse wheel.
+  var wheelTimer;
+  wrap.addEventListener("wheel", function(e){
+    if (open) return;
+    var d = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
+    if (!d) return;
+    e.preventDefault();
+    target = clamp(target + d / (spacing * 1.3), -0.35, N - 0.65);
+    clearTimeout(wheelTimer);
+    wheelTimer = setTimeout(function(){ target = clamp(Math.round(target), 0, N - 1); }, 130);
+  }, { passive: false });
+
+  document.addEventListener("keydown", function(e){
+    if (open) return;
+    if (e.key === "ArrowLeft") target = clamp(Math.round(target) - 1, 0, N - 1);
+    if (e.key === "ArrowRight") target = clamp(Math.round(target) + 1, 0, N - 1);
+  });
   $("see").addEventListener("click", function(){ openItem(current); });
 
   // Product view.
   var side = "front", sizePick = "M";
-  function renderPdp(){
+  function renderPdp(opening){
     var item = ITEMS[current], c = chosen[item.id];
     $("faceFront").innerHTML = garment(item, c, "front");
     $("faceBack").innerHTML = garment(item, c, "back");
@@ -309,14 +404,14 @@ body.open .spin.enter{animation:enter .9s cubic-bezier(.2,.85,.25,1)}
     $("price").textContent = "$" + item.price;
     var tags = $("tags"); tags.textContent = "";
     item.colors.forEach(function(col, k){
-      var w = document.createElement("div"); w.className = "tagwrap";
+      var w = document.createElement("div"); w.className = "tagwrap" + (opening ? " drop" : ""); w.style.setProperty("--k", k);
       var t = document.createElement("button");
       t.type = "button"; t.className = "tag" + (k === c ? " on" : "");
       t.style.background = col[1]; t.style.color = col[2];
       t.textContent = col[0]; t.setAttribute("aria-label", "Color " + col[0]);
       t.addEventListener("click", function(){
         chosen[item.id] = k; renderPdp();
-        slots[current].querySelector(".g").innerHTML = garment(item, k, "front");
+        gs[current].innerHTML = garment(item, k, "front");
         slots[current].setAttribute("aria-label", item.name + ", " + col[0]);
         $("label").textContent = item.name + " — " + col[0];
       });
@@ -335,23 +430,50 @@ body.open .spin.enter{animation:enter .9s cubic-bezier(.2,.85,.25,1)}
     $("spin").style.transform = s === "back" ? "rotateY(180deg)" : "";
     document.querySelectorAll(".toggle button").forEach(function(b){ b.classList.toggle("on", b.dataset.side === s); });
   }
+  // Open: the garment flies from its spot on the rack into the product view (FLIP).
+  var flight;
+  function flyBetween(a, b){
+    var box = $("stagebox").getBoundingClientRect();
+    function t(r){ return "translate(" + ((r.left + r.width / 2) - (box.left + box.width / 2)) + "px," + (r.top - box.top) + "px) scale(" + (r.width / box.width) + ")"; }
+    return [a ? { transform: t(a) } : { transform: "none" }, b ? { transform: t(b) } : { transform: "none" }];
+  }
   function openItem(i){
-    current = i; setSide("front"); renderPdp();
-    var spin = $("spin"); spin.classList.remove("enter"); void spin.offsetWidth; spin.classList.add("enter");
+    if (open) return;
+    open = true; current = i; target = i; hoverIdx = -1;
+    var spin = $("spin");
+    spin.style.transition = "none"; setSide("front"); void spin.offsetWidth; spin.style.transition = "";
+    renderPdp(true); setLabel();
+    var from = gs[i].getBoundingClientRect();
+    document.body.classList.remove("closing");
     document.body.classList.add("open");
     $("pdp").setAttribute("aria-hidden", "false");
-    setTimeout(function(){ $("close").focus({ preventScroll: true }); }, 50);
+    slots[i].style.visibility = "hidden";
+    if (flight) flight.cancel();
+    flight = $("stagebox").animate(flyBetween(from, null), { duration: 780, easing: "cubic-bezier(.2,.9,.25,1)" });
   }
   function closePdp(){
+    if (!open) return;
+    var i = current;
+    document.body.classList.add("closing");
     document.body.classList.remove("open");
     $("pdp").setAttribute("aria-hidden", "true");
-    slots[current].focus({ preventScroll: true });
+    // Aim at where the garment will sit once the rack has un-blurred and scaled back.
+    var to = gs[i].getBoundingClientRect(), k = 1 / 0.97, cx = window.innerWidth / 2, cy = window.innerHeight / 2;
+    to = { left: cx + (to.left - cx) * k, top: cy + (to.top - cy) * k, width: to.width * k };
+    if (flight) flight.cancel();
+    flight = $("stagebox").animate(flyBetween(null, to), { duration: 560, easing: "cubic-bezier(.55,0,.2,1)", fill: "forwards" });
+    flight.onfinish = function(){
+      slots[i].style.visibility = "";
+      om[i] += 90;
+      document.body.classList.remove("closing");
+      flight.cancel(); flight = null; open = false;
+    };
   }
   document.querySelectorAll(".toggle button").forEach(function(b){ b.addEventListener("click", function(){ setSide(b.dataset.side); }); });
   $("close").addEventListener("click", closePdp);
   $("pdp").addEventListener("click", function(e){ if (e.target === $("pdp")) closePdp(); });
   document.addEventListener("keydown", function(e){
-    if (!document.body.classList.contains("open")) return;
+    if (!open) return;
     if (e.key === "Escape") closePdp();
     if (e.key === "ArrowLeft" || e.key === "ArrowRight") setSide(side === "front" ? "back" : "front");
   });
@@ -372,9 +494,6 @@ body.open .spin.enter{animation:enter .9s cubic-bezier(.2,.85,.25,1)}
   var line = "<span>Fake Best Friend</span><span>New drop · Fall 2026</span><span>Free shipping over $100</span><span>Fake Best Friend</span><span>Shop the rack</span>";
   $("track").innerHTML = line + line + line + line;
 
-  // Start the rack scrolled to the middle on narrow screens.
-  var wrap = $("rackwrap");
-  wrap.scrollLeft = (wrap.scrollWidth - wrap.clientWidth) / 2;
 })();
 </script>
 </body>
